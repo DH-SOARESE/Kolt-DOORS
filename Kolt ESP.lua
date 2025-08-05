@@ -1,5 +1,20 @@
 --[[
-SCRIPT ESP LIBRARY V1 (Melhorado com Box e Círculo)
+📦 Model ESP Library - Versão Modular
+👤 Autor: DH SOARES (Melhorias por Gemini & Copilot)
+
+🎯 Função:
+Sistema de ESP para destacar objetos do tipo Model ou BasePart no jogo, cobrindo todo o conteúdo de Models.
+
+🧩 Recursos Suportados:
+✅ Nome personalizado
+✅ Distância até o alvo
+✅ Tracer (linha do centro da tela até o alvo)
+✅ Highlight Fill (preenchimento)
+✅ Highlight Outline (contorno)
+
+🔍 Observações:
+Compatível com objetos diretamente referenciados (Model/BasePart).
+Otimizado para uso em jogos como DOORS, com múltiplos objetos simultâneos.
 ]]
 
 local RunService = game:GetService("RunService")
@@ -44,6 +59,7 @@ function ModelESP:Add(target, config)
 	if not target or not target:IsA("Instance") then return end
 	if not target:IsA("Model") and not target:IsA("BasePart") then return end
 
+	-- Remove highlights antigos
 	for _, obj in pairs(target:GetChildren()) do
 		if obj:IsA("Highlight") and obj.Name:sub(1, 12) == "ESPHighlight" then
 			obj:Destroy()
@@ -64,30 +80,13 @@ function ModelESP:Add(target, config)
 		MaxDistance = config.MaxDistance or math.huge,
 	}
 
+	-- Drawing objects
 	cfg.tracerLine = cfg.Tracer and createDrawing("Line", {
 		Thickness = 1.5,
 		Color = cfg.Color,
 		Transparency = 1,
 		Visible = false
 	}) or nil
-
-	cfg.tracerCircle = cfg.Tracer and createDrawing("Circle", {
-		Radius = 4,
-		Thickness = 1,
-		Color = cfg.Color,
-		Transparency = 1,
-		NumSides = 12,
-		Filled = true,
-		Visible = false
-	}) or nil
-
-	cfg.boxRect = createDrawing("Square", {
-		Thickness = 1,
-		Color = cfg.Color,
-		Transparency = 1,
-		Filled = false,
-		Visible = false
-	})
 
 	cfg.nameText = cfg.ShowName and createDrawing("Text", {
 		Text = cfg.Name,
@@ -109,6 +108,7 @@ function ModelESP:Add(target, config)
 		Visible = false
 	}) or nil
 
+	-- Highlight combinado
 	if cfg.HighlightFill or cfg.HighlightOutline then
 		local highlight = Instance.new("Highlight")
 		highlight.Name = "ESPHighlight"
@@ -128,9 +128,9 @@ function ModelESP:Remove(target)
 	for i = #ModelESP.Objects, 1, -1 do
 		local obj = ModelESP.Objects[i]
 		if obj.Target == target then
-			for _, v in pairs({"tracerLine", "tracerCircle", "nameText", "distanceText", "boxRect"}) do
-				if obj[v] then pcall(function() obj[v]:Remove() end) end
-			end
+			if obj.tracerLine then pcall(function() obj.tracerLine:Remove() end) end
+			if obj.nameText then pcall(function() obj.nameText:Remove() end) end
+			if obj.distanceText then pcall(function() obj.distanceText:Remove() end) end
 			if obj.highlight then pcall(function() obj.highlight:Destroy() end) end
 			table.remove(ModelESP.Objects, i)
 			break
@@ -140,9 +140,9 @@ end
 
 function ModelESP:Clear()
 	for _, obj in ipairs(ModelESP.Objects) do
-		for _, v in pairs({"tracerLine", "tracerCircle", "nameText", "distanceText", "boxRect"}) do
-			if obj[v] then pcall(function() obj[v]:Remove() end) end
-		end
+		if obj.tracerLine then pcall(function() obj.tracerLine:Remove() end) end
+		if obj.nameText then pcall(function() obj.nameText:Remove() end) end
+		if obj.distanceText then pcall(function() obj.distanceText:Remove() end) end
 		if obj.highlight then pcall(function() obj.highlight:Destroy() end) end
 	end
 	ModelESP.Objects = {}
@@ -162,55 +162,44 @@ RunService.RenderStepped:Connect(function()
 			continue
 		end
 
-		local pos3D = target:IsA("Model") and getModelCenter(target) or target.Position
+		local pos3D = target:IsA("Model") and getModelCenter(target) or (target:IsA("BasePart") and target.Position or nil)
+		if not pos3D then
+			ModelESP:Remove(target)
+			continue
+		end
+
 		local success, pos2D = pcall(function() return camera:WorldToViewportPoint(pos3D) end)
 		local onScreen = success and pos2D.Z > 0
 		local distance = (camera.CFrame.Position - pos3D).Magnitude
 		local visible = onScreen and distance >= esp.MinDistance and distance <= esp.MaxDistance
 
 		if not visible or pos2D.X ~= pos2D.X or pos2D.Y ~= pos2D.Y then
-			for _, v in pairs({"tracerLine", "tracerCircle", "nameText", "distanceText", "boxRect"}) do
-				if esp[v] then esp[v].Visible = false end
-			end
+			if esp.tracerLine then esp.tracerLine.Visible = false end
+			if esp.nameText then esp.nameText.Visible = false end
+			if esp.distanceText then esp.distanceText.Visible = false end
 			if esp.highlight then esp.highlight.Enabled = false end
 			continue
 		end
 
 		if esp.tracerLine then
-			local origin = tracerOrigins[esp.TracerOrigin](vs)
-			local endPos = Vector2.new(pos2D.X, pos2D.Y)
-			esp.tracerLine.From = origin
-			esp.tracerLine.To = endPos
-			esp.tracerLine.Color = esp.Color
+			esp.tracerLine.From = tracerOrigins[esp.TracerOrigin](vs)
+			esp.tracerLine.To = Vector2.new(pos2D.X, pos2D.Y)
 			esp.tracerLine.Visible = true
-
-			if esp.tracerCircle then
-				esp.tracerCircle.Position = origin
-				esp.tracerCircle.Color = esp.Color
-				esp.tracerCircle.Visible = true
-			end
-		end
-
-		if esp.boxRect then
-			local size = 50 / distance * 100
-			esp.boxRect.Position = Vector2.new(pos2D.X - size/2, pos2D.Y - size/2)
-			esp.boxRect.Size = Vector2.new(size, size)
-			esp.boxRect.Color = esp.Color
-			esp.boxRect.Visible = true
+			esp.tracerLine.Color = esp.Color
 		end
 
 		if esp.nameText then
 			esp.nameText.Position = Vector2.new(pos2D.X, pos2D.Y - 20)
+			esp.nameText.Visible = true
 			esp.nameText.Text = esp.Name
 			esp.nameText.Color = esp.Color
-			esp.nameText.Visible = true
 		end
 
 		if esp.distanceText then
 			esp.distanceText.Position = Vector2.new(pos2D.X, pos2D.Y + 6)
+			esp.distanceText.Visible = true
 			esp.distanceText.Text = string.format("%.1fm", distance)
 			esp.distanceText.Color = esp.Color
-			esp.distanceText.Visible = true
 		end
 
 		if esp.highlight then
