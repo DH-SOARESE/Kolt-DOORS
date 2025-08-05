@@ -1,12 +1,29 @@
---📦 ModelESP Plus 2.1 | Autor: DH SOARES + Gemini
---✨ Features: Nome, Distância, Tracer + Círculo, Highlight, Customizações completas
+--[[
+📦 Model ESP Library - Versão Modular
+👤 Autor: DH SOARES (Melhorias por Gemini & Copilot)
+
+🎯 Função:
+Sistema de ESP para destacar objetos do tipo Model ou BasePart no jogo, cobrindo todo o conteúdo de Models.
+
+🧩 Recursos Suportados:
+✅ Nome personalizado
+✅ Distância até o alvo
+✅ Tracer (linha do centro da tela até o alvo)
+✅ Highlight Fill (preenchimento)
+✅ Highlight Outline (contorno)
+
+🔍 Observações:
+Compatível com objetos diretamente referenciados (Model/BasePart).
+Otimizado para uso em jogos como DOORS, com múltiplos objetos simultâneos.
+]]
 
 local RunService = game:GetService("RunService")
 local camera = workspace.CurrentCamera
 
-local ModelESP = { Objects = {}, Enabled = true }
+local ModelESP = {}
+ModelESP.Objects = {}
+ModelESP.Enabled = true
 
---📍 Posições de origem do tracer
 local tracerOrigins = {
 	Top = function(vs) return Vector2.new(vs.X / 2, 0) end,
 	Center = function(vs) return Vector2.new(vs.X / 2, vs.Y / 2) end,
@@ -15,117 +32,122 @@ local tracerOrigins = {
 	Right = function(vs) return Vector2.new(vs.X, vs.Y / 2) end,
 }
 
---🎯 Centraliza o modelo
 local function getModelCenter(model)
 	local total, count = Vector3.zero, 0
 	for _, p in ipairs(model:GetDescendants()) do
-		if p:IsA("BasePart") and p.Transparency < 1 then
+		if p:IsA("BasePart") and p.Transparency < 1 and p.CanCollide then
 			total += p.Position
 			count += 1
 		end
 	end
-	return count > 0 and (total / count) or (model:GetPivot() and model:GetPivot().Position or nil)
+	if count > 0 then
+		local center = total / count
+		if center.Magnitude == center.Magnitude then return center end
+	end
+	if model.PrimaryPart then return model.PrimaryPart.Position end
+	if model:IsA("Model") and model.WorldPivot then return model.WorldPivot.Position end
+	return nil
 end
 
---🧱 Cria um Drawing
 local function createDrawing(class, props)
-	local d = Drawing.new(class)
-	for prop, val in pairs(props) do d[prop] = val end
-	return d
+	local obj = Drawing.new(class)
+	for k, v in pairs(props) do obj[k] = v end
+	return obj
 end
 
---➕ Adiciona ESP
 function ModelESP:Add(target, config)
 	if not target or not target:IsA("Instance") then return end
-	if not (target:IsA("Model") or target:IsA("BasePart")) then return end
+	if not target:IsA("Model") and not target:IsA("BasePart") then return end
 
-	--🧹 Limpa Highlights antigos
-	for _, c in ipairs(target:GetChildren()) do
-		if c:IsA("Highlight") and c.Name:find("ESPHighlight") then c:Destroy() end
+	-- Remove highlights antigos
+	for _, obj in pairs(target:GetChildren()) do
+		if obj:IsA("Highlight") and obj.Name:sub(1, 12) == "ESPHighlight" then
+			obj:Destroy()
+		end
 	end
 
-	local color = config.Color or Color3.new(1, 1, 1)
-
-	local esp = {
+	local cfg = {
 		Target = target,
-		Color = color,
+		Color = config.Color or Color3.fromRGB(255, 255, 255),
 		Name = config.Name or target.Name,
 		ShowName = config.ShowName or false,
 		ShowDistance = config.ShowDistance or false,
 		Tracer = config.Tracer or false,
-		TracerCircle = config.TracerCircle or false,
-		TracerOrigin = tracerOrigins[config.TracerOrigin] and config.TracerOrigin or "Bottom",
 		HighlightFill = config.HighlightFill or false,
 		HighlightOutline = config.HighlightOutline or false,
-		FontSize = config.FontSize or 16,
-		CircleRadius = config.CircleRadius or 4,
-		LineThickness = config.LineThickness or 1.5,
+		TracerOrigin = tracerOrigins[config.TracerOrigin] and config.TracerOrigin or "Bottom",
 		MinDistance = config.MinDistance or 0,
-		MaxDistance = config.MaxDistance or math.huge
+		MaxDistance = config.MaxDistance or math.huge,
 	}
 
-	--🧵 Desenhos
-	esp.tracerLine = esp.Tracer and createDrawing("Line", {
-		Color = color, Transparency = 1, Visible = false, Thickness = esp.LineThickness
+	-- Drawing objects
+	cfg.tracerLine = cfg.Tracer and createDrawing("Line", {
+		Thickness = 1.5,
+		Color = cfg.Color,
+		Transparency = 1,
+		Visible = false
 	}) or nil
 
-	esp.tracerCircle = esp.TracerCircle and createDrawing("Circle", {
-		Color = color, Transparency = 1, Visible = false, Radius = esp.CircleRadius, Filled = true, NumSides = 12
+	cfg.nameText = cfg.ShowName and createDrawing("Text", {
+		Text = cfg.Name,
+		Color = cfg.Color,
+		Size = 16,
+		Center = true,
+		Outline = true,
+		Font = 2,
+		Visible = false
 	}) or nil
 
-	esp.nameText = esp.ShowName and createDrawing("Text", {
-		Text = esp.Name, Color = color, Visible = false, Center = true, Outline = true,
-		Size = esp.FontSize, Font = 2
+	cfg.distanceText = cfg.ShowDistance and createDrawing("Text", {
+		Text = "",
+		Color = cfg.Color,
+		Size = 14,
+		Center = true,
+		Outline = true,
+		Font = 2,
+		Visible = false
 	}) or nil
 
-	esp.distanceText = esp.ShowDistance and createDrawing("Text", {
-		Text = "", Color = color, Visible = false, Center = true, Outline = true,
-		Size = math.floor(esp.FontSize * 0.8), Font = 2
-	}) or nil
-
-	--💡 Highlight
-	if esp.HighlightFill or esp.HighlightOutline then
-		local h = Instance.new("Highlight")
-		h.Name = "ESPHighlight"
-		h.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-		h.FillColor = color
-		h.OutlineColor = color
-		h.FillTransparency = esp.HighlightFill and 0.6 or 1
-		h.OutlineTransparency = esp.HighlightOutline and 0 or 1
-		h.Parent = target
-		esp.highlight = h
+	-- Highlight combinado
+	if cfg.HighlightFill or cfg.HighlightOutline then
+		local highlight = Instance.new("Highlight")
+		highlight.Name = "ESPHighlight"
+		highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+		highlight.FillColor = cfg.Color
+		highlight.OutlineColor = cfg.Color
+		highlight.FillTransparency = cfg.HighlightFill and 0.6 or 1
+		highlight.OutlineTransparency = cfg.HighlightOutline and 0 or 1
+		highlight.Parent = target
+		cfg.highlight = highlight
 	end
 
-	table.insert(ModelESP.Objects, esp)
+	table.insert(ModelESP.Objects, cfg)
 end
 
---❌ Remove ESP
 function ModelESP:Remove(target)
 	for i = #ModelESP.Objects, 1, -1 do
-		local esp = ModelESP.Objects[i]
-		if esp.Target == target then
-			for _, v in pairs({ "tracerLine", "tracerCircle", "nameText", "distanceText" }) do
-				if esp[v] then pcall(function() esp[v]:Remove() end) end
-			end
-			if esp.highlight then pcall(function() esp.highlight:Destroy() end) end
+		local obj = ModelESP.Objects[i]
+		if obj.Target == target then
+			if obj.tracerLine then pcall(function() obj.tracerLine:Remove() end) end
+			if obj.nameText then pcall(function() obj.nameText:Remove() end) end
+			if obj.distanceText then pcall(function() obj.distanceText:Remove() end) end
+			if obj.highlight then pcall(function() obj.highlight:Destroy() end) end
 			table.remove(ModelESP.Objects, i)
 			break
 		end
 	end
 end
 
---🧼 Limpa todos
 function ModelESP:Clear()
-	for _, esp in ipairs(ModelESP.Objects) do
-		for _, v in pairs({ "tracerLine", "tracerCircle", "nameText", "distanceText" }) do
-			if esp[v] then pcall(function() esp[v]:Remove() end) end
-		end
-		if esp.highlight then pcall(function() esp.highlight:Destroy() end) end
+	for _, obj in ipairs(ModelESP.Objects) do
+		if obj.tracerLine then pcall(function() obj.tracerLine:Remove() end) end
+		if obj.nameText then pcall(function() obj.nameText:Remove() end) end
+		if obj.distanceText then pcall(function() obj.distanceText:Remove() end) end
+		if obj.highlight then pcall(function() obj.highlight:Destroy() end) end
 	end
 	ModelESP.Objects = {}
 end
 
---📡 Atualização contínua
 RunService.RenderStepped:Connect(function()
 	if not ModelESP.Enabled then return end
 
@@ -134,58 +156,58 @@ RunService.RenderStepped:Connect(function()
 	for i = #ModelESP.Objects, 1, -1 do
 		local esp = ModelESP.Objects[i]
 		local target = esp.Target
-		if not target or not target.Parent then ModelESP:Remove(target) continue end
 
-		local pos3D = target:IsA("Model") and getModelCenter(target) or target.Position
-		local ok, pos2D = pcall(function() return camera:WorldToViewportPoint(pos3D) end)
-		local dist = (camera.CFrame.Position - pos3D).Magnitude
+		if not target or not target.Parent or (target:IsA("Model") and not getModelCenter(target)) then
+			ModelESP:Remove(target)
+			continue
+		end
 
-		local visible = ok and pos2D.Z > 0 and dist >= esp.MinDistance and dist <= esp.MaxDistance
-		if not visible then
+		local pos3D = target:IsA("Model") and getModelCenter(target) or (target:IsA("BasePart") and target.Position or nil)
+		if not pos3D then
+			ModelESP:Remove(target)
+			continue
+		end
+
+		local success, pos2D = pcall(function() return camera:WorldToViewportPoint(pos3D) end)
+		local onScreen = success and pos2D.Z > 0
+		local distance = (camera.CFrame.Position - pos3D).Magnitude
+		local visible = onScreen and distance >= esp.MinDistance and distance <= esp.MaxDistance
+
+		if not visible or pos2D.X ~= pos2D.X or pos2D.Y ~= pos2D.Y then
 			if esp.tracerLine then esp.tracerLine.Visible = false end
-			if esp.tracerCircle then esp.tracerCircle.Visible = false end
 			if esp.nameText then esp.nameText.Visible = false end
 			if esp.distanceText then esp.distanceText.Visible = false end
 			if esp.highlight then esp.highlight.Enabled = false end
 			continue
 		end
 
-		local origin = tracerOrigins[esp.TracerOrigin](vs)
-		local screenPos = Vector2.new(pos2D.X, pos2D.Y)
-
 		if esp.tracerLine then
-			esp.tracerLine.From = origin
-			esp.tracerLine.To = screenPos
-			esp.tracerLine.Color = esp.Color
+			esp.tracerLine.From = tracerOrigins[esp.TracerOrigin](vs)
+			esp.tracerLine.To = Vector2.new(pos2D.X, pos2D.Y)
 			esp.tracerLine.Visible = true
-		end
-
-		if esp.tracerCircle then
-			esp.tracerCircle.Position = origin
-			esp.tracerCircle.Color = esp.Color
-			esp.tracerCircle.Visible = true
+			esp.tracerLine.Color = esp.Color
 		end
 
 		if esp.nameText then
-			esp.nameText.Position = screenPos - Vector2.new(0, 18)
+			esp.nameText.Position = Vector2.new(pos2D.X, pos2D.Y - 20)
+			esp.nameText.Visible = true
 			esp.nameText.Text = esp.Name
 			esp.nameText.Color = esp.Color
-			esp.nameText.Visible = true
 		end
 
 		if esp.distanceText then
-			esp.distanceText.Position = screenPos + Vector2.new(0, 6)
-			esp.distanceText.Text = string.format("%.1fm", dist)
-			esp.distanceText.Color = esp.Color
+			esp.distanceText.Position = Vector2.new(pos2D.X, pos2D.Y + 6)
 			esp.distanceText.Visible = true
+			esp.distanceText.Text = string.format("%.1fm", distance)
+			esp.distanceText.Color = esp.Color
 		end
 
 		if esp.highlight then
+			esp.highlight.Enabled = true
 			esp.highlight.FillColor = esp.Color
 			esp.highlight.OutlineColor = esp.Color
 			esp.highlight.FillTransparency = esp.HighlightFill and 0.6 or 1
 			esp.highlight.OutlineTransparency = esp.HighlightOutline and 0 or 1
-			esp.highlight.Enabled = true
 		end
 	end
 end)
