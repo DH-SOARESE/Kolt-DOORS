@@ -1,19 +1,25 @@
 --[[
-👤 Autor: DH_SOARES
+👤 Autor: DH_SOARES (modificado por ChatGPT)
 🎨 Estilo: HUB Refinado
 🧩 Recursos Suportados:
 ✅ Nome personalizado
 ✅ Distância até o alvo
 ✅ Tracer com bolinha de origem
 ✅ Highlight Fill & Outline
+✅ Entrada flexível por endereço string, Model, BasePart
+✅ Filtro por FOV
+✅ Fontes melhores para labels
 ]]
 
 local RunService = game:GetService("RunService")
 local camera = workspace.CurrentCamera
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
 
 local ModelESP = {}
 ModelESP.Objects = {}
 ModelESP.Enabled = true
+ModelESP.FOV = 90 -- graus, você pode alterar depois
 
 local tracerOrigins = {
 	Top = function(vs) return Vector2.new(vs.X / 2, 0) end,
@@ -24,7 +30,7 @@ local tracerOrigins = {
 }
 
 local function getModelCenter(model)
-	local total, count = Vector3.zero, 0
+	local total, count = Vector3.new(), 0
 	for _, p in ipairs(model:GetDescendants()) do
 		if p:IsA("BasePart") and p.Transparency < 1 and p.CanCollide then
 			total += p.Position
@@ -43,10 +49,33 @@ local function createDrawing(class, props)
 	return obj
 end
 
-function ModelESP:Add(target, config)
-	if not target or not target:IsA("Instance") then return end
-	if not target:IsA("Model") and not target:IsA("BasePart") then return end
+-- Função para resolver string de endereço do workspace (ex: "Door.Door" ou "Workspace.Door.Door")
+function ModelESP.ResolveTarget(input)
+	if typeof(input) == "Instance" then
+		return input
+	elseif typeof(input) == "string" then
+		-- Remove prefix workspace. se existir
+		local path = input
+		if path:sub(1,9):lower() == "workspace" then
+			path = path:sub(11)
+		end
+		
+		local current = workspace
+		for part in path:gmatch("[^%.]+") do
+			current = current:FindFirstChild(part)
+			if not current then return nil end
+		end
+		return current
+	end
+	return nil
+end
 
+function ModelESP:Add(targetInput, config)
+	local target = ModelESP.ResolveTarget(targetInput)
+	if not target or not target:IsA("Instance") then return warn("Target inválido.") end
+	if not (target:IsA("Model") or target:IsA("BasePart")) then return warn("Target deve ser Model ou BasePart.") end
+
+	-- Remove highlights existentes no target para evitar duplicados
 	for _, obj in pairs(target:GetChildren()) do
 		if obj:IsA("Highlight") and obj.Name:sub(1, 12) == "ESPHighlight" then
 			obj:Destroy()
@@ -66,6 +95,7 @@ function ModelESP:Add(target, config)
 		TracerOrigin = tracerOrigins[config.TracerOrigin] and config.TracerOrigin or "Bottom",
 		MinDistance = config.MinDistance or 0,
 		MaxDistance = config.MaxDistance or math.huge,
+		FOV = config.FOV or ModelESP.FOV, -- Pode sobrescrever o FOV individualmente
 	}
 
 	-- DRAWINGS
@@ -86,13 +116,14 @@ function ModelESP:Add(target, config)
 		Position = Vector2.new()
 	}) or nil
 
+	-- Melhor fonte: usar Fonte Consolas (5) ou ArialBold (1), mais legível que 2 (Gotham)
 	cfg.nameText = cfg.ShowName and createDrawing("Text", {
 		Text = cfg.Name,
 		Color = cfg.Color,
 		Size = 16,
 		Center = true,
 		Outline = true,
-		Font = 2,
+		Font = 5, -- Consolas
 		Visible = false
 	}) or nil
 
@@ -102,7 +133,7 @@ function ModelESP:Add(target, config)
 		Size = 14,
 		Center = true,
 		Outline = true,
-		Font = 2,
+		Font = 5, -- Consolas
 		Visible = false
 	}) or nil
 
@@ -119,9 +150,13 @@ function ModelESP:Add(target, config)
 	end
 
 	table.insert(ModelESP.Objects, cfg)
+	return cfg -- Retorna a config para manipulação externa se desejar
 end
 
-function ModelESP:Remove(target)
+function ModelESP:Remove(targetInput)
+	local target = ModelESP.ResolveTarget(targetInput)
+	if not target then return end
+
 	for i = #ModelESP.Objects, 1, -1 do
 		local obj = ModelESP.Objects[i]
 		if obj.Target == target then
@@ -145,6 +180,15 @@ function ModelESP:Clear()
 	ModelESP.Objects = {}
 end
 
+-- Função para checar se posição está dentro do FOV (em graus)
+local function isInFOV(pos3D, fovAngle)
+	local camCF = camera.CFrame
+	local dirToTarget = (pos3D - camCF.Position).Unit
+	local forward = camCF.LookVector
+	local angle = math.deg(math.acos(forward:Dot(dirToTarget)))
+	return angle <= fovAngle / 2
+end
+
 RunService.RenderStepped:Connect(function()
 	if not ModelESP.Enabled then return end
 
@@ -163,7 +207,10 @@ RunService.RenderStepped:Connect(function()
 		local success, pos2D = pcall(function() return camera:WorldToViewportPoint(pos3D) end)
 		local onScreen = success and pos2D.Z > 0
 		local distance = (camera.CFrame.Position - pos3D).Magnitude
-		local visible = onScreen and distance >= esp.MinDistance and distance <= esp.MaxDistance
+		local visible = onScreen 
+						and distance >= esp.MinDistance 
+						and distance <= esp.MaxDistance 
+						and isInFOV(pos3D, esp.FOV)
 
 		if not visible then
 			if esp.tracerLine then esp.tracerLine.Visible = false end
