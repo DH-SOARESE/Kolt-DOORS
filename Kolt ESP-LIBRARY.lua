@@ -1,11 +1,11 @@
---// 📦 Model ESP Library 
---// 👤 Autor: DH SOARES 
+--// 📦 Library Kolt v1
+--// 👤 Autor: DH_SOARES 
 --// 🎨 Estilo: Focado em animações suaves, tipografia refinada e pouco poluição visual
 
 --// 🔧 Serviços
 local RunService = game:GetService("RunService")
 local camera = workspace.CurrentCamera
-local TweenService = game:GetService("TweenService")
+local TweenService = game:GetService("TweenService") -- Mantemos o serviço, mas não o usamos para a posição
 
 --// 🧠 Tabela principal da biblioteca
 local ModelESP = {
@@ -82,7 +82,6 @@ function ModelESP:Add(target, config)
 		MinDistance = config.MinDistance or 0,
 		MaxDistance = config.MaxDistance or math.huge,
 		Opacity = config.Opacity or 0.7, -- Opacidade padrão ajustada para ser mais sutil
-		TracerPosition = nil, -- Posição inicial do tracer para a animação
 	}
 
 	-- Desenhos ESP com estilo limpo
@@ -208,32 +207,30 @@ RunService.RenderStepped:Connect(function(deltaTime)
 		local screenPos = Vector2.new(pos2D.X, pos2D.Y)
 		local originPos = tracerOrigins[esp.TracerOrigin](vs)
 		local currentColor = ModelESP.Theme.RainbowMode and getRainbowColor(time) or esp.Color
+		
+		-- // REMOVIDO: Inicialização do tracerPosition
+		-- // REMOVIDO: Efeito de tween suave com Lerp
 
-		-- Inicializa a posição do tracer se for a primeira vez
-		if not esp.TracerPosition then
-			esp.TracerPosition = screenPos
-		end
-
-		-- Efeito de tween suave para o tracer
-		esp.TracerPosition = esp.TracerPosition:Lerp(screenPos, 0.2) -- 0.2 é o fator de interpolação, ajuste para mais ou menos suavidade
-
+		-- **NOVO:** Atualiza a posição do tracer diretamente
+		local finalTracerPos = screenPos
+		
 		-- Atualiza Tracer
 		if esp.tracerLine then
 			esp.tracerLine.From = originPos
-			esp.tracerLine.To = esp.TracerPosition
+			esp.tracerLine.To = finalTracerPos
 			esp.tracerLine.Color = currentColor
 		end
 
 		-- Atualiza nome
 		if esp.nameText then
-			esp.nameText.Position = esp.TracerPosition - Vector2.new(0, 20) -- Posição ajustada
+			esp.nameText.Position = finalTracerPos - Vector2.new(0, 20) -- Posição ajustada
 			esp.nameText.Text = esp.Name
 			esp.nameText.Color = currentColor
 		end
 
 		-- Atualiza distância
 		if esp.distanceText then
-			esp.distanceText.Position = esp.TracerPosition + Vector2.new(0, 5) -- Posição ajustada
+			esp.distanceText.Position = finalTracerPos + Vector2.new(0, 5) -- Posição ajustada
 			esp.distanceText.Text = string.format("%.1fm", distance)
 			esp.distanceText.Color = currentColor
 		end
