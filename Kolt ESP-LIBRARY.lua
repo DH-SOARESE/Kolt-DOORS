@@ -1,141 +1,426 @@
---// ESP LIBRARY
---// GitHub ready
---// Usage: local ESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/SEU_REPO/esp/main/esp.lua"))()
+--[[
+    ESPLib (Roblox LocalScript Library)
+    Versão: 1.0.0
+    Autor: você :)
+    Licença: MIT
 
-local ESP = {}
-ESP.Objects = {}
-ESP.Settings = {
-    MaxDistance = 100,
-    MinDistance = 1,
-    Enabled = true,
-    ShowName = true,
-    ShowDistance = true,
-    ShowTracer = true,
-    ShowHighlight = true
+    Recursos:
+      - Highlight Outline/Fill
+      - Nome + Distância (m) via BillboardGui
+      - Tracer 2D (Top/Center/Bottom) via GUI
+      - Filtros de distância (min/max) e Display global
+      - Suporte a Model (usa PrimaryPart) e BasePart
+      - Limpeza automática
+
+    Observações:
+      - Distância: 1 stud = 1 "metro" para fins de HUD (ajustável por ScaleMetersPerStud).
+      - Rodar como LocalScript (cliente).
+]]
+
+local Players        = game:GetService("Players")
+local RunService     = game:GetService("RunService")
+local Workspace      = game:GetService("Workspace")
+
+local LocalPlayer    = Players.LocalPlayer
+local PlayerGui      = LocalPlayer:WaitForChild("PlayerGui")
+local Camera         = Workspace.CurrentCamera
+
+-- ==============================
+-- CONFIG GLOBAIS
+-- ==============================
+local GLOBAL = {
+    Display = true,
+    MinDistance = 1,      -- metros
+    MaxDistance = 100,    -- metros
+    TracerOrigin = "Bottom", -- "Top" | "Center" | "Bottom"
+    ScaleMetersPerStud = 1,  -- 1 stud = 1 m (ajuste se quiser)
 }
 
-local camera = workspace.CurrentCamera
-local RunService = game:GetService("RunService")
-local Players = game:GetService("Players")
-local localPlayer = Players.LocalPlayer
+-- ==============================
+-- GUI RAIZ (para linhas/labels)
+-- ==============================
+local rootGui = Instance.new("ScreenGui")
+rootGui.Name = "ESPLibGui"
+rootGui.ResetOnSpawn = false
+rootGui.IgnoreGuiInset = true
+rootGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+rootGui.Parent = PlayerGui
 
---// Função para adicionar objeto
-function ESP:AddObject(obj, name)
-    if not obj or not obj:IsA("BasePart") then return end
-    
-    self.Objects[obj] = {
-        Name = name or obj.Name,
-        Object = obj,
-        Highlight = nil,
-        Drawing = {
-            Name = Drawing.new("Text"),
-            Distance = Drawing.new("Text"),
-            Tracer = Drawing.new("Line")
-        }
-    }
+-- Container para linhas
+local linesFolder = Instance.new("Folder")
+linesFolder.Name = "Lines"
+linesFolder.Parent = rootGui
 
-    -- Configuração inicial
-    local data = self.Objects[obj]
-    data.Drawing.Name.Size = 13
-    data.Drawing.Name.Color = Color3.fromRGB(255, 255, 255)
-    data.Drawing.Name.Center = true
-    data.Drawing.Name.Outline = true
-
-    data.Drawing.Distance.Size = 13
-    data.Drawing.Distance.Color = Color3.fromRGB(0, 255, 255)
-    data.Drawing.Distance.Center = true
-    data.Drawing.Distance.Outline = true
-
-    data.Drawing.Tracer.Thickness = 1
-    data.Drawing.Tracer.Color = Color3.fromRGB(255, 0, 0)
-    data.Drawing.Tracer.Transparency = 1
-
-    -- Highlight
-    if ESP.Settings.ShowHighlight then
-        local highlight = Instance.new("Highlight")
-        highlight.FillTransparency = 1
-        highlight.OutlineTransparency = 0
-        highlight.OutlineColor = Color3.fromRGB(255, 255, 0)
-        highlight.Parent = obj
-        data.Highlight = highlight
-    end
+-- ==============================
+-- UTILITÁRIOS
+-- ==============================
+local function isModel(x)
+    return typeof(x) == "Instance" and x:IsA("Model")
 end
 
---// Função para remover objeto
-function ESP:RemoveObject(obj)
-    local data = self.Objects[obj]
-    if not data then return end
-
-    for _, v in pairs(data.Drawing) do
-        if v then v:Remove() end
-    end
-    if data.Highlight then data.Highlight:Destroy() end
-
-    self.Objects[obj] = nil
+local function isBasePart(x)
+    return typeof(x) == "Instance" and x:IsA("BasePart")
 end
 
---// Funções de configuração
-function ESP:SetMaxDistance(value)
-    self.Settings.MaxDistance = value
-end
-
-function ESP:SetMinDistance(value)
-    self.Settings.MinDistance = value
-end
-
---// Renderização
-RunService.RenderStepped:Connect(function()
-    if not ESP.Settings.Enabled then
-        for _, data in pairs(ESP.Objects) do
-            for _, v in pairs(data.Drawing) do v.Visible = false end
-            if data.Highlight then data.Highlight.Enabled = false end
+local function getAdorneeFromTarget(target)
+    if isBasePart(target) then
+        return target
+    elseif isModel(target) then
+        if target.PrimaryPart then
+            return target.PrimaryPart
+        else
+            -- tenta inferir um part
+            local part = target:FindFirstChildWhichIsA("BasePart", true)
+            return part
         end
+    end
+    return nil
+end
+
+local function getWorldCFrame(target)
+    local part = getAdorneeFromTarget(target)
+    if part and part.Parent then
+        return part.CFrame
+    end
+    return nil
+end
+
+local function getWorldPosition(target)
+    local cf = getWorldCFrame(target)
+    return cf and cf.Position or nil
+end
+
+local function formatMeters(studs, scale)
+    local meters = studs * (scale or GLOBAL.ScaleMetersPerStud)
+    -- arredonda para 0.1 m
+    meters = math.floor(meters * 10 + 0.5) / 10
+    return tostring(meters) .. " m"
+end
+
+local function inDistance(studs)
+    local m = studs * GLOBAL.ScaleMetersPerStud
+    return (m >= GLOBAL.MinDistance) and (m <= GLOBAL.MaxDistance)
+end
+
+local function makeUILine()
+    -- Uma linha como Frame rotacionado
+    local fr = Instance.new("Frame")
+    fr.Name = "Tracer"
+    fr.AnchorPoint = Vector2.new(0.5, 0.5)
+    fr.BorderSizePixel = 0
+    fr.BackgroundColor3 = Color3.new(1,1,1)
+    fr.BackgroundTransparency = 0
+    fr.ZIndex = 2
+
+    local stroke = Instance.new("UIStroke")
+    stroke.Thickness = 2
+    stroke.Parent = fr
+
+    fr.Parent = linesFolder
+    return fr
+end
+
+local function drawLine(frame, p0, p1)
+    -- p0, p1: Vector2 (em pixels)
+    local dx = p1.X - p0.X
+    local dy = p1.Y - p0.Y
+    local len = math.max(1, math.sqrt(dx*dx + dy*dy))
+    local ang = math.deg(math.atan2(dy, dx))
+
+    frame.Position = UDim2.fromOffset((p0.X + p1.X)/2, (p0.Y + p1.Y)/2)
+    frame.Size = UDim2.fromOffset(len, 2)
+    frame.Rotation = ang
+end
+
+local function getTracerOriginPx(mode)
+    local vs = Camera.ViewportSize
+    mode = (mode or GLOBAL.TracerOrigin)
+    if mode == "Top" then
+        return Vector2.new(vs.X/2, 0)
+    elseif mode == "Center" then
+        return Vector2.new(vs.X/2, vs.Y/2)
+    else -- "Bottom" default
+        return Vector2.new(vs.X/2, vs.Y)
+    end
+end
+
+local function getNameFromTarget(target)
+    if isModel(target) then
+        return target.Name
+    elseif isBasePart(target) then
+        if target.Parent and target.Parent:IsA("Model") then
+            return target.Parent.Name .. "/" .. target.Name
+        end
+        return target.Name
+    else
+        return "Unknown"
+    end
+end
+
+-- ==============================
+-- CLASSE: EspItem
+-- ==============================
+local EspItem = {}
+EspItem.__index = EspItem
+
+function EspItem:_buildGui()
+    -- Billboard para nome+distância
+    local billboard = Instance.new("BillboardGui")
+    billboard.Name = "ESPLibBillboard"
+    billboard.AlwaysOnTop = true
+    billboard.Size = UDim2.new(0, 200, 0, 32)
+    billboard.StudsOffset = Vector3.new(0, 2.5, 0)
+    billboard.MaxDistance = math.huge
+
+    local label = Instance.new("TextLabel")
+    label.Name = "Text"
+    label.Size = UDim2.fromScale(1,1)
+    label.BackgroundTransparency = 1
+    label.TextScaled = true
+    label.Font = Enum.Font.GothamMedium
+    label.TextColor3 = Color3.new(1,1,1)
+    label.TextStrokeTransparency = 0.5
+    label.Text = ""
+    label.Parent = billboard
+
+    self.Billboard = billboard
+    self.Label = label
+end
+
+function EspItem:_buildHighlight()
+    local h = Instance.new("Highlight")
+    h.Name = "ESPLibHighlight"
+    h.Enabled = true
+    h.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+    self.Highlight = h
+end
+
+function EspItem:_buildTracer()
+    local fr = makeUILine()
+    self.TracerFrame = fr
+end
+
+function EspItem:_applyVisual()
+    -- Highlight
+    if self.Highlight then
+        self.Highlight.FillColor = self.Color
+        self.Highlight.OutlineColor = self.Color
+        self.Highlight.FillTransparency = self.HighlightFill and self.FillTransparency or 1
+        self.Highlight.OutlineTransparency = self.HighlightOutline and self.OutlineTransparency or 1
+    end
+    -- Texto
+    if self.Label then
+        self.Label.TextColor3 = self.Color
+    end
+    -- Tracer
+    if self.TracerFrame then
+        self.TracerFrame.BackgroundColor3 = self.Color
+        local stroke = self.TracerFrame:FindFirstChildOfClass("UIStroke")
+        if stroke then stroke.Color = self.Color end
+    end
+end
+
+function EspItem.new(target, opts)
+    local self = setmetatable({}, EspItem)
+
+    self.Target = target
+    self.Color = (opts and opts.Color) or Color3.fromRGB(255, 60, 60)
+
+    self.ShowName = (opts and opts.ShowName) ~= false
+    self.ShowDistance = (opts and opts.ShowDistance) ~= false
+
+    self.HighlightOutline = (opts and opts.HighlightOutline) ~= false
+    self.HighlightFill = (opts and opts.HighlightFill) or false
+    self.FillTransparency = (opts and opts.FillTransparency) or 0.7
+    self.OutlineTransparency = (opts and opts.OutlineTransparency) or 0
+
+    self.NameText = (opts and opts.Name) or getNameFromTarget(target)
+
+    self.Tracer = (opts and opts.Tracer) or "Off" -- "Top" | "Center" | "Bottom" | "Off"
+    self.Adornee = getAdorneeFromTarget(target)
+
+    self._maid = {}
+
+    -- Construir elementos
+    self:_buildGui()
+    self:_buildHighlight()
+    self:_buildTracer()
+
+    -- Parentear
+    if self.Adornee then
+        self.Billboard.Adornee = self.Adornee
+        self.Billboard.Parent = self.Adornee
+        self.Highlight.Adornee = isModel(self.Target) and self.Target or self.Adornee
+        self.Highlight.Parent = self.Adornee
+    end
+
+    self:_applyVisual()
+
+    -- Conexão de atualização
+    self._conn = RunService.RenderStepped:Connect(function()
+        self:_update()
+    end)
+
+    table.insert(self._maid, self._conn)
+
+    -- Observa destruição do alvo
+    if self.Adornee then
+        local ancConn = self.Adornee.AncestryChanged:Connect(function(_, parent)
+            if not parent then
+                self:Destroy()
+            end
+        end)
+        table.insert(self._maid, ancConn)
+    end
+
+    return self
+end
+
+function EspItem:_update()
+    if not GLOBAL.Display then
+        self:_setVisible(false)
         return
     end
 
-    for obj, data in pairs(ESP.Objects) do
-        if obj and obj.Parent then
-            local pos, onScreen = camera:WorldToViewportPoint(obj.Position)
-            local distance = (localPlayer.Character and localPlayer.Character:FindFirstChild("HumanoidRootPart")) and (localPlayer.Character.HumanoidRootPart.Position - obj.Position).Magnitude or 0
+    local pos = getWorldPosition(self.Target)
+    if not pos then
+        self:_setVisible(false)
+        return
+    end
 
-            if onScreen and distance <= ESP.Settings.MaxDistance and distance >= ESP.Settings.MinDistance then
-                -- Highlight
-                if data.Highlight then data.Highlight.Enabled = true end
+    local camPos = Camera.CFrame.Position
+    local studs = (pos - camPos).Magnitude
 
-                -- Nome
-                if ESP.Settings.ShowName then
-                    data.Drawing.Name.Position = Vector2.new(pos.X, pos.Y - 15)
-                    data.Drawing.Name.Text = data.Name
-                    data.Drawing.Name.Visible = true
-                else
-                    data.Drawing.Name.Visible = false
-                end
+    if not inDistance(studs) then
+        self:_setVisible(false)
+        return
+    end
 
-                -- Distância
-                if ESP.Settings.ShowDistance then
-                    data.Drawing.Distance.Position = Vector2.new(pos.X, pos.Y)
-                    data.Drawing.Distance.Text = string.format("%.1fm", distance)
-                    data.Drawing.Distance.Visible = true
-                else
-                    data.Drawing.Distance.Visible = false
-                end
+    -- On-screen?
+    local screenPos, onScreen = Camera:WorldToViewportPoint(pos)
+    if not onScreen or screenPos.Z < 0 then
+        self:_setVisible(false)
+        return
+    end
 
-                -- Tracer
-                if ESP.Settings.ShowTracer then
-                    data.Drawing.Tracer.From = Vector2.new(camera.ViewportSize.X/2, camera.ViewportSize.Y)
-                    data.Drawing.Tracer.To = Vector2.new(pos.X, pos.Y)
-                    data.Drawing.Tracer.Visible = true
-                else
-                    data.Drawing.Tracer.Visible = false
-                end
-            else
-                for _, v in pairs(data.Drawing) do v.Visible = false end
-                if data.Highlight then data.Highlight.Enabled = false end
-            end
-        else
-            ESP:RemoveObject(obj)
+    -- Atualiza texto
+    local labelText = {}
+    if self.ShowName then table.insert(labelText, self.NameText) end
+    if self.ShowDistance then table.insert(labelText, "[" .. formatMeters(studs, GLOBAL.ScaleMetersPerStud) .. "]") end
+    self.Label.Text = table.concat(labelText, " ")
+
+    -- Cores/transparências (caso mude em runtime)
+    self:_applyVisual()
+
+    -- Tracer
+    local tracerOn = (self.Tracer == "Top" or self.Tracer == "Center" or self.Tracer == "Bottom")
+    if tracerOn then
+        self.TracerFrame.Visible = true
+        local origin = getTracerOriginPx(self.Tracer)
+        local target2D = Vector2.new(screenPos.X, screenPos.Y)
+        drawLine(self.TracerFrame, origin, target2D)
+    else
+        self.TracerFrame.Visible = false
+    end
+
+    self:_setVisible(true)
+end
+
+function EspItem:_setVisible(v)
+    if self.Highlight then self.Highlight.Enabled = v end
+    if self.Billboard then self.Billboard.Enabled = v end
+    if self.TracerFrame then self.TracerFrame.Visible = v and (self.Tracer ~= "Off") end
+end
+
+function EspItem:SetColor(color)
+    self.Color = color
+    self:_applyVisual()
+end
+
+function EspItem:SetName(nameText)
+    self.NameText = nameText
+end
+
+function EspItem:SetTracer(mode) -- "Top" | "Center" | "Bottom" | "Off"
+    self.Tracer = mode
+end
+
+function EspItem:Destroy()
+    if self._conn then
+        self._conn:Disconnect()
+        self._conn = nil
+    end
+    for _, c in ipairs(self._maid) do
+        if typeof(c) == "RBXScriptConnection" then
+            c:Disconnect()
         end
     end
-end)
+    self._maid = {}
 
-return ESP
+    if self.TracerFrame then
+        self.TracerFrame:Destroy()
+        self.TracerFrame = nil
+    end
+    if self.Billboard then
+        self.Billboard:Destroy()
+        self.Billboard = nil
+    end
+    if self.Highlight then
+        self.Highlight:Destroy()
+        self.Highlight = nil
+    end
+
+    self.Target = nil
+    self.Adornee = nil
+end
+
+-- ==============================
+-- API PÚBLICA
+-- ==============================
+local ESPLib = {}
+
+-- Adiciona e retorna um "handle" (o próprio EspItem)
+function ESPLib.Add(target, opts)
+    local adornee = getAdorneeFromTarget(target)
+    if not adornee then
+        warn("[ESPLib] Alvo inválido (não encontrou BasePart).")
+        return nil
+    end
+    return EspItem.new(target, opts or {})
+end
+
+function ESPLib.Remove(handle)
+    if handle and typeof(handle) == "table" and handle.Destroy then
+        handle:Destroy()
+    end
+end
+
+function ESPLib.SetDisplay(on)
+    GLOBAL.Display = not not on
+end
+
+function ESPLib.SetMaxDistance(meters)
+    GLOBAL.MaxDistance = tonumber(meters) or GLOBAL.MaxDistance
+end
+
+function ESPLib.SetMinDistance(meters)
+    GLOBAL.MinDistance = tonumber(meters) or GLOBAL.MinDistance
+end
+
+function ESPLib.SetTracerOrigin(mode) -- "Top" | "Center" | "Bottom"
+    if mode == "Top" or mode == "Center" or mode == "Bottom" then
+        GLOBAL.TracerOrigin = mode
+    end
+end
+
+function ESPLib.SetMetersPerStud(scale)
+    -- Caso queira 1 stud ≈ 0.28 m: ESPLib.SetMetersPerStud(0.28)
+    GLOBAL.ScaleMetersPerStud = tonumber(scale) or GLOBAL.ScaleMetersPerStud
+end
+
+-- Retorna versão
+function ESPLib.Version()
+    return "1.0.0"
+end
+
+return ESPLib
