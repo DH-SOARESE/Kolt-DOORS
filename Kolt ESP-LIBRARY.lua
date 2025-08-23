@@ -1,246 +1,141 @@
---// 📦 Library Kolt v1
---// 👤 Autor: DH_SOARES 
---// 🎨 Estilo: Focado em animações suaves, tipografia refinada e pouco poluição visual
+--// ESP LIBRARY
+--// GitHub ready
+--// Usage: local ESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/SEU_REPO/esp/main/esp.lua"))()
 
---// 🔧 Serviços
-local RunService = game:GetService("RunService")
+local ESP = {}
+ESP.Objects = {}
+ESP.Settings = {
+    MaxDistance = 100,
+    MinDistance = 1,
+    Enabled = true,
+    ShowName = true,
+    ShowDistance = true,
+    ShowTracer = true,
+    ShowHighlight = true
+}
+
 local camera = workspace.CurrentCamera
-local TweenService = game:GetService("TweenService") -- Mantemos o serviço, mas não o usamos para a posição
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+local localPlayer = Players.LocalPlayer
 
---// 🧠 Tabela principal da biblioteca
-local ModelESP = {
-	Objects = {},
-	Enabled = true,
-	Theme = {
-		PrimaryColor = Color3.fromRGB(130, 200, 255), -- Azul claro suave
-		SecondaryColor = Color3.fromRGB(255, 255, 255), -- Branco
-		OutlineColor = Color3.fromRGB(0, 0, 0), -- Contorno preto sutil para legibilidade
-		RainbowMode = false,
-		PulseSpeed = 2,
-	}
-}
+--// Função para adicionar objeto
+function ESP:AddObject(obj, name)
+    if not obj or not obj:IsA("BasePart") then return end
+    
+    self.Objects[obj] = {
+        Name = name or obj.Name,
+        Object = obj,
+        Highlight = nil,
+        Drawing = {
+            Name = Drawing.new("Text"),
+            Distance = Drawing.new("Text"),
+            Tracer = Drawing.new("Line")
+        }
+    }
 
---// 🌈 Função para gerar cor arco-íris
-local function getRainbowColor(t)
-	local frequency = 0.5
-	local r = math.sin(frequency * t + 0) * 127 + 128
-	local g = math.sin(frequency * t + 2) * 127 + 128
-	local b = math.sin(frequency * t + 4) * 127 + 128
-	return Color3.fromRGB(r, g, b)
+    -- Configuração inicial
+    local data = self.Objects[obj]
+    data.Drawing.Name.Size = 13
+    data.Drawing.Name.Color = Color3.fromRGB(255, 255, 255)
+    data.Drawing.Name.Center = true
+    data.Drawing.Name.Outline = true
+
+    data.Drawing.Distance.Size = 13
+    data.Drawing.Distance.Color = Color3.fromRGB(0, 255, 255)
+    data.Drawing.Distance.Center = true
+    data.Drawing.Distance.Outline = true
+
+    data.Drawing.Tracer.Thickness = 1
+    data.Drawing.Tracer.Color = Color3.fromRGB(255, 0, 0)
+    data.Drawing.Tracer.Transparency = 1
+
+    -- Highlight
+    if ESP.Settings.ShowHighlight then
+        local highlight = Instance.new("Highlight")
+        highlight.FillTransparency = 1
+        highlight.OutlineTransparency = 0
+        highlight.OutlineColor = Color3.fromRGB(255, 255, 0)
+        highlight.Parent = obj
+        data.Highlight = highlight
+    end
 end
 
---// 📍 Posições de Origem para o Tracer
-local tracerOrigins = {
-	Top = function(vs) return Vector2.new(vs.X / 2, 0) end,
-	Center = function(vs) return Vector2.new(vs.X / 2, vs.Y / 2) end,
-	Bottom = function(vs) return Vector2.new(vs.X / 2, vs.Y) end,
-	Left = function(vs) return Vector2.new(0, vs.Y / 2) end,
-	Right = function(vs) return Vector2.new(vs.X, vs.Y / 2) end,
-}
+--// Função para remover objeto
+function ESP:RemoveObject(obj)
+    local data = self.Objects[obj]
+    if not data then return end
 
---// 📍 Calcula o centro visual do modelo
-local function getModelCenter(model)
-	local total, count = Vector3.zero, 0
-	for _, p in ipairs(model:GetDescendants()) do
-		if p:IsA("BasePart") and p.Transparency < 1 and p.CanCollide then
-			total += p.Position
-			count += 1
-		end
-	end
-	return count > 0 and total / count or (model:IsA("Model") and (model.PrimaryPart and model.PrimaryPart.Position or model:GetPivot().Position))
+    for _, v in pairs(data.Drawing) do
+        if v then v:Remove() end
+    end
+    if data.Highlight then data.Highlight:Destroy() end
+
+    self.Objects[obj] = nil
 end
 
---// 🛠️ Cria objetos Drawing com propriedades estilizadas
-local function createDrawing(class, props)
-	local obj = Drawing.new(class)
-	for k, v in pairs(props) do obj[k] = v end
-	return obj
+--// Funções de configuração
+function ESP:SetMaxDistance(value)
+    self.Settings.MaxDistance = value
 end
 
---// ➕ Adiciona novo ESP ao sistema
-function ModelESP:Add(target, config)
-	if not target or not target:IsA("Instance") then return end
-	if not (target:IsA("Model") or target:IsA("BasePart")) then return end
-
-	-- Remove Highlights anteriores para evitar duplicatas
-	for _, obj in ipairs(target:GetChildren()) do
-		if obj:IsA("Highlight") and obj.Name == "ESPHighlight" then
-			obj:Destroy()
-		end
-	end
-
-	local cfg = {
-		Target = target,
-		Color = config.Color or ModelESP.Theme.PrimaryColor,
-		Name = config.Name or target.Name,
-		ShowName = config.ShowName ~= false,
-		ShowDistance = config.ShowDistance ~= false,
-		Tracer = config.Tracer ~= false,
-		HighlightFill = config.HighlightFill ~= false,
-		HighlightOutline = config.HighlightOutline ~= false,
-		TracerOrigin = tracerOrigins[config.TracerOrigin] and config.TracerOrigin or "Bottom",
-		MinDistance = config.MinDistance or 0,
-		MaxDistance = config.MaxDistance or math.huge,
-		Opacity = config.Opacity or 0.7, -- Opacidade padrão ajustada para ser mais sutil
-	}
-
-	-- Desenhos ESP com estilo limpo
-	cfg.tracerLine = cfg.Tracer and createDrawing("Line", {
-		Thickness = 1.5, -- Espessura reduzida para um visual mais delicado
-		Color = cfg.Color,
-		Transparency = cfg.Opacity,
-		Visible = false
-	}) or nil
-
-	cfg.nameText = cfg.ShowName and createDrawing("Text", {
-		Text = cfg.Name,
-		Color = cfg.Color,
-		Size = 14, -- Tamanho reduzido para menos poluição
-		Center = true,
-		Outline = true,
-		OutlineColor = ModelESP.Theme.OutlineColor, -- Contorno preto sutil
-		Font = Drawing.Fonts.Monospace,
-		Transparency = cfg.Opacity,
-		Visible = false
-	}) or nil
-
-	cfg.distanceText = cfg.ShowDistance and createDrawing("Text", {
-		Color = cfg.Color,
-		Size = 12, -- Tamanho ainda menor para a distância
-		Center = true,
-		Outline = true,
-		OutlineColor = ModelESP.Theme.OutlineColor, -- Contorno preto sutil
-		Font = Drawing.Fonts.Monospace,
-		Transparency = cfg.Opacity,
-		Visible = false
-	}) or nil
-
-	-- Highlight com estilo sutil
-	if cfg.HighlightFill or cfg.HighlightOutline then
-		local highlight = Instance.new("Highlight")
-		highlight.Name = "ESPHighlight"
-		highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-		highlight.FillColor = cfg.Color
-		highlight.OutlineColor = ModelESP.Theme.SecondaryColor
-		highlight.FillTransparency = cfg.HighlightFill and 0.85 or 1 -- Opacidade do preenchimento ajustada
-		highlight.OutlineTransparency = cfg.HighlightOutline and 0.65 or 1 -- Opacidade do contorno ajustada
-		highlight.Parent = target
-		cfg.highlight = highlight
-	end
-
-	table.insert(ModelESP.Objects, cfg)
+function ESP:SetMinDistance(value)
+    self.Settings.MinDistance = value
 end
 
---// ➖ Remove ESP individual
-function ModelESP:Remove(target)
-	for i = #ModelESP.Objects, 1, -1 do
-		local obj = ModelESP.Objects[i]
-		if obj.Target == target then
-			for _, draw in ipairs({obj.tracerLine, obj.nameText, obj.distanceText}) do
-				if draw then pcall(draw.Remove, draw) end
-			end
-			if obj.highlight then pcall(obj.highlight.Destroy, obj.highlight) end
-			table.remove(ModelESP.Objects, i)
-			break
-		end
-	end
-end
+--// Renderização
+RunService.RenderStepped:Connect(function()
+    if not ESP.Settings.Enabled then
+        for _, data in pairs(ESP.Objects) do
+            for _, v in pairs(data.Drawing) do v.Visible = false end
+            if data.Highlight then data.Highlight.Enabled = false end
+        end
+        return
+    end
 
---// 🧹 Remove todos os ESPs
-function ModelESP:Clear()
-	for _, obj in ipairs(ModelESP.Objects) do
-		for _, draw in ipairs({obj.tracerLine, obj.nameText, obj.distanceText}) do
-			if draw then pcall(draw.Remove, draw) end
-		end
-		if obj.highlight then pcall(obj.highlight.Destroy, obj.highlight) end
-	end
-	ModelESP.Objects = {}
-end
+    for obj, data in pairs(ESP.Objects) do
+        if obj and obj.Parent then
+            local pos, onScreen = camera:WorldToViewportPoint(obj.Position)
+            local distance = (localPlayer.Character and localPlayer.Character:FindFirstChild("HumanoidRootPart")) and (localPlayer.Character.HumanoidRootPart.Position - obj.Position).Magnitude or 0
 
---// 🎨 Alterna tema para arco-íris
-function ModelESP:ToggleRainbowMode(enable)
-	ModelESP.Theme.RainbowMode = enable
-end
+            if onScreen and distance <= ESP.Settings.MaxDistance and distance >= ESP.Settings.MinDistance then
+                -- Highlight
+                if data.Highlight then data.Highlight.Enabled = true end
 
---// 🔁 Atualização a cada frame
-RunService.RenderStepped:Connect(function(deltaTime)
-	if not ModelESP.Enabled then return end
-	local vs = camera.ViewportSize
-	local time = tick()
+                -- Nome
+                if ESP.Settings.ShowName then
+                    data.Drawing.Name.Position = Vector2.new(pos.X, pos.Y - 15)
+                    data.Drawing.Name.Text = data.Name
+                    data.Drawing.Name.Visible = true
+                else
+                    data.Drawing.Name.Visible = false
+                end
 
-	for i = #ModelESP.Objects, 1, -1 do
-		local esp = ModelESP.Objects[i]
-		local target = esp.Target
-		if not target or not target.Parent then
-			ModelESP:Remove(target)
-			continue
-		end
+                -- Distância
+                if ESP.Settings.ShowDistance then
+                    data.Drawing.Distance.Position = Vector2.new(pos.X, pos.Y)
+                    data.Drawing.Distance.Text = string.format("%.1fm", distance)
+                    data.Drawing.Distance.Visible = true
+                else
+                    data.Drawing.Distance.Visible = false
+                end
 
-		local pos3D = target:IsA("Model") and getModelCenter(target) or (target:IsA("BasePart") and target.Position)
-		if not pos3D then
-			ModelESP:Remove(target)
-			continue
-		end
-
-		local success, pos2D = pcall(function() return camera:WorldToViewportPoint(pos3D) end)
-		if not success or pos2D.Z <= 0 or pos2D.X ~= pos2D.X then
-			for _, draw in ipairs({esp.tracerLine, esp.nameText, esp.distanceText}) do
-				if draw then draw.Visible = false end
-			end
-			if esp.highlight then esp.highlight.Enabled = false end
-			continue
-		end
-
-		local distance = (camera.CFrame.Position - pos3D).Magnitude
-		local visible = distance >= esp.MinDistance and distance <= esp.MaxDistance
-
-		for _, draw in ipairs({esp.tracerLine, esp.nameText, esp.distanceText}) do
-			if draw then draw.Visible = visible end
-		end
-
-		if esp.highlight then
-			esp.highlight.Enabled = visible
-		end
-
-		if not visible then continue end
-
-		local screenPos = Vector2.new(pos2D.X, pos2D.Y)
-		local originPos = tracerOrigins[esp.TracerOrigin](vs)
-		local currentColor = ModelESP.Theme.RainbowMode and getRainbowColor(time) or esp.Color
-		
-		-- // REMOVIDO: Inicialização do tracerPosition
-		-- // REMOVIDO: Efeito de tween suave com Lerp
-
-		-- **NOVO:** Atualiza a posição do tracer diretamente
-		local finalTracerPos = screenPos
-		
-		-- Atualiza Tracer
-		if esp.tracerLine then
-			esp.tracerLine.From = originPos
-			esp.tracerLine.To = finalTracerPos
-			esp.tracerLine.Color = currentColor
-		end
-
-		-- Atualiza nome
-		if esp.nameText then
-			esp.nameText.Position = finalTracerPos - Vector2.new(0, 20) -- Posição ajustada
-			esp.nameText.Text = esp.Name
-			esp.nameText.Color = currentColor
-		end
-
-		-- Atualiza distância
-		if esp.distanceText then
-			esp.distanceText.Position = finalTracerPos + Vector2.new(0, 5) -- Posição ajustada
-			esp.distanceText.Text = string.format("%.1fm", distance)
-			esp.distanceText.Color = currentColor
-		end
-
-		-- Atualiza Highlight
-		if esp.highlight then
-			esp.highlight.FillColor = currentColor
-			esp.highlight.OutlineColor = ModelESP.Theme.OutlineColor
-		end
-	end
+                -- Tracer
+                if ESP.Settings.ShowTracer then
+                    data.Drawing.Tracer.From = Vector2.new(camera.ViewportSize.X/2, camera.ViewportSize.Y)
+                    data.Drawing.Tracer.To = Vector2.new(pos.X, pos.Y)
+                    data.Drawing.Tracer.Visible = true
+                else
+                    data.Drawing.Tracer.Visible = false
+                end
+            else
+                for _, v in pairs(data.Drawing) do v.Visible = false end
+                if data.Highlight then data.Highlight.Enabled = false end
+            end
+        else
+            ESP:RemoveObject(obj)
+        end
+    end
 end)
 
-return ModelESP
+return ESP
