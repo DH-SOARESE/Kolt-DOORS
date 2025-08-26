@@ -2,15 +2,23 @@
 --// 👤 Autor: DH_SOARES
 --// 🎨 Estilo: Animações suaves, tipografia refinada, pouco poluição visual
 
---// 🔧 Serviços
 local RunService = game:GetService("RunService")
 local camera = workspace.CurrentCamera
-local TweenService = game:GetService("TweenService") -- Mantido para possíveis animações futuras
 
 --// 🧠 Tabela principal da biblioteca
 local ModelESP = {
     Objects = {},
     Enabled = true,
+    GlobalConfig = { -- Configurações globais aplicáveis a todos os ESPs
+        TracerOrigin = "Bottom",
+        Visible = true,
+        ShowName = true,
+        ShowDistance = true,
+        Tracer = true,
+        HighlightFill = true,
+        HighlightOutline = true,
+        Opacity = 0.7,
+    },
     Theme = {
         PrimaryColor = Color3.fromRGB(130, 200, 255),
         SecondaryColor = Color3.fromRGB(255, 255, 255),
@@ -20,64 +28,7 @@ local ModelESP = {
     }
 }
 
---// 📦 Configuração Global ESP
-local GlobalESPConfig = {
-    UseGlobal = false,
-    Tracer = nil,
-    TracerOrigin = nil,
-    ShowName = nil,
-    ShowDistance = nil
-}
-
---// 📍 Funções de configuração global
-local SetGlobalEsp = {}
-
-function SetGlobalEsp:EnableGlobal(state)
-    GlobalESPConfig.UseGlobal = state
-end
-
-function SetGlobalEsp:Tracer(state)
-    GlobalESPConfig.Tracer = state
-    for _, esp in ipairs(ModelESP.Objects) do
-        if esp.tracerLine then esp.tracerLine.Visible = state end
-        esp.Tracer = state
-    end
-end
-
-local tracerOrigins = {
-    Top = function(vs) return Vector2.new(vs.X / 2, 0) end,
-    Center = function(vs) return Vector2.new(vs.X / 2, vs.Y / 2) end,
-    Bottom = function(vs) return Vector2.new(vs.X / 2, vs.Y) end,
-    Left = function(vs) return Vector2.new(0, vs.Y / 2) end,
-    Right = function(vs) return Vector2.new(vs.X, vs.Y / 2) end,
-}
-
-function SetGlobalEsp:TracerOrigin(origin)
-    if tracerOrigins[origin] then
-        GlobalESPConfig.TracerOrigin = origin
-        for _, esp in ipairs(ModelESP.Objects) do
-            esp.TracerOrigin = origin
-        end
-    end
-end
-
-function SetGlobalEsp:ShowName(state)
-    GlobalESPConfig.ShowName = state
-    for _, esp in ipairs(ModelESP.Objects) do
-        if esp.nameText then esp.nameText.Visible = state end
-        esp.ShowName = state
-    end
-end
-
-function SetGlobalEsp:ShowDistance(state)
-    GlobalESPConfig.ShowDistance = state
-    for _, esp in ipairs(ModelESP.Objects) do
-        if esp.distanceText then esp.distanceText.Visible = state end
-        esp.ShowDistance = state
-    end
-end
-
---// 🌈 Função para cor arco-íris
+--// 🌈 Função para gerar cor arco-íris
 local function getRainbowColor(t)
     local frequency = 0.5
     local r = math.sin(frequency * t + 0) * 127 + 128
@@ -85,6 +36,15 @@ local function getRainbowColor(t)
     local b = math.sin(frequency * t + 4) * 127 + 128
     return Color3.fromRGB(r, g, b)
 end
+
+--// 📍 Posições de Origem para o Tracer
+local tracerOrigins = {
+    Top = function(vs) return Vector2.new(vs.X/2, 0) end,
+    Center = function(vs) return Vector2.new(vs.X/2, vs.Y/2) end,
+    Bottom = function(vs) return Vector2.new(vs.X/2, vs.Y) end,
+    Left = function(vs) return Vector2.new(0, vs.Y/2) end,
+    Right = function(vs) return Vector2.new(vs.X, vs.Y/2) end,
+}
 
 --// 📍 Calcula o centro visual do modelo
 local function getModelCenter(model)
@@ -95,10 +55,10 @@ local function getModelCenter(model)
             count += 1
         end
     end
-    return count > 0 and total / count or (model.PrimaryPart and model.PrimaryPart.Position or model:GetPivot().Position)
+    return count > 0 and total/count or (model.PrimaryPart and model.PrimaryPart.Position or model:GetPivot().Position)
 end
 
---// 🛠️ Cria objetos Drawing com propriedades
+--// 🛠️ Cria objetos Drawing
 local function createDrawing(class, props)
     local obj = Drawing.new(class)
     for k, v in pairs(props) do obj[k] = v end
@@ -110,67 +70,40 @@ function ModelESP:Add(target, config)
     if not target or not target:IsA("Instance") then return end
     if not (target:IsA("Model") or target:IsA("BasePart")) then return end
 
-    -- Remove highlights duplicados
+    -- Remove Highlights antigos
     for _, obj in ipairs(target:GetChildren()) do
         if obj:IsA("Highlight") and obj.Name == "ESPHighlight" then
             obj:Destroy()
         end
     end
 
-    -- Aplica global config
-    if GlobalESPConfig.UseGlobal then
-        config.Tracer = (GlobalESPConfig.Tracer ~= nil) and GlobalESPConfig.Tracer or config.Tracer
-        config.TracerOrigin = (GlobalESPConfig.TracerOrigin ~= nil) and GlobalESPConfig.TracerOrigin or config.TracerOrigin
-        config.ShowName = (GlobalESPConfig.ShowName ~= nil) and GlobalESPConfig.ShowName or config.ShowName
-        config.ShowDistance = (GlobalESPConfig.ShowDistance ~= nil) and GlobalESPConfig.ShowDistance or config.ShowDistance
+    -- Aplica configuração global
+    local cfg = {}
+    for k, v in pairs(ModelESP.GlobalConfig) do
+        cfg[k] = config[k] ~= nil and config[k] or v
     end
 
-    local cfg = {
-        Target = target,
-        Color = config.Color or ModelESP.Theme.PrimaryColor,
-        Name = config.Name or target.Name,
-        ShowName = config.ShowName ~= false,
-        ShowDistance = config.ShowDistance ~= false,
-        Tracer = config.Tracer ~= false,
-        HighlightFill = config.HighlightFill ~= false,
-        HighlightOutline = config.HighlightOutline ~= false,
-        TracerOrigin = tracerOrigins[config.TracerOrigin] and config.TracerOrigin or "Bottom",
-        MinDistance = config.MinDistance or 0,
-        MaxDistance = config.MaxDistance or math.huge,
-        Opacity = config.Opacity or 0.7,
-    }
+    cfg.Target = target
+    cfg.Color = config.Color or ModelESP.Theme.PrimaryColor
+    cfg.Name = config.Name or target.Name
+    cfg.MinDistance = config.MinDistance or 0
+    cfg.MaxDistance = config.MaxDistance or math.huge
 
+    -- Criar objetos Drawing
     cfg.tracerLine = cfg.Tracer and createDrawing("Line", {
-        Thickness = 1.5,
-        Color = cfg.Color,
-        Transparency = cfg.Opacity,
-        Visible = false
+        Thickness = 1.5, Color = cfg.Color, Transparency = cfg.Opacity, Visible = false
     }) or nil
 
     cfg.nameText = cfg.ShowName and createDrawing("Text", {
-        Text = cfg.Name,
-        Color = cfg.Color,
-        Size = 14,
-        Center = true,
-        Outline = true,
-        OutlineColor = ModelESP.Theme.OutlineColor,
-        Font = Drawing.Fonts.Monospace,
-        Transparency = cfg.Opacity,
-        Visible = false
+        Text = cfg.Name, Color = cfg.Color, Size = 14, Center = true, Outline = true,
+        OutlineColor = ModelESP.Theme.OutlineColor, Font = Drawing.Fonts.Monospace, Transparency = cfg.Opacity, Visible = false
     }) or nil
 
     cfg.distanceText = cfg.ShowDistance and createDrawing("Text", {
-        Color = cfg.Color,
-        Size = 12,
-        Center = true,
-        Outline = true,
-        OutlineColor = ModelESP.Theme.OutlineColor,
-        Font = Drawing.Fonts.Monospace,
-        Transparency = cfg.Opacity,
-        Visible = false
+        Color = cfg.Color, Size = 12, Center = true, Outline = true,
+        OutlineColor = ModelESP.Theme.OutlineColor, Font = Drawing.Fonts.Monospace, Transparency = cfg.Opacity, Visible = false
     }) or nil
 
-    -- Highlight
     if cfg.HighlightFill or cfg.HighlightOutline then
         local highlight = Instance.new("Highlight")
         highlight.Name = "ESPHighlight"
@@ -212,13 +145,24 @@ function ModelESP:Clear()
     ModelESP.Objects = {}
 end
 
---// 🎨 Alterna tema Rainbow
+--// 🎨 Alterna tema para arco-íris
 function ModelESP:ToggleRainbowMode(enable)
     ModelESP.Theme.RainbowMode = enable
 end
 
---// 🔁 Atualização por frame
-RunService.RenderStepped:Connect(function(deltaTime)
+--// 🔧 Define configuração global
+function ModelESP:SetGlobal(key, value)
+    ModelESP.GlobalConfig[key] = value
+    -- Aplica em todos ESPs existentes
+    for _, esp in ipairs(ModelESP.Objects) do
+        if esp[key] ~= nil then
+            esp[key] = value
+        end
+    end
+end
+
+--// 🔁 Atualização a cada frame
+RunService.RenderStepped:Connect(function()
     if not ModelESP.Enabled then return end
     local vs = camera.ViewportSize
     local time = tick()
@@ -238,7 +182,7 @@ RunService.RenderStepped:Connect(function(deltaTime)
         end
 
         local success, pos2D = pcall(function() return camera:WorldToViewportPoint(pos3D) end)
-        if not success or pos2D.Z <= 0 or pos2D.X ~= pos2D.X then
+        if not success or pos2D.Z <= 0 then
             for _, draw in ipairs({esp.tracerLine, esp.nameText, esp.distanceText}) do
                 if draw then draw.Visible = false end
             end
@@ -247,16 +191,12 @@ RunService.RenderStepped:Connect(function(deltaTime)
         end
 
         local distance = (camera.CFrame.Position - pos3D).Magnitude
-        local visible = distance >= esp.MinDistance and distance <= esp.MaxDistance
+        local visible = distance >= esp.MinDistance and distance <= esp.MaxDistance and esp.Visible
 
         for _, draw in ipairs({esp.tracerLine, esp.nameText, esp.distanceText}) do
             if draw then draw.Visible = visible end
         end
-
-        if esp.highlight then
-            esp.highlight.Enabled = visible
-        end
-
+        if esp.highlight then esp.highlight.Enabled = visible end
         if not visible then continue end
 
         local screenPos = Vector2.new(pos2D.X, pos2D.Y)
@@ -268,19 +208,16 @@ RunService.RenderStepped:Connect(function(deltaTime)
             esp.tracerLine.To = screenPos
             esp.tracerLine.Color = currentColor
         end
-
         if esp.nameText then
-            esp.nameText.Position = screenPos - Vector2.new(0, 20)
+            esp.nameText.Position = screenPos - Vector2.new(0,20)
             esp.nameText.Text = esp.Name
             esp.nameText.Color = currentColor
         end
-
         if esp.distanceText then
-            esp.distanceText.Position = screenPos + Vector2.new(0, 5)
+            esp.distanceText.Position = screenPos + Vector2.new(0,5)
             esp.distanceText.Text = string.format("%.1fm", distance)
             esp.distanceText.Color = currentColor
         end
-
         if esp.highlight then
             esp.highlight.FillColor = currentColor
             esp.highlight.OutlineColor = ModelESP.Theme.OutlineColor
