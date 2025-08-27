@@ -1,38 +1,37 @@
+
 # Kolt ESP-Library v3
 
-Uma biblioteca de **ESP (Extra Sensory Perception)** para Roblox, criada para ser **simples, leve e altamente configurável**.  
-Ela permite destacar **Players**, **Models** e **Entities sem Humanoid**, com suporte a configurações globais.
+Biblioteca ESP para Roblox, desenvolvida para ser **leve, eficiente e totalmente configurável**. Permite adicionar ESP em **Players, Models e Entities 2D**, com **tracers, highlights, nomes e distâncias**.
 
 ---
 
 ## Recursos
-- Suporte a **Players, Models e Entities 2D**
-- **Highlights 3D** nativos
-- **Tracers personalizáveis** (Top, Center, Bottom, Left, Right)
-- Nome e distância exibidos dinamicamente
-- **Configurações globais** em tempo real
+
+- ESP para **Players, Models e Entities sem Humanoid**
+- **Highlights 3D** (com preenchimento e contorno ajustáveis)
+- **Tracers** com origem personalizável: Top, Center, Bottom, Left, Right
+- Exibição de **nome e distância**
+- **Configurações globais** aplicáveis a todos os ESPs existentes e novos
 - **Modo Rainbow** para cores dinâmicas
-- **Opacidade, fonte e espessura ajustáveis**
-- Auto limpeza de alvos inválidos
+- Ajuste de **opacidade, fonte e espessura**
+- Remoção automática de targets inválidos
 
 ---
 
 ## Instalação
 
-Carregue a biblioteca com:
+Carregue a biblioteca diretamente de GitHub:
 
 ```lua
 local ModelESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/DH-SOARESE/Kolt-DOORS/main/Kolt%20ESP-LIBRARY.lua"))()
-
+```
 
 ---
 
 Uso Básico
 
--- Carregar a library
-local ModelESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/DH-SOARESE/Kolt-DOORS/main/Kolt%20ESP-LIBRARY.lua"))()
+Adiciona ESP para todos os jogadores no jogo:
 
--- Adicionar ESP para todos os players
 for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
     if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
         ModelESP:Add(player.Character, {
@@ -43,69 +42,72 @@ for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
     end
 end
 
-Esse exemplo cria ESPs básicos para todos os jogadores, com tracer vindo da parte inferior.
+Name: Nome exibido acima do target
+
+Color: Cor da ESP
+
+TracerOrigin: Origem da linha (Bottom, Top, Center, Left, Right)
+
 
 
 ---
 
 Uso Avançado
 
--- Carregar a library
-local ModelESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/DH-SOARESE/Kolt-DOORS/main/Kolt%20ESP-LIBRARY.lua"))()
+Adiciona ESP para monstros/Entities sem Humanoid e aplica configurações globais:
 
--- ESP para inimigos (Entities2D)
+-- ESP para monstros
 for _, mob in ipairs(workspace.Monstros:GetChildren()) do
     ModelESP:AddEntities2D(mob, {
         Name = "Monstro",
-        Color = Color3.fromRGB(255, 100, 100),
+        Color = Color3.fromRGB(255, 100, 100)
     })
 end
 
 -- Configurações globais
-ModelESP:SetGlobalTracerOrigin("Center")     -- Origem do tracer
-ModelESP:SetGlobalRainbow(true)             -- Ativar modo Rainbow
-ModelESP:SetGlobalOpacity(0.9)              -- Transparência
-ModelESP:SetGlobalFontSize(15)              -- Fonte
-ModelESP:SetGlobalLineThickness(2)          -- Espessura
-
--- Opções de exibição
+ModelESP:SetGlobalTracerOrigin("Center")     
+ModelESP:SetGlobalRainbow(true)             
+ModelESP:SetGlobalOpacity(0.9)              
+ModelESP:SetGlobalFontSize(15)              
+ModelESP:SetGlobalLineThickness(2)          
 ModelESP:SetGlobalESPType("ShowTracer", true)
 ModelESP:SetGlobalESPType("ShowName", true)
 ModelESP:SetGlobalESPType("ShowDistance", true)
 ModelESP:SetGlobalESPType("ShowHighlightFill", true)
 ModelESP:SetGlobalESPType("ShowHighlightOutline", true)
 
-Esse exemplo mostra como usar ESP em Entities 2D (sem Humanoid) e aplicar configurações globais em tempo real.
+AddEntities2D: Cria ESP para models sem Humanoid, deixando partes invisíveis
+
+Configurações globais afetam todas as ESPs, existentes e futuras
+
 
 
 ---
 
-API
-
 Funções Principais
 
-ModelESP:Add(target, config) → Adiciona ESP a um Model/Player
+Função	Descrição
 
-ModelESP:AddEntities2D(target, config) → Adiciona ESP a Entities sem Humanoid
+Add(target, config)	Adiciona ESP a um Model/Player
+AddEntities2D(target, config)	Adiciona ESP a Entities sem Humanoid
+Remove(target)	Remove ESP de um alvo específico
+Clear()	Remove todos os ESPs ativos
 
-ModelESP:Remove(target) → Remove ESP de um objeto específico
 
-ModelESP:Clear() → Remove todos os ESPs ativos
 
+---
 
 Configurações Globais
 
-SetGlobalTracerOrigin("Top|Center|Bottom|Left|Right")
+Método	Descrição
 
-SetGlobalESPType("ShowTracer|ShowName|ShowDistance|ShowHighlightFill|ShowHighlightOutline", true/false)
-
-SetGlobalOpacity(number)
-
-SetGlobalFontSize(number)
-
-SetGlobalLineThickness(number)
-
-SetGlobalRainbow(true/false)
+`SetGlobalTracerOrigin("Top	Center
+SetGlobalESPType(typeName, true/false)	Ativa/desativa: ShowTracer, ShowName, ShowDistance, ShowHighlightFill, ShowHighlightOutline
+SetGlobalOpacity(number)	Define transparência de ESPs (0 a 1)
+SetGlobalFontSize(number)	Define tamanho da fonte
+SetGlobalLineThickness(number)	Define espessura da linha do tracer
+SetGlobalRainbow(true/false)	Ativa modo Rainbow dinâmico
+Enabled	Habilita/desabilita todos ESPs
 
 
 
@@ -117,7 +119,20 @@ Autor: DH_SOARES
 
 Versão: v3
 
-Dependências: Drawing API (nativo em exploits compatíveis: Synapse, Script-Ware, etc.)
+Dependências: Drawing API (Sinapse, Script-Ware, etc.)
+
+Estilo: Minimalista, eficiente e responsivo
+
 
 
 ---
+
+Observações
+
+A ESP segue configurações globais automaticamente para novos e existentes targets
+
+Targets inválidos podem ser removidos automaticamente usando AutoRemoveInvalid
+
+Tracers sempre respeitam o valor definido em SetGlobalTracerOrigin
+
+
