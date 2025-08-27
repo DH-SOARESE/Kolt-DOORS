@@ -145,5 +145,3 @@ Versão: v3
 Estilo: Minimalista e responsivo
 
 Dependências: Drawing API (nativo de exploits compatíveis: Synapse, Script-Ware, etc.)
-
----
