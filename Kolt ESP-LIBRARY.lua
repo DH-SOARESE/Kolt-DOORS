@@ -1,4 +1,4 @@
---// 📦 Library Kolt V1.1
+--// 📦 Library Kolt V1.2
 --// 👤 Autor: DH_SOARES
 --// 🎨 Estilo: Minimalista, eficiente e responsivo
 
@@ -20,18 +20,19 @@ local ModelESP = {
         ShowHighlightOutline = true,
         ShowName = true,
         ShowDistance = true,
-        ShowBox = true,       -- Novo
-        ShowSkeleton = false, -- Novo
+        ShowBox = true,
+        ShowSkeleton = false,
         RainbowMode = false,
         MaxDistance = math.huge,
         MinDistance = 0,
         Opacity = 0.8,
         LineThickness = 1.5,
-        BoxThickness = 1.5,      -- Novo
-        SkeletonThickness = 1.2, -- Novo
-        BoxTransparency = 0.5,   -- Novo
+        BoxThickness = 1.5,
+        SkeletonThickness = 1.2,
+        BoxTransparency = 0.5,
         FontSize = 14,
         AutoRemoveInvalid = true,
+        AlwaysOnTop = true,  -- Novo: Controla se o ESP é sempre visível (através de paredes)
     }
 }
 
@@ -54,16 +55,20 @@ local tracerOrigins = {
     Right = function(vs) return Vector2.new(vs.X, vs.Y/2) end,
 }
 
---// 📍 Centro do modelo
-local function getModelCenter(model)
-    local total, count = Vector3.zero, 0
-    for _, p in ipairs(model:GetDescendants()) do
-        if p:IsA("BasePart") and p.Transparency < 1 then
-            total += p.Position
-            count += 1
-        end
+--// 📍 Obtém o bounding box do target
+local function getBoundingBox(target)
+    if target:IsA("Model") then
+        return target:GetBoundingBox()
+    elseif target:IsA("BasePart") then
+        return target.CFrame, target.Size
     end
-    return count > 0 and total/count or (model.PrimaryPart and model.PrimaryPart.Position or model:GetPivot().Position)
+    return nil, nil
+end
+
+--// 📍 Centro do modelo
+local function getModelCenter(target)
+    local cf = getBoundingBox(target)
+    return cf and cf.Position or Vector3.zero
 end
 
 --// 🛠️ Cria Drawing
@@ -122,7 +127,7 @@ function ModelESP:Add(target, config)
     if self.GlobalSettings.ShowHighlightFill or self.GlobalSettings.ShowHighlightOutline then
         local highlight = Instance.new("Highlight")
         highlight.Name = "ESPHighlight"
-        highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+        highlight.DepthMode = self.GlobalSettings.AlwaysOnTop and Enum.HighlightDepthMode.AlwaysOnTop or Enum.HighlightDepthMode.Occluded
         highlight.FillColor = cfg.Color
         highlight.OutlineColor = self.Theme.SecondaryColor
         highlight.FillTransparency = self.GlobalSettings.ShowHighlightFill and 0.85 or 1
@@ -137,22 +142,35 @@ function ModelESP:Add(target, config)
             Thickness = self.GlobalSettings.BoxThickness,
             Color = cfg.Color,
             Transparency = self.GlobalSettings.BoxTransparency,
-            Visible = false
+            Visible = false,
+            Filled = false
         })
     end
 
-    -- Skeleton ESP (simplificado)
-    if self.GlobalSettings.ShowSkeleton and target:IsA("Model") then
+    -- Skeleton ESP (para personagens com Humanoid)
+    if self.GlobalSettings.ShowSkeleton and target:IsA("Model") and target:FindFirstChildOfClass("Humanoid") then
+        local bonePairs = {
+            {"Head", "UpperTorso"},
+            {"UpperTorso", "LowerTorso"},
+            {"LowerTorso", "LeftUpperLeg"}, {"LowerTorso", "RightUpperLeg"},
+            {"UpperTorso", "LeftUpperArm"}, {"UpperTorso", "RightUpperArm"},
+            {"LeftUpperArm", "LeftLowerArm"}, {"RightUpperArm", "RightLowerArm"},
+            {"LeftLowerArm", "LeftHand"}, {"RightLowerArm", "RightHand"},
+            {"LeftUpperLeg", "LeftLowerLeg"}, {"RightUpperLeg", "RightLowerLeg"},
+            {"LeftLowerLeg", "LeftFoot"}, {"RightLowerLeg", "RightFoot"},
+        }
         cfg.skeletonLines = {}
-        for _, part in ipairs(target:GetDescendants()) do
-            if part:IsA("BasePart") then
+        for _, pair in ipairs(bonePairs) do
+            local p1 = target:FindFirstChild(pair[1])
+            local p2 = target:FindFirstChild(pair[2])
+            if p1 and p2 then
                 local line = createDrawing("Line", {
                     Thickness = self.GlobalSettings.SkeletonThickness,
                     Color = cfg.Color,
                     Transparency = self.GlobalSettings.Opacity,
                     Visible = false
                 })
-                table.insert(cfg.skeletonLines, line)
+                table.insert(cfg.skeletonLines, {line = line, parts = {p1, p2}})
             end
         end
     end
@@ -168,7 +186,7 @@ function ModelESP:Remove(target)
             for _, draw in ipairs({obj.tracerLine,obj.nameText,obj.distanceText}) do if draw then pcall(draw.Remove,draw) end end
             if obj.highlight then pcall(obj.highlight.Destroy,obj.highlight) end
             if obj.box then pcall(obj.box.Remove,obj.box) end
-            if obj.skeletonLines then for _, l in ipairs(obj.skeletonLines) do if l then pcall(l.Remove,l) end end end
+            if obj.skeletonLines then for _, skel in ipairs(obj.skeletonLines) do if skel.line then pcall(skel.line.Remove,skel.line) end end end
             table.remove(self.Objects,i)
             break
         end
@@ -181,7 +199,7 @@ function ModelESP:Clear()
         for _, draw in ipairs({obj.tracerLine,obj.nameText,obj.distanceText}) do if draw then pcall(draw.Remove,draw) end end
         if obj.highlight then pcall(obj.highlight.Destroy,obj.highlight) end
         if obj.box then pcall(obj.box.Remove,obj.box) end
-        if obj.skeletonLines then for _, l in ipairs(obj.skeletonLines) do if l then pcall(l.Remove,l) end end end
+        if obj.skeletonLines then for _, skel in ipairs(obj.skeletonLines) do if skel.line then pcall(skel.line.Remove,skel.line) end end end
     end
     self.Objects = {}
 end
@@ -192,11 +210,19 @@ function ModelESP:UpdateGlobalSettings()
         if esp.tracerLine then esp.tracerLine.Thickness = self.GlobalSettings.LineThickness end
         if esp.nameText then esp.nameText.Size = self.GlobalSettings.FontSize end
         if esp.distanceText then esp.distanceText.Size = self.GlobalSettings.FontSize-2 end
-        if esp.box then esp.box.Thickness = self.GlobalSettings.BoxThickness esp.box.Transparency = self.GlobalSettings.BoxTransparency end
+        if esp.box then 
+            esp.box.Thickness = self.GlobalSettings.BoxThickness 
+            esp.box.Transparency = self.GlobalSettings.BoxTransparency 
+        end
         if esp.skeletonLines then
-            for _, l in ipairs(esp.skeletonLines) do
-                l.Thickness = self.GlobalSettings.SkeletonThickness
+            for _, skel in ipairs(esp.skeletonLines) do
+                if skel.line then skel.line.Thickness = self.GlobalSettings.SkeletonThickness end
             end
+        end
+        if esp.highlight then
+            esp.highlight.DepthMode = self.GlobalSettings.AlwaysOnTop and Enum.HighlightDepthMode.AlwaysOnTop or Enum.HighlightDepthMode.Occluded
+            esp.highlight.FillTransparency = self.GlobalSettings.ShowHighlightFill and 0.85 or 1
+            esp.highlight.OutlineTransparency = self.GlobalSettings.ShowHighlightOutline and 0.65 or 1
         end
     end
 end
@@ -226,6 +252,10 @@ function ModelESP:SetGlobalLineThickness(thick)
     self.GlobalSettings.LineThickness = math.max(1,thick)
     self:UpdateGlobalSettings()
 end
+function ModelESP:SetEspAlVisible(enable)
+    self.GlobalSettings.AlwaysOnTop = enable
+    self:UpdateGlobalSettings()
+end
 
 --// 🔁 Atualização por frame
 RunService.RenderStepped:Connect(function()
@@ -243,14 +273,14 @@ RunService.RenderStepped:Connect(function()
             continue
         end
 
-        local pos3D = target:IsA("Model") and getModelCenter(target) or (target:IsA("BasePart") and target.Position)
+        local pos3D = getModelCenter(target)
         if not pos3D then continue end
 
         local success, pos2D = pcall(function() return camera:WorldToViewportPoint(pos3D) end)
         if not success or pos2D.Z <= 0 then
             for _, draw in ipairs({esp.tracerLine,esp.nameText,esp.distanceText,esp.box}) do if draw then draw.Visible=false end end
             if esp.highlight then esp.highlight.Enabled=false end
-            if esp.skeletonLines then for _, l in ipairs(esp.skeletonLines) do l.Visible=false end end
+            if esp.skeletonLines then for _, skel in ipairs(esp.skeletonLines) do if skel.line then skel.line.Visible=false end end end
             continue
         end
 
@@ -285,22 +315,57 @@ RunService.RenderStepped:Connect(function()
             esp.highlight.Enabled = (ModelESP.GlobalSettings.ShowHighlightFill or ModelESP.GlobalSettings.ShowHighlightOutline) and visible
             esp.highlight.FillColor = color
             esp.highlight.OutlineColor = ModelESP.Theme.OutlineColor
-            esp.highlight.FillTransparency = ModelESP.GlobalSettings.ShowHighlightFill and 0.85 or 1
-            esp.highlight.OutlineTransparency = ModelESP.GlobalSettings.ShowHighlightOutline and 0.65 or 1
         end
         -- Box ESP
         if esp.box then
-            esp.box.Visible = ModelESP.GlobalSettings.ShowBox and visible
-            esp.box.Size = Vector2.new(50,50) -- Placeholder, você pode calcular bounds reais
-            esp.box.Position = screenPos - esp.box.Size/2
-            esp.box.Color = color
+            local cf, size3D = getBoundingBox(target)
+            if cf and size3D then
+                local offsets = {
+                    Vector3.new(1,1,1), Vector3.new(1,1,-1), Vector3.new(1,-1,1), Vector3.new(1,-1,-1),
+                    Vector3.new(-1,1,1), Vector3.new(-1,1,-1), Vector3.new(-1,-1,1), Vector3.new(-1,-1,-1),
+                }
+                local minX, minY = math.huge, math.huge
+                local maxX, maxY = -math.huge, -math.huge
+                local onScreen = false
+                for _, off in ipairs(offsets) do
+                    local corner = cf * (off * (size3D / 2))
+                    local vp, inView = camera:WorldToViewportPoint(corner)
+                    if inView then
+                        onScreen = true
+                        minX = math.min(minX, vp.X)
+                        maxX = math.max(maxX, vp.X)
+                        minY = math.min(minY, vp.Y)
+                        maxY = math.max(maxY, vp.Y)
+                    end
+                end
+                if onScreen and visible then
+                    esp.box.Position = Vector2.new(minX, minY)
+                    esp.box.Size = Vector2.new(maxX - minX, maxY - minY)
+                    esp.box.Visible = true
+                    esp.box.Color = color
+                else
+                    esp.box.Visible = false
+                end
+            else
+                esp.box.Visible = false
+            end
         end
         -- Skeleton ESP
         if esp.skeletonLines then
-            for _, l in ipairs(esp.skeletonLines) do
-                l.Visible = ModelESP.GlobalSettings.ShowSkeleton and visible
-                l.Color = color
-                -- Aqui você pode atualizar posições reais se tiver joints
+            for _, skel in ipairs(esp.skeletonLines) do
+                local p1, p2 = skel.parts[1], skel.parts[2]
+                if p1 and p2 then
+                    local vp1, in1 = camera:WorldToViewportPoint(p1.Position)
+                    local vp2, in2 = camera:WorldToViewportPoint(p2.Position)
+                    if in1 and in2 and visible then
+                        skel.line.From = Vector2.new(vp1.X, vp1.Y)
+                        skel.line.To = Vector2.new(vp2.X, vp2.Y)
+                        skel.line.Visible = true
+                        skel.line.Color = color
+                    else
+                        skel.line.Visible = false
+                    end
+                end
             end
         end
     end
