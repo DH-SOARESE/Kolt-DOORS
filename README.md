@@ -1,25 +1,25 @@
+# Kolt ESP-Library v3
 
-# 📦 Kolt ESP-Library v3
-
-> Uma **ESP Library completa** para Roblox, criada com foco em **simplicidade, desempenho e flexibilidade**.  
-> Ideal para **Players ESP**, **Entities ESP** e até **objetos 2D sem Humanoid**.
-
----
-
-## ✨ Recursos
-- 🎯 **Suporte a Models, Parts e Entities sem Humanoid**
-- 🎨 **Highlights 3D nativos**
-- 🧵 **Tracers personalizáveis** (Top, Center, Bottom, Left, Right)
-- 📝 **Nome + Distância em tempo real**
-- 🌈 **Modo Rainbow (dinâmico)**
-- 🛠️ **Configuração global para todas ESPs**
-- 🚮 **Auto limpeza de objetos inválidos**
-- ⚡ **API simples e intuitiva**
+Uma biblioteca de **ESP (Extra Sensory Perception)** para Roblox, criada para ser **simples, leve e altamente configurável**.  
+Ela permite destacar **Players**, **Models** e **Entities sem Humanoid**, com suporte a configurações globais.
 
 ---
 
-## 📥 Instalação
-Basta carregar a library no seu script:
+## Recursos
+- Suporte a **Players, Models e Entities 2D**
+- **Highlights 3D** nativos
+- **Tracers personalizáveis** (Top, Center, Bottom, Left, Right)
+- Nome e distância exibidos dinamicamente
+- **Configurações globais** em tempo real
+- **Modo Rainbow** para cores dinâmicas
+- **Opacidade, fonte e espessura ajustáveis**
+- Auto limpeza de alvos inválidos
+
+---
+
+## Instalação
+
+Carregue a biblioteca com:
 
 ```lua
 local ModelESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/DH-SOARESE/Kolt-DOORS/main/Kolt%20ESP-LIBRARY.lua"))()
@@ -27,121 +27,97 @@ local ModelESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/DH-S
 
 ---
 
-🧰 API da Library
-
-➕ Adicionar ESP
-
-ModelESP:Add(target: Instance, config: table)
-
-Name → Nome exibido no ESP
-
-Color → Cor do ESP (Color3)
-
-TracerOrigin → Origem do tracer ("Top", "Center", "Bottom", "Left", "Right")
-
-Opacity → Transparência (0 a 1)
-
-MinDistance / MaxDistance → Limite de renderização
-
-
-
----
-
-🎭 Adicionar Entities2D
-
-ModelESP:AddEntities2D(target: Model, config: table)
-
-Cria um Humanoid falso para entidades sem humanoide (monstros, mobs, props etc).
-
-
-
----
-
-➖ Remover ESP
-
-ModelESP:Remove(target: Instance)
-
-
----
-
-🧹 Limpar Todos ESPs
-
-ModelESP:Clear()
-
-
----
-
-⚙️ Configurações Globais
-
-Afetam todos os ESPs já existentes e novos em tempo real:
-
--- Tracer origin global
-ModelESP:SetGlobalTracerOrigin("Bottom")
-
--- Mostrar/Ocultar elementos
-ModelESP:SetGlobalESPType("ShowTracer", true)
-ModelESP:SetGlobalESPType("ShowName", true)
-ModelESP:SetGlobalESPType("ShowDistance", false)
-ModelESP:SetGlobalESPType("ShowHighlightFill", true)
-ModelESP:SetGlobalESPType("ShowHighlightOutline", true)
-
--- Aparência
-ModelESP:SetGlobalOpacity(0.8)        -- Transparência
-ModelESP:SetGlobalFontSize(16)       -- Tamanho da fonte
-ModelESP:SetGlobalLineThickness(2)   -- Espessura das linhas
-
--- Rainbow 🌈
-ModelESP:SetGlobalRainbow(true)
-
-
----
-
-🚀 Exemplo Completo
+Uso Básico
 
 -- Carregar a library
 local ModelESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/DH-SOARESE/Kolt-DOORS/main/Kolt%20ESP-LIBRARY.lua"))()
 
--- 1) Adicionando ESP para Players
+-- Adicionar ESP para todos os players
 for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
     if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
         ModelESP:Add(player.Character, {
             Name = player.Name,
-            Color = Color3.fromRGB(130, 200, 255), -- azul claro
+            Color = Color3.fromRGB(130, 200, 255),
             TracerOrigin = "Bottom"
         })
     end
 end
 
--- 2) Adicionando ESP em inimigos (Entities2D)
-for _, mob in ipairs(workspace.Monstros:GetChildren()) do
-    ModelESP:AddEntities2D(mob, {
-        Name = "Monstro",
-        Color = Color3.fromRGB(255, 100, 100), -- vermelho
-    })
-end
-
--- 3) Configurações globais
-ModelESP:SetGlobalTracerOrigin("Center")
-ModelESP:SetGlobalRainbow(true)
-ModelESP:SetGlobalOpacity(0.9)
-ModelESP:SetGlobalFontSize(15)
-ModelESP:SetGlobalLineThickness(2)
-
--- 4) Exemplo de remoção manual
--- ModelESP:Remove(workspace.Monstros.Monstro1)
-
--- 5) Limpar tudo
--- ModelESP:Clear()
+Esse exemplo cria ESPs básicos para todos os jogadores, com tracer vindo da parte inferior.
 
 
 ---
 
-📌 Informações
+Uso Avançado
+
+-- Carregar a library
+local ModelESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/DH-SOARESE/Kolt-DOORS/main/Kolt%20ESP-LIBRARY.lua"))()
+
+-- ESP para inimigos (Entities2D)
+for _, mob in ipairs(workspace.Monstros:GetChildren()) do
+    ModelESP:AddEntities2D(mob, {
+        Name = "Monstro",
+        Color = Color3.fromRGB(255, 100, 100),
+    })
+end
+
+-- Configurações globais
+ModelESP:SetGlobalTracerOrigin("Center")     -- Origem do tracer
+ModelESP:SetGlobalRainbow(true)             -- Ativar modo Rainbow
+ModelESP:SetGlobalOpacity(0.9)              -- Transparência
+ModelESP:SetGlobalFontSize(15)              -- Fonte
+ModelESP:SetGlobalLineThickness(2)          -- Espessura
+
+-- Opções de exibição
+ModelESP:SetGlobalESPType("ShowTracer", true)
+ModelESP:SetGlobalESPType("ShowName", true)
+ModelESP:SetGlobalESPType("ShowDistance", true)
+ModelESP:SetGlobalESPType("ShowHighlightFill", true)
+ModelESP:SetGlobalESPType("ShowHighlightOutline", true)
+
+Esse exemplo mostra como usar ESP em Entities 2D (sem Humanoid) e aplicar configurações globais em tempo real.
+
+
+---
+
+API
+
+Funções Principais
+
+ModelESP:Add(target, config) → Adiciona ESP a um Model/Player
+
+ModelESP:AddEntities2D(target, config) → Adiciona ESP a Entities sem Humanoid
+
+ModelESP:Remove(target) → Remove ESP de um objeto específico
+
+ModelESP:Clear() → Remove todos os ESPs ativos
+
+
+Configurações Globais
+
+SetGlobalTracerOrigin("Top|Center|Bottom|Left|Right")
+
+SetGlobalESPType("ShowTracer|ShowName|ShowDistance|ShowHighlightFill|ShowHighlightOutline", true/false)
+
+SetGlobalOpacity(number)
+
+SetGlobalFontSize(number)
+
+SetGlobalLineThickness(number)
+
+SetGlobalRainbow(true/false)
+
+
+
+---
+
+Informações
 
 Autor: DH_SOARES
 
 Versão: v3
 
-Estilo: Minimalista e responsivo
+Dependências: Drawing API (nativo em exploits compatíveis: Synapse, Script-Ware, etc.)
 
-Dependências: Drawing API (nativo de exploits compatíveis: Synapse, Script-Ware, etc.)
+
+---
