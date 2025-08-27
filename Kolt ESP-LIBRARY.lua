@@ -1,4 +1,4 @@
---// 📦 Library Kolt V1.1
+--// 📦 Library Kolt v1.1
 --// 👤 Autor: DH_SOARES
 --// 🎨 Estilo: Minimalista, eficiente e responsivo
 
@@ -8,20 +8,34 @@ local camera = workspace.CurrentCamera
 local ModelESP = {
     Objects = {},
     Enabled = true,
+
     Theme = {
         PrimaryColor = Color3.fromRGB(130, 200, 255),
         SecondaryColor = Color3.fromRGB(255, 255, 255),
         OutlineColor = Color3.fromRGB(0, 0, 0),
-        RainbowMode = false,
     },
+
     GlobalSettings = {
-        TracerOrigin = "Bottom",
+        -- Tracer
+        TracerOrigin = "Bottom",  -- Top/Center/Bottom/Left/Right
         ShowTracer = true,
+        TracerThickness = 1.5,
+        TracerTransparency = 0.9,
+
+        -- Highlight
         ShowHighlightFill = true,
         ShowHighlightOutline = true,
+        AlwaysOnTop = true,
+
+        -- Texto
         ShowName = true,
         ShowDistance = true,
+        TextSizeName = 14,
+        TextSizeDistance = 12,
+
+        -- Extras
         RainbowMode = false,
+        MaxRenderDistance = 3000, -- limite global
     }
 }
 
@@ -63,6 +77,15 @@ local function createDrawing(class, props)
     return obj
 end
 
+--// 🔧 Aplica configs no Highlight
+local function applyHighlightSettings(highlight, cfg, global)
+    highlight.DepthMode = global.AlwaysOnTop and Enum.HighlightDepthMode.AlwaysOnTop or Enum.HighlightDepthMode.Occluded
+    highlight.FillColor = cfg.Color
+    highlight.OutlineColor = ModelESP.Theme.SecondaryColor
+    highlight.FillTransparency = global.ShowHighlightFill and 0.85 or 1
+    highlight.OutlineTransparency = global.ShowHighlightOutline and 0.65 or 1
+end
+
 --// ➕ Adiciona ESP
 function ModelESP:Add(target, config)
     if not target or not target:IsA("Instance") then return end
@@ -77,26 +100,21 @@ function ModelESP:Add(target, config)
         Target = target,
         Name = config.Name or target.Name,
         Color = config.Color or self.Theme.PrimaryColor,
-        TracerOrigin = config.TracerOrigin or self.GlobalSettings.TracerOrigin, -- ✅ sempre pega o global se não tiver config
         MinDistance = config.MinDistance or 0,
         MaxDistance = config.MaxDistance or math.huge,
         Opacity = config.Opacity or 0.7,
     }
 
     -- Criando Drawings
-    cfg.tracerLine = createDrawing("Line", {Thickness=1.5, Color=cfg.Color, Transparency=cfg.Opacity, Visible=false})
-    cfg.nameText = createDrawing("Text", {Text=cfg.Name, Color=cfg.Color, Size=14, Center=true, Outline=true, OutlineColor=self.Theme.OutlineColor, Font=Drawing.Fonts.Monospace, Transparency=cfg.Opacity, Visible=false})
-    cfg.distanceText = createDrawing("Text", {Text="", Color=cfg.Color, Size=12, Center=true, Outline=true, OutlineColor=self.Theme.OutlineColor, Font=Drawing.Fonts.Monospace, Transparency=cfg.Opacity, Visible=false})
+    cfg.tracerLine = createDrawing("Line", {Thickness=ModelESP.GlobalSettings.TracerThickness, Color=cfg.Color, Transparency=ModelESP.GlobalSettings.TracerTransparency, Visible=false})
+    cfg.nameText = createDrawing("Text", {Text=cfg.Name, Color=cfg.Color, Size=ModelESP.GlobalSettings.TextSizeName, Center=true, Outline=true, OutlineColor=self.Theme.OutlineColor, Font=Drawing.Fonts.Monospace, Transparency=cfg.Opacity, Visible=false})
+    cfg.distanceText = createDrawing("Text", {Text="", Color=cfg.Color, Size=ModelESP.GlobalSettings.TextSizeDistance, Center=true, Outline=true, OutlineColor=self.Theme.OutlineColor, Font=Drawing.Fonts.Monospace, Transparency=cfg.Opacity, Visible=false})
 
     -- Highlight
     if self.GlobalSettings.ShowHighlightFill or self.GlobalSettings.ShowHighlightOutline then
         local highlight = Instance.new("Highlight")
         highlight.Name = "ESPHighlight"
-        highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-        highlight.FillColor = cfg.Color
-        highlight.OutlineColor = self.Theme.SecondaryColor
-        highlight.FillTransparency = self.GlobalSettings.ShowHighlightFill and 0.85 or 1
-        highlight.OutlineTransparency = self.GlobalSettings.ShowHighlightOutline and 0.65 or 1
+        applyHighlightSettings(highlight, cfg, self.GlobalSettings)
         highlight.Parent = target
         cfg.highlight = highlight
     end
@@ -126,7 +144,7 @@ function ModelESP:AddEntities2D(target, config)
         end
     end
 
-    -- Adiciona ESP com configs globais
+    -- Adiciona ESP normal
     self:Add(target, {
         Name = config.Name or target.Name,
         Color = config.Color or self.Theme.PrimaryColor,
@@ -155,29 +173,11 @@ function ModelESP:Clear()
     self.Objects = {}
 end
 
---// 🌐 Atualiza GlobalSettings
-function ModelESP:UpdateGlobalSettings()
-    for _, esp in ipairs(self.Objects) do
-        esp.TracerOrigin = self.GlobalSettings.TracerOrigin -- ✅ garante que todos seguem o global
+--// 🌐 Alterar config global
+function ModelESP:SetGlobal(option, value)
+    if self.GlobalSettings[option] ~= nil then
+        self.GlobalSettings[option] = value
     end
-    self.Theme.RainbowMode = self.GlobalSettings.RainbowMode
-end
-
-function ModelESP:SetGlobalTracerOrigin(origin)
-    if tracerOrigins[origin] then
-        self.GlobalSettings.TracerOrigin = origin
-        self:UpdateGlobalSettings()
-    end
-end
-
-function ModelESP:SetGlobalESPType(typeName, enabled)
-    self.GlobalSettings[typeName] = enabled
-    self:UpdateGlobalSettings()
-end
-
-function ModelESP:SetGlobalRainbow(enable)
-    self.GlobalSettings.RainbowMode = enable
-    self:UpdateGlobalSettings()
 end
 
 --// 🔁 Atualização por frame
@@ -208,40 +208,44 @@ RunService.RenderStepped:Connect(function()
         end
 
         local distance = (camera.CFrame.Position - pos3D).Magnitude
-        local visible = distance>=esp.MinDistance and distance<=esp.MaxDistance
+        local visible = distance>=esp.MinDistance and distance<=esp.MaxDistance and distance<=ModelESP.GlobalSettings.MaxRenderDistance
 
         local screenPos = Vector2.new(pos2D.X,pos2D.Y)
-        local originPos = tracerOrigins[esp.TracerOrigin](vs)
+        local originPos = tracerOrigins[ModelESP.GlobalSettings.TracerOrigin](vs) -- 🔑 sempre depende do global
         local color = ModelESP.GlobalSettings.RainbowMode and getRainbowColor(time) or esp.Color
 
-        -- Aplica configs globais
+        -- Tracer
         if esp.tracerLine then
             esp.tracerLine.Visible = ModelESP.GlobalSettings.ShowTracer and visible
+            esp.tracerLine.Thickness = ModelESP.GlobalSettings.TracerThickness
+            esp.tracerLine.Transparency = ModelESP.GlobalSettings.TracerTransparency
             esp.tracerLine.From = originPos
             esp.tracerLine.To = screenPos
             esp.tracerLine.Color = color
         end
 
+        -- Nome
         if esp.nameText then
             esp.nameText.Visible = ModelESP.GlobalSettings.ShowName and visible
+            esp.nameText.Size = ModelESP.GlobalSettings.TextSizeName
             esp.nameText.Position = screenPos - Vector2.new(0,20)
             esp.nameText.Text = esp.Name
             esp.nameText.Color = color
         end
 
+        -- Distância
         if esp.distanceText then
             esp.distanceText.Visible = ModelESP.GlobalSettings.ShowDistance and visible
+            esp.distanceText.Size = ModelESP.GlobalSettings.TextSizeDistance
             esp.distanceText.Position = screenPos + Vector2.new(0,5)
             esp.distanceText.Text = string.format("%.1fm",distance)
             esp.distanceText.Color = color
         end
 
+        -- Highlight
         if esp.highlight then
             esp.highlight.Enabled = (ModelESP.GlobalSettings.ShowHighlightFill or ModelESP.GlobalSettings.ShowHighlightOutline) and visible
-            esp.highlight.FillColor = color
-            esp.highlight.OutlineColor = ModelESP.Theme.OutlineColor
-            esp.highlight.FillTransparency = ModelESP.GlobalSettings.ShowHighlightFill and 0.85 or 1
-            esp.highlight.OutlineTransparency = ModelESP.GlobalSettings.ShowHighlightOutline and 0.65 or 1
+            applyHighlightSettings(esp.highlight, esp, ModelESP.GlobalSettings)
         end
     end
 end)
