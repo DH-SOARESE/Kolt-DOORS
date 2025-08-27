@@ -103,6 +103,36 @@ function ModelESP:Add(target, config)
     table.insert(ModelESP.Objects, cfg)
 end
 
+--// ➕ Adiciona Entities2D
+function ModelESP:AddEntities2D(target, config)
+    if not target or not target:IsA("Model") then return end
+
+    -- Cria humanoid falso se não existir
+    if not target:FindFirstChildOfClass("Humanoid") then
+        local humanoid = Instance.new("Humanoid")
+        humanoid.Name = "FakeHumanoid"
+        humanoid.Health = 0
+        humanoid.MaxHealth = 0
+        humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None
+        humanoid.Parent = target
+    end
+
+    -- Torna todas partes quase invisíveis
+    for _, obj in ipairs(target:GetDescendants()) do
+        if obj:IsA("BasePart") then
+            obj.Transparency = 0.99
+            obj.CanCollide = false
+        end
+    end
+
+    -- Adiciona ESP via biblioteca
+    self:Add(target, {
+        Name = config.Name or target.Name,
+        Color = config.Color or self.Theme.PrimaryColor,
+        TracerOrigin = self.GlobalSettings.TracerOrigin,
+    })
+end
+
 --// ➖ Remove ESP individual
 function ModelESP:Remove(target)
     for i=#ModelESP.Objects,1,-1 do
@@ -125,7 +155,7 @@ function ModelESP:Clear()
     ModelESP.Objects = {}
 end
 
---// 🌐 GlobalSettings
+--// 🌐 Atualiza GlobalSettings
 function ModelESP:UpdateGlobalSettings()
     for _, esp in ipairs(ModelESP.Objects) do
         esp.TracerOrigin = ModelESP.GlobalSettings.TracerOrigin
