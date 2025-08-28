@@ -1,5 +1,4 @@
---// 📦 Library Kolt v3 (melhorada)
---// 👤 Autor: DH_SOARES
+--// 📦 Library Kolt v1.2
 --// 🎨 Estilo: Minimalista, eficiente e responsivo
 
 local RunService = game:GetService("RunService")
@@ -26,27 +25,27 @@ local ModelESP = {
         Opacity = 0.8,
         LineThickness = 1.5,
         FontSize = 14,
-        AutoRemoveInvalid = true, -- remove automático targets inválidos
+        AutoRemoveInvalid = true,
     }
 }
 
---// 🌈 Cor arco-íris
+--// 🌈 Cor arco-íris (corrigido)
 local function getRainbowColor(t)
     local f = 2
     return Color3.fromRGB(
-        math.sin(f*t+0)*127+128,
-        math.sin(f*t+2)*127+128,
-        math.sin(f*t+4)*127+128
+        math.floor(math.sin(f*t + 0) * 127 + 128),
+        math.floor(math.sin(f*t + 2) * 127 + 128),
+        math.floor(math.sin(f*t + 4) * 127 + 128)
     )
 end
 
 --// 📍 Tracer Origins
 local tracerOrigins = {
-    Top = function(vs) return Vector2.new(vs.X/2, 0) end,
+    Top    = function(vs) return Vector2.new(vs.X/2, 0) end,
     Center = function(vs) return Vector2.new(vs.X/2, vs.Y/2) end,
     Bottom = function(vs) return Vector2.new(vs.X/2, vs.Y) end,
-    Left = function(vs) return Vector2.new(0, vs.Y/2) end,
-    Right = function(vs) return Vector2.new(vs.X, vs.Y/2) end,
+    Left   = function(vs) return Vector2.new(0, vs.Y/2) end,
+    Right  = function(vs) return Vector2.new(vs.X, vs.Y/2) end,
 }
 
 --// 📍 Centro do modelo
@@ -114,15 +113,11 @@ function ModelESP:Add(target, config)
         Visible = false
     })
 
-    -- Highlight
+    -- Highlight (sempre pega dos globais)
     if self.GlobalSettings.ShowHighlightFill or self.GlobalSettings.ShowHighlightOutline then
         local highlight = Instance.new("Highlight")
         highlight.Name = "ESPHighlight"
         highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-        highlight.FillColor = cfg.Color
-        highlight.OutlineColor = self.Theme.SecondaryColor
-        highlight.FillTransparency = self.GlobalSettings.ShowHighlightFill and 0.85 or 1
-        highlight.OutlineTransparency = self.GlobalSettings.ShowHighlightOutline and 0.65 or 1
         highlight.Parent = target
         cfg.highlight = highlight
     end
@@ -175,7 +170,7 @@ function ModelESP:Clear()
     self.Objects = {}
 end
 
---// 🌐 Update GlobalSettings em todos
+--// 🌐 Atualiza configs globais
 function ModelESP:UpdateGlobalSettings()
     for _, esp in ipairs(self.Objects) do
         if esp.tracerLine then esp.tracerLine.Thickness = self.GlobalSettings.LineThickness end
@@ -184,7 +179,7 @@ function ModelESP:UpdateGlobalSettings()
     end
 end
 
---// ✅ Configs Globais (APIs)
+--// ✅ APIs Globais
 function ModelESP:SetGlobalTracerOrigin(origin)
     if tracerOrigins[origin] then
         self.GlobalSettings.TracerOrigin = origin
@@ -194,9 +189,7 @@ function ModelESP:SetGlobalESPType(typeName, enabled)
     self.GlobalSettings[typeName] = enabled
     self:UpdateGlobalSettings()
 end
-function ModelESP:SetGlobalRainbow(enable)
-    self.GlobalSettings.RainbowMode = enable
-end
+function ModelESP:SetGlobalRainbow(enable) self.GlobalSettings.RainbowMode = enable end
 function ModelESP:SetGlobalOpacity(value)
     self.GlobalSettings.Opacity = math.clamp(value,0,1)
     self:UpdateGlobalSettings()
@@ -226,47 +219,47 @@ RunService.RenderStepped:Connect(function()
             continue
         end
 
-        local pos3D = target:IsA("Model") and getModelCenter(target) or (target:IsA("BasePart") and target.Position)
-        if not pos3D then continue end
+        local pos3D = target:IsA("Model") and getModelCenter(target) or (target:IsA("BasePart") and target.Position)      
+        if not pos3D then continue end      
 
-        local success, pos2D = pcall(function() return camera:WorldToViewportPoint(pos3D) end)
-        if not success or pos2D.Z <= 0 then
-            for _, draw in ipairs({esp.tracerLine,esp.nameText,esp.distanceText}) do if draw then draw.Visible=false end end
-            if esp.highlight then esp.highlight.Enabled=false end
-            continue
-        end
+        local success, pos2D = pcall(function() return camera:WorldToViewportPoint(pos3D) end)      
+        if not success or pos2D.Z <= 0 then      
+            for _, draw in ipairs({esp.tracerLine,esp.nameText,esp.distanceText}) do if draw then draw.Visible=false end end      
+            if esp.highlight then esp.highlight.Enabled=false end      
+            continue      
+        end      
 
-        local distance = (camera.CFrame.Position - pos3D).Magnitude
-        local visible = distance >= ModelESP.GlobalSettings.MinDistance and distance <= ModelESP.GlobalSettings.MaxDistance
+        local distance = (camera.CFrame.Position - pos3D).Magnitude      
+        local visible = distance >= ModelESP.GlobalSettings.MinDistance and distance <= ModelESP.GlobalSettings.MaxDistance      
 
-        local screenPos = Vector2.new(pos2D.X,pos2D.Y)
-        local originPos = tracerOrigins[ModelESP.GlobalSettings.TracerOrigin](vs) -- ✅ sempre global
-        local color = ModelESP.GlobalSettings.RainbowMode and getRainbowColor(time) or esp.Color
+        local screenPos = Vector2.new(pos2D.X,pos2D.Y)      
+        local originPos = tracerOrigins[ModelESP.GlobalSettings.TracerOrigin](vs) -- ✅ sempre global      
+        local color = ModelESP.GlobalSettings.RainbowMode and getRainbowColor(time) or esp.Color      
 
-        if esp.tracerLine then
-            esp.tracerLine.Visible = ModelESP.GlobalSettings.ShowTracer and visible
-            esp.tracerLine.From = originPos
-            esp.tracerLine.To = screenPos
-            esp.tracerLine.Color = color
-        end
-        if esp.nameText then
-            esp.nameText.Visible = ModelESP.GlobalSettings.ShowName and visible
-            esp.nameText.Position = screenPos - Vector2.new(0,20)
-            esp.nameText.Text = esp.Name
-            esp.nameText.Color = color
-        end
-        if esp.distanceText then
-            esp.distanceText.Visible = ModelESP.GlobalSettings.ShowDistance and visible
-            esp.distanceText.Position = screenPos + Vector2.new(0,5)
-            esp.distanceText.Text = string.format("%.1fm",distance)
-            esp.distanceText.Color = color
-        end
-        if esp.highlight then
-            esp.highlight.Enabled = (ModelESP.GlobalSettings.ShowHighlightFill or ModelESP.GlobalSettings.ShowHighlightOutline) and visible
-            esp.highlight.FillColor = color
-            esp.highlight.OutlineColor = ModelESP.Theme.OutlineColor
-            esp.highlight.FillTransparency = ModelESP.GlobalSettings.ShowHighlightFill and 0.85 or 1
-            esp.highlight.OutlineTransparency = ModelESP.GlobalSettings.ShowHighlightOutline and 0.65 or 1
+        if esp.tracerLine then      
+            esp.tracerLine.Visible = ModelESP.GlobalSettings.ShowTracer and visible      
+            esp.tracerLine.From = originPos      
+            esp.tracerLine.To = screenPos      
+            esp.tracerLine.Color = color      
+        end      
+        if esp.nameText then      
+            esp.nameText.Visible = ModelESP.GlobalSettings.ShowName and visible      
+            esp.nameText.Position = screenPos - Vector2.new(0,20)      
+            esp.nameText.Text = esp.Name      
+            esp.nameText.Color = color      
+        end      
+        if esp.distanceText then      
+            esp.distanceText.Visible = ModelESP.GlobalSettings.ShowDistance and visible      
+            esp.distanceText.Position = screenPos + Vector2.new(0,5)      
+            esp.distanceText.Text = string.format("%.1fm",distance)      
+            esp.distanceText.Color = color      
+        end      
+        if esp.highlight then      
+            esp.highlight.Enabled = (ModelESP.GlobalSettings.ShowHighlightFill or ModelESP.GlobalSettings.ShowHighlightOutline) and visible      
+            esp.highlight.FillColor = color      
+            esp.highlight.OutlineColor = ModelESP.Theme.OutlineColor      
+            esp.highlight.FillTransparency = ModelESP.GlobalSettings.ShowHighlightFill and 0.85 or 1      
+            esp.highlight.OutlineTransparency = ModelESP.GlobalSettings.ShowHighlightOutline and 0.65 or 1      
         end
     end
 end)
