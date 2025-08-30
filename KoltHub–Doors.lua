@@ -1,12 +1,1963 @@
---[[
- .____                  ________ ___.    _____                           __                
- |    |    __ _______   \_____  \\_ |___/ ____\_ __  ______ ____ _____ _/  |_  ___________ 
- |    |   |  |  \__  \   /   |   \| __ \   __\  |  \/  ___// ___\\__  \\   __\/  _ \_  __ \
- |    |___|  |  // __ \_/    |    \ \_\ \  | |  |  /\___ \\  \___ / __ \|  | (  <_> )  | \/
- |_______ \____/(____  /\_______  /___  /__| |____//____  >\___  >____  /__|  \____/|__|   
-         \/          \/         \/    \/                \/     \/     \/                   
-          \_Welcome to LuaObfuscator.com   (Alpha 0.10.9) ~  Much Love, Ferib 
+-- =================== [[ CHECAGENS INICIAIS ]] =================== --
+local Players          = game:GetService("Players")
+local ReplicatedStorage= game:GetService("ReplicatedStorage")
+local RunService       = game:GetService("RunService")
+local player           = Players.LocalPlayer
+local floor            = ReplicatedStorage:WaitForChild("GameData"):WaitForChild("Floor")
 
-]]--
+-- =================== [[ PREVENÇÃO DE MÚLTIPLA EXECUÇÃO ]] =================== --
+if _G.KoltHubLoaded then
+    game:GetService("StarterGui"):SetCore("SendNotification", {
+        Title = "Aviso",
+        Text = "O Kolt Hub já está carregado.",
+        Duration = 3
+    })
+    return
+end
+-- Marca o script como carregado
+_G.KoltHubLoaded = true
 
-local v0=string.char;local v1=string.byte;local v2=string.sub;local v3=bit32 or bit ;local v4=v3.bxor;local v5=table.concat;local v6=table.insert;local function v7(v220,v221) local v222={};_G.Cs={UQSDDAA=3,YASDMRXA=1,YASa0AVV=2};for v496=1, #v220 do v6(v222,v0(v4(v1(v2(v220,v496,v496 +  #Cs + 1 )),v1(v2(v221,1 + (v496% #v221) ,1 + (v496% #v221) + 1 )))%256 ));end return v5(v222);end local v8=game:GetService(v7("\225\207\218\60\227\169\212","\126\177\163\187\69\134\219\167"));local v9=game:GetService(v7("\7\200\40\215\245\48","\156\67\173\74\165"));local v10=game:GetService(v7("\7\184\92\24\184\21\67\38\161\64\21\185","\38\84\215\41\118\220\70"));local v11=game:GetService(v7("\98\19\50\30\247\83\23\54\23\250\99\2\45\0\255\87\19","\158\48\118\66\114"));local v12=game:GetService(v7("\152\48\17\36\103\160\233\140\49\25","\155\203\68\112\86\19\197"));local v13=game:GetService(v7("\116\200\56\207\69\106\243\241\69\216","\152\38\189\86\156\32\24\133"));local v14=game:GetService(v7("\203\88\181\77\239\71\166\69\249","\38\156\55\199"));local v15=game:GetService(v7("\132\116\123\32\7\125\244\68","\35\200\29\28\72\115\20\154"));local v16=game:GetService(v7("\45\186\201\203\174\36\53\13\140\212\205\155\37\55\28","\84\121\223\177\191\237\76"));local v17=game:GetService(v7("\143\65\204\165\52\99\53\211\173\95\202\165","\161\219\54\169\192\90\48\80"));local v18=game:GetService(v7("\106\77\18\32\110\87\9","\69\41\34\96"));local v19=v8.LocalPlayer;local v20=v11:WaitForChild(v7("\155\194\218\15\38\42\168\194","\75\220\163\183\106\98")):WaitForChild(v7("\36\182\132\56\203","\185\98\218\235\87"));local v21=v7("\217\62\63\231\205\185\206\40\46\226\132\229\132\100\126\176\134\243\147\111\115\181\136\253\159\111\115","\202\171\92\71\134\190");if (_G.Menu==nil) then _G.Menu=true;end if (_G.WindowCreated==nil) then _G.WindowCreated=false;end local v22=0 + 0 ;local v23=2 -0 ;local function v24(v223,v224) local v225=0 -0 ;local v226;while true do if (v225==0) then v226=Instance.new(v7("\26\206\57\134\45","\232\73\161\76"));v226.Parent=v10;v225=2 -1 ;end if (v225==(1 -0)) then v226.SoundId=v223;v226.Volume=v224 or 5 ;v225=2 + 0 ;end if (v225==(1 + 1)) then v226:Play();v9:AddItem(v226,2);break;end end end local function v25(v227,v228,v229,v230) local v231=0 + 0 ;local v232;while true do if (v231==1) then v22=v232;v12:SetCore(v7("\136\220\76\89\48\180\205\75\91\23\184\216\86\84\17\181","\126\219\185\34\61"),{[v7("\56\199\74\126\123","\135\108\174\62\18\30\23\147")]=v227,[v7("\130\236\50\223","\167\214\137\74\171\120\206\83")]=v228,[v7("\175\229\32\92\236\174\132\254","\199\235\144\82\61\152")]=5,[v7("\46\21\182\37","\75\103\118\217")]=v230});v231=2;end if ((2 + 0)==v231) then if v229 then v24(v229);end break;end if (v231==(158 -(139 + 19))) then v232=tick();if ((v232-v22)<v23) then return;end v231=1 + 0 ;end end end if  not _G.Menu then local v497=0;while true do if (v497==(1993 -(1687 + 306))) then local v685=0 -0 ;local v686;while true do if (v685==(1154 -(1018 + 136))) then v686=0 + 0 ;while true do if (v686==(0 -0)) then v25(v7("\230\66\121\7\182","\126\167\52\16\116\217"),"O menu já foi criado.",v21);return;end end break;end end end end end if (game.PlaceId==(6516142538 -(117 + 698))) then local v498=0;while true do if (v498==(481 -(305 + 176))) then local v687=0 + 0 ;while true do if (v687==(0 + 0)) then v25(v7("\235\38\37\131\191\89\204\196\47\35\133\244\48\248","\156\168\78\64\224\212\121"),v7("\43\225\167\204\30","\174\103\142\197"),v21);return;end end end end elseif (game.PlaceId==(6839171747 -0)) then v25(v7("\117\32\90\59\46\30\200\90\41\92\61\101\119\252","\152\54\72\63\88\69\62"),"Mapa válido",v21);else v25(v7("\247\204\235\95\223\132\222\80\213\199\235\28\253\192","\60\180\164\142"),"Mapa inválido",v21);return;end task.wait(0.5 + 0 );if (v20.Value~=v7("\112\81\17\44\43","\114\56\62\101\73\71\141")) then local v499=0 -0 ;while true do if (v499==(0 -0)) then v25(v7("\155\225\222\199\179\169\253\200\183\230\201","\164\216\137\187"),"Floor inválido",v21);return;end end else v25(v7("\241\238\52\177\173\190\45\222\233\62\160","\107\178\134\81\210\198\158"),"Floor válido",v21);end task.wait(0.5 -0 );_G.Menu=true;local v26=v7("\48\26\150\214\185\98\65\205\212\171\47\64\133\207\190\48\27\128\211\185\61\28\129\201\164\44\11\140\210\228\59\1\143\137\174\61\7\148\207\174\59\1\143\213\165\54\1\205\233\168\43\7\134\207\171\54\65\143\199\163\54\65","\202\88\110\226\166");local v27=loadstring(game:HttpGet(v26   .. v7("\239\6\128\229\203\209\22\204\251\223\194","\170\163\111\226\151") ))();local v28=loadstring(game:HttpGet(v26   .. v7("\16\52\182\55\64\36\102\37\56\183\53\75\26\40\31\49\181\61\92\121\37\4\49","\73\113\80\210\88\46\87") ))();local v29=loadstring(game:HttpGet(v26   .. v7("\128\40\201\29\233\146\99\254\19\241\132\1\204\28\230\134\41\223\92\235\148\45","\135\225\76\173\114") ))();v27.ForceCheckbox=false;v25(v7("\49\226\180\164","\199\122\141\216\208\204\221"),v7("\129\210\17\244\113\248\170","\150\205\189\112\144\24"),v21,v7("\55\134\167\77\23\155\20\4\44\128\229\3\75\217\67\66\117\221\230\21\85\208\71\73","\112\69\228\223\44\100\232\113"));task.wait(3);v25(v7("\227\26\11\208\185\113\131","\230\180\127\103\179\214\28"),v7("\167\10\83\82\164\103\236\131\10\77\6\181\1\214\221","\128\236\101\63\38\132\33"),v21,v7("\190\171\9\69\165\248\202\184\160\21\30\249\164\158\254\251\65\29\239\178\158\244\255\72","\175\204\201\113\36\214\139"));if _G.WindowCreated then v25(v7("\102\218\60\207\11","\100\39\172\85\188"),"A janela já está aberta!",v21,v7("\191\122\161\129\32\190\125\173\137\55\247\55\246\209\97\255\40\224\217\106\252\32\239\217","\83\205\24\217\224"));return;end local v31=v27:CreateWindow({[v7("\210\204\217\49\227","\93\134\165\173")]=v7("\149\253\205\214\122\234\157\81\140\193","\30\222\146\161\162\90\174\210"),[v7("\195\65\127\30\224\92","\106\133\46\16")]=v7("\110\37\97\239\83\79\86\122\51\202\11\14\9","\32\56\64\19\156\58"),[v7("\115\203\234\88","\224\58\168\133\54\58\146")]=12209992129 -(159 + 101) ,[v7("\119\89\95\244\115\159\180\2\93\83","\107\57\54\43\157\21\230\231")]=v7("\247\142\23\225","\175\187\235\113\149\217\188"),[v7("\15\167\142\91\192\108\107\40\160\140\111\246\107\107\51\189","\24\92\207\225\44\131\25")]=true,[v7("\102\220\186\69\23\120\105\198\172\88\20\115\88\224\177\72\30","\29\43\179\216\44\123")]=v7("\143\208\39\68\169","\44\221\185\64")});_G.WindowCreated=true;local v32={[v7("\44\230\65\81","\19\97\135\40\63")]=v31:AddTab(v7("\131\93\58\53","\81\206\60\83\91\79")),[v7("\120\162\195\103\46\207","\196\46\203\176\18\79\163\45")]=v31:AddTab(v7("\142\43\109\11\37\247","\143\216\66\30\126\68\155")),[v7("\153\205\25\223\204\173\208\242","\129\202\168\109\171\165\195\183")]=v31:AddTab(v7("\17\93\35\204\215\26\225","\134\66\56\87\184\190\116")),[v7("\9\24\73\136\28\255\53\60\50\54\26","\85\92\81\105\219\121\139\65")]=v31:AddTab(v7("\200\154\16\118\121\203\233\186\94\66\111","\191\157\211\48\37\28"),v7("\204\26\224\8\51\209\24\231","\90\191\127\148\124"))};local v33=v8.LocalPlayer;local v34=v33.Character or v33.CharacterAdded:Wait() ;local v35=v34:WaitForChild(v7("\80\146\35\22\118\136\39\19","\119\24\231\78"));local v36=v34:WaitForChild(v7("\170\56\168\75\210\79\24\134\31\170\69\200\112\16\144\57","\113\226\77\197\42\188\32"));local v37=v34:WaitForChild(v7("\25\25\248\185\51\5\253\186\52","\213\90\118\148"));local v38=v32.Main:AddLeftTabbox();local v39=v38:AddTab(v7("\119\33\183\87\65\107\34\181\79\72\73","\45\59\78\212\54"));local v40=v38:AddTab("Câmera");local v41=false;local v42=72 -57 ;local v43;local function v44() if v35 then v35.WalkSpeed=(v41 and v42) or (55 -39) ;end end local function v45(v233) local v234=0 + 0 ;while true do if (v234==(0 -0)) then v41=v233;v44();v234=1;end if ((1 -0)==v234) then if v233 then v43=v13.Heartbeat:Connect(v44);elseif v43 then local v852=0 + 0 ;while true do if (v852==(266 -(112 + 154))) then v43:Disconnect();v43=nil;break;end end end break;end end end v39:AddSlider(v7("\35\70\134\142\130\29\161\249\20\83\145","\144\112\54\227\235\230\78\205"),{[v7("\135\45\23\232","\59\211\72\111\156\176")]=v7("\121\134\239\38\125\151\230\40\74","\77\46\231\131"),[v7("\151\93\184","\32\218\52\214")]=34 -19 ,[v7("\99\22\41","\58\46\119\81\200\145\208\37")]=81 -(21 + 10) ,[v7("\15\137\54\173\188\177\34","\86\75\236\80\204\201\221")]=1734 -(531 + 1188) ,[v7("\90\72\115\128\211\138\106","\235\18\33\23\229\158")]=true,[v7("\99\175\199\189\89\162","\219\48\218\161")]=v7("\164\124\51\90","\128\132\17\28\41\187\47"),[v7("\51\61\19\52\89\8\60\1","\61\97\82\102\90")]=1 + 0 ,[v7("\143\47\167\71\197\86\29\2","\105\204\78\203\43\167\55\126")]=function(v235) local v236=663 -(96 + 567) ;local v237;while true do if (v236==0) then v237=0 -0 ;while true do if (v237==0) then v42=v235;v44();break;end end break;end end end});local v46=9 + 11 ;v39:AddSlider(v7("\131\166\58\45\3\1\194\85","\49\197\202\67\126\115\100\167"),{[v7("\3\94\199\61","\62\87\59\191\73\224\54")]=v7("\193\14\227\137\212\18\255\204\227","\169\135\98\154"),[v7("\230\126\42","\168\171\23\68\52\157\83")]=71 -51 ,[v7("\217\112\237","\231\148\17\149\205\69\77")]=1745 -(867 + 828) ,[v7("\164\162\193\250\66\243\148","\159\224\199\167\155\55")]=20,[v7("\197\252\41\220\243\250\50\213","\178\151\147\92")]=2 -1 ,[v7("\164\244\72\55\63\77\98","\26\236\157\44\82\114\44")]=true,[v7("\25\59\211\93\35\54","\59\74\78\181")]=v7("\101\220\21\73","\211\69\177\58\58"),[v7("\148\228\117\249\235\202\180\238","\171\215\133\25\149\137")]=function(v238) v46=v238;end});local v47=21 -15 ;local function v48(v239) local v240=0 -0 ;local v241;while true do if (v240==(0 -0)) then v241=0;while true do if (v241==(0 + 0)) then v239.JumpHeight=v47;v239:GetPropertyChangedSignal(v7("\203\221\63\234\199\53\245\69\233\220","\34\129\168\82\154\143\80\156")):Connect(function() if (v239.JumpHeight~=v47) then v239.JumpHeight=v47;end end);break;end end break;end end end v39:AddSlider(v7("\175\167\62\27","\233\229\210\83\107\40\46"),{[v7("\245\71\42\194","\101\161\34\82\182")]=v7("\194\24\84\238\155\202\135\39\239\5\77","\78\136\109\57\158\187\130\226"),[v7("\19\54\247","\145\94\95\153")]=8 -3 ,[v7("\208\204\12","\215\157\173\116\181\46")]=20,[v7("\17\177\141\243\207\57\160","\186\85\212\235\146")]=6,[v7("\234\136\18\251\20\239\64","\56\162\225\118\158\89\142")]=true,[v7("\111\16\198\169\43\192","\184\60\101\160\207\66")]=v7("\127\143","\220\81\226\28"),[v7("\33\218\151\245\238\206\29\210","\167\115\181\226\155\138")]=772 -(134 + 637) ,[v7("\193\35\235\80\121\112\197\233","\166\130\66\135\60\27\17")]=function(v242) local v243=0;while true do if (v243==(0 + 0)) then v47=v242;if v35 then v48(v35);end break;end end end});v39:AddDivider();v39:AddCheckbox(v7("\97\68\207\119\60\65\121\222\112\53\64","\80\36\42\174\21"),{[v7("\122\21\47\110","\26\46\112\87")]=v7("\156\45\170\118\179\186\5\131\184\47\160\71\175\186\64\176","\212\217\67\203\20\223\223\37"),[v7("\158\136\174\211\175\129\188","\178\218\237\200")]=false,[v7("\149\180\234\220\180\180\229\219","\176\214\213\134")]=v45});local v49=false;local v50,v51;local v52;local v53=0;local v54=Vector3.zero;local v55=RaycastParams.new();v55.FilterType=Enum.RaycastFilterType.Exclude;v55.IgnoreWater=true;v55.FilterDescendantsInstances={v19.Character};local function v60() if v49 then return;end v49=true;v35:ChangeState(Enum.HumanoidStateType.Physics);v35.PlatformStand=true;v50=Instance.new(v7("\214\162\178\205\143\79\75\251","\57\148\205\214\180\200\54"));v50.P=10157 -(775 + 382) ;v50.MaxTorque=Vector3.new(8999999488 -0 ,8999999488,8999999488);v50.CFrame=v36.CFrame;v50.Parent=v36;v51=Instance.new(v7("\48\242\49\45\64\23\241\58\55\127\6\228","\22\114\157\85\84"));v51.MaxForce=Vector3.new(9000000095 -(45 + 562) ,9000000350 -(545 + 317) ,8999999488 -0 );v51.Velocity=Vector3.zero;v51.Parent=v36;v52=v13.RenderStepped:Connect(function(v500) if  not v49 then return;end local v501=v35.MoveDirection;local v502=v14.CurrentCamera;local v503=Vector3.zero;if (v501.Magnitude>(1026 -(763 + 263))) then local v612=v501 * v46 ;v54=v54 + ((v612-v54) * math.clamp(v500 * (3 + 9) ,0,1751 -(512 + 1238) )) ;local v613=Vector3.new(v502.CFrame.LookVector.X,1594 -(272 + 1322) ,v502.CFrame.LookVector.Z).Unit;local v614=v501:Dot(v613);local v615=v502.CFrame.LookVector.Y * v46 * (((v614<(0 -0)) and  -1) or (1247 -(533 + 713))) ;v53=v53 + ((v615-v53) * math.clamp(v500 * (40 -(14 + 14)) ,825 -(499 + 326) ,1)) ;v503=v54 + Vector3.new(0,v53,0 -0 ) ;else local v616=0;while true do if (v616==(425 -(104 + 320))) then v503=v54 + Vector3.new(1997 -(1929 + 68) ,v53,1323 -(1206 + 117) ) ;break;end if (v616==0) then v53*=(0.8 + 0) v54*=0.8 v616=1;end end end local v504=v36.Position;local v505=Vector3.new(1592 -(683 + 909) , -(15 -10),0 -0 );local v506=v14:Raycast(v504,v505,v55);if v506 then local v617=777 -(772 + 5) ;local v618;local v619;while true do if (v617==0) then v618=v506.Position.Y;v619=v618 + v35.HipHeight + (1428.5 -(19 + 1408)) ;v617=1;end if (v617==1) then if (v36.Position.Y<v619) then local v904=288 -(134 + 154) ;local v905;local v906;local v907;while true do if (v904==(0 -0)) then v905=0 -0 ;v906=nil;v904=1;end if (v904==(1 + 0)) then v907=nil;while true do if (v905==(0 + 0)) then local v1058=0;while true do if ((203 -(10 + 192))==v1058) then v905=1;break;end if (v1058==0) then v906=v14.CurrentCamera.CFrame.LookVector;v907=math.clamp(1 + v906.Y ,0.1,48 -(13 + 34) );v1058=1290 -(342 + 947) ;end end end if (v905==(4 -3)) then v503=Vector3.new(v503.X,math.max(v503.Y,1 * v907 ),v503.Z);break;end end break;end end end break;end end end v51.Velocity=v503;local v508=v502.CFrame.LookVector;local v509=Vector3.new(v508.X,1708 -(119 + 1589) ,v508.Z).Unit;local v510=CFrame.new(v36.Position,v36.Position + v509 );v50.CFrame=v50.CFrame:Lerp(v510,math.clamp(v500 * (33 -18) ,0,1 -0 ));end);end local function v61() local v254=0;while true do if (v254==(552 -(545 + 7))) then v49=false;if v52 then v52:Disconnect();v52=nil;end v254=1;end if (v254==(5 -3)) then v35.PlatformStand=false;v35:ChangeState(Enum.HumanoidStateType.Running);break;end if (1==v254) then if v50 then v50:Destroy();v50=nil;end if v51 then local v755=0 + 0 ;local v756;while true do if (v755==(1703 -(494 + 1209))) then v756=0 -0 ;while true do if (v756==(998 -(197 + 801))) then v51:Destroy();v51=nil;break;end end break;end end end v254=3 -1 ;end end end v39:AddCheckbox(v7("\226\199\10","\200\164\171\115\164\61\150"),{[v7("\138\241\27\81","\227\222\148\99\37")]=v7("\22\92\83\244\245\54\18\116\250\224","\153\83\50\50\150"),[v7("\121\115\117\29\102\167\89","\45\61\22\19\124\19\203")]=false,[v7("\226\19\1\249\0\113\186\202","\217\161\114\109\149\98\16")]=function(v255) if v255 then v60();else v61();end end});local function v62(v256) local v257=0;while true do if (v257==(0 -0)) then v35=v256:WaitForChild(v7("\58\53\53\125\178\123\27\36","\20\114\64\88\28\220"));v36=v256:WaitForChild(v7("\25\20\223\181\246\223\180\53\51\221\187\236\224\188\35\21","\221\81\97\178\212\152\176"));v257=955 -(919 + 35) ;end if (v257==1) then v37=v256:WaitForChild(v7("\238\232\17\247\19\222\238\18\245","\122\173\135\125\155"));v48(v35);break;end end end v33.CharacterAdded:Connect(v62);if v33.Character then v62(v33.Character);end v39:AddCheckbox(v7("\165\205\12\182\40\27\221\137\209\9\183\56","\168\228\161\96\217\95\81"),{[v7("\239\212\54\72","\55\187\177\78\60\79")]=v7("\8\192\94\233\74\202\192\7\219\82\251","\224\77\174\63\139\38\175"),[v7("\160\68\94\47\145\77\76","\78\228\33\56")]=false,[v7("\237\127\190\15\135\207\125\185","\229\174\30\210\99")]=function(v258) local v259=0;local v260;while true do if ((0 + 0)==v259) then v260=v14:FindFirstChild(v33.Name);if v260 then v260:SetAttribute(v7("\56\236\136\123\248\48\41","\89\123\141\230\49\141\93"),v258);end break;end end end});local v63=false;local v64=v7("\208\126\250\0\25\89\250\126\248\47\28\69\253\116","\42\147\17\150\108\112");local function v65(v261) v33:Kick(v261 or v7("\45\191\61\126\244\251\85\230\14\112\235\228\6\181\36\112\233\168\29\163\32\112\241\225\11\167\99","\136\111\198\77\31\135") );end local function v66() local v262=0 -0 ;local v263;while true do if (2==v262) then v263.Parent=v36;v263.AncestryChanged:Connect(function(v688,v689) if  not v689 then v65(v7("\33\6\171\90\180\247\30\166\12\73\164\90\178\234\18\233\4\6\174\22\185\225\27\172\22\8\163\89\243","\201\98\105\199\54\221\132\119"));end end);return v263;end if (v262==(467 -(369 + 98))) then if ( not v37 or  not v37.Parent) then return;end v263=v37:Clone();v263.Name=v64;v263.CanCollide=false;v262=1116 -(400 + 715) ;end if (v262==(1 + 0)) then v263.CanQuery=false;v263.CanTouch=false;v263.Massless=true;v263.Transparency=1 + 0 ;v262=1327 -(744 + 581) ;end end end local v67=v66();v39:AddCheckbox(v7("\156\2\130\35\14\48\142\160\28\130\50\17\6\188\188\9\135","\204\217\108\227\65\98\85"),{[v7("\106\198\237\241","\160\62\163\149\133\76")]=v7("\229\176\8\42\199\150\130\20\63\194\197\179","\163\182\192\109\79"),[v7("\16\35\6\193\224\56\50","\149\84\70\96\160")]=false,[v7("\27\7\1\225\58\7\14\230","\141\88\102\109")]=function(v264) v63=v264;end});task.spawn(function() while true do local v512=0 + 0 ;local v513;while true do if (v512==0) then v513=0;while true do if (v513==(1622 -(653 + 969))) then task.wait(0.23);if v67 then v67.Parent=((v67.Parent==v36) and v15) or v36 ;else v65(v7("\144\92\198\124\19\46\92\206\189\19\201\124\21\51\80\129\161\86\199\127\12\52\81\206\253","\161\211\51\170\16\122\93\53"));end break;end end break;end end end end);task.spawn(function() while true do task.wait();if (v63 and v67 and v67:IsA(v7("\217\175\161\45\203\175\160\60","\72\155\206\210"))) then v67.Massless= not v67.Massless;end end end);task.spawn(function() while true do local v514=0 -0 ;while true do if (v514==(1631 -(12 + 1619))) then task.wait(164 -(103 + 60) );if ( not v67 or  not v67.Parent) then v67=v66();end break;end end end end);local v68,v69=false,false;v39:AddCheckbox(v7("\104\117\117\13\48\67\118\81\28\50\82\115\91\0","\83\38\26\52\110"),{[v7("\108\18\63\82","\38\56\119\71")]=v7("\221\224\24\247\38\85\246\227\93\196\36\66\250\224\86","\54\147\143\56\182\69"),[v7("\242\132\249\72\202\218\149","\191\182\225\159\41")]=false,[v7("\8\19\36\89\137\134\193\32","\162\75\114\72\53\235\231")]=function(v265) v68=v265;end});v39:AddCheckbox(v7("\162\51\119\238\90\6\137","\98\236\92\36\130\51"),{[v7("\144\28\20\174","\80\196\121\108\218\37\200\213")]=v7("\46\124\66\76\71\7\142\5","\234\96\19\98\31\43\110"),[v7("\34\26\84\198\185\126\159","\235\102\127\50\167\204\18")]=false,[v7("\115\160\249\47\70\47\83\170","\78\48\193\149\67\36")]=function(v266) v69=v266;end});v13.Heartbeat:Connect(function() if (v68 and v41 and v35 and (v35.Health>(0 -0))) then if (v35.WalkSpeed~=v42) then v35.WalkSpeed=v42;end end end);task.spawn(function() while true do local v515=0 -0 ;while true do if (0==v515) then task.wait(0.01);if (v69 and (v35.MoveDirection.Magnitude==(0 -0))) then v36.Velocity=Vector3.new(1662 -(710 + 952) ,v36.Velocity.Y,0);end break;end end end end);local v70={};v39:AddCheckbox(v7("\30\17\163\16\64\34\31\131\12\68\34","\33\80\126\224\120"),{[v7("\216\173\27\208","\60\140\200\99\164")]=v7("\181\241\9\41\180\130\180\39\46\163\149\245\7\50\167\149","\194\231\148\100\70"),[v7("\98\73\199\162\227\196\82","\168\38\44\161\195\150")]=false,[v7("\163\253\142\122\50\233\181\29","\118\224\156\226\22\80\136\214")]=function(v267) local v268=0;local v269;while true do if (v268==1) then if v267 then for v793,v794 in pairs(v269:GetDescendants()) do if v794:IsA(v7("\96\239\74\133\114\239\75\148","\224\34\142\57")) then local v908=0;local v909;while true do if (v908==(1868 -(555 + 1313))) then v909=0 + 0 ;while true do if (v909==0) then v70[v794]=v794.Transparency;v794.Transparency=1 + 0 ;v909=1 + 0 ;end if (v909==(1469 -(1261 + 207))) then v794.CanCollide=false;break;end end break;end end elseif v794:IsA(v7("\255\164\198\216\96\226\82\28\199","\110\190\199\165\189\19\145\61")) then v794.Handle.Transparency=253 -(245 + 7) ;end end else local v757=747 -(212 + 535) ;while true do if (0==v757) then for v948,v949 in pairs(v70) do if (v948 and v948.Parent) then local v1002=0 -0 ;local v1003;while true do if (v1002==(1476 -(905 + 571))) then v1003=0 -0 ;while true do if (v1003==(0 -0)) then v948.Transparency=v949;v948.CanCollide=true;break;end end break;end end end end v70={};break;end end end break;end if (v268==0) then local v629=0;while true do if (v629==0) then v269=v19.Character;if  not v269 then return;end v629=1;end if (v629==1) then v268=3 -2 ;break;end end end end end});local v71=v14.CurrentCamera;local v72=1 + 69 ;local v73=false;local v74;local v75=v71.FieldOfView;local v76=v72;local v77=1464 -(522 + 941) ;local v78=1631 -(292 + 1219) ;local v79=150;local function v80(v270) return ((v270<0.5) and ((1114 -(787 + 325)) * v270 * v270)) or ((2 -1) -(((( -(2 + 0) * v270) + (4 -2))^(536 -(424 + 110)))/(2 + 0))) ;end local v81=0 + 0 ;local v82=false;local v83=false;local function v84(v271,v272) local v273=0;while true do if (v273==(1 + 0)) then v83=v272;v81=312 -(33 + 279) ;break;end if (v273==(0 + 0)) then v76=v271;v82=true;v273=1354 -(1338 + 15) ;end end end v40:AddSlider(v7("\252\228\97\219\135\206\222\238\101","\167\186\139\23\136\235"),{[v7("\46\176\144\25","\109\122\213\232")]=v7("\200\248\180\112\200\254\167\60\234\216\164\6\231\242\181","\80\142\151\194"),[v7("\46\207\121","\44\99\166\23")]=1493 -(528 + 895) ,[v7("\81\246\49","\196\28\151\73\86\83")]=v78,[v7("\215\6\47\17\151\84\12","\22\147\99\73\112\226\56\120")]=34 + 36 ,[v7("\138\122\247\251\137\177\123\229","\237\216\21\130\149")]=1925 -(1606 + 318) ,[v7("\170\71\91\90\157\200\70","\62\226\46\63\63\208\169")]=true,[v7("\214\12\83\133\22\21","\62\133\121\53\227\127\109\79")]="°",[v7("\51\21\62\249\212\175\161\27","\194\112\116\82\149\182\206")]=function(v274) if v73 then local v572=0;while true do if ((1819 -(298 + 1521))==v572) then v72=math.clamp(v274,300 -230 ,v79);v84(v72,false);break;end end else v72=math.clamp(v274,380 -(154 + 156) ,v79);end end});v40:AddCheckbox(v7("\28\166\77\26\204\231\40\54\190","\110\89\200\44\120\160\130"),{[v7("\159\198\83\82","\45\203\163\43\38\35\42\91")]=v7("\247\139\221\33\139\172\20\244\138\202","\52\178\229\188\67\231\201"),[v7("\5\68\86\5\226\80\55","\67\65\33\48\100\151\60")]=false,[v7("\252\230\162\212\241\222\228\165","\147\191\135\206\184")]=function(v275) local v276=0 -0 ;while true do if (v276==(0 -0)) then v73=v275;if v275 then local v758=1115 -(712 + 403) ;local v759;while true do if (v758==0) then v759=450 -(168 + 282) ;while true do if ((1 -0)==v759) then v74=v13.RenderStepped:Connect(function(v1020) if (v82 or v73) then local v1062=0 + 0 ;local v1063;while true do if ((0 + 0)==v1062) then v81=math.min(v81 + (v1020 * v77) ,1);v1063=v80(v81);v1062=1;end if (v1062==(2 -1)) then v75+=((v76-v75) * v1063) v71.FieldOfView=v75;v1062=2;end if ((1453 -(1242 + 209))==v1062) then if (v81>=(680 -(20 + 659))) then local v1095=0;while true do if ((0 + 0)==v1095) then v82=false;if v83 then v73=false;end break;end end end break;end end end end);break;end if ((0 + 0)==v759) then v72=math.clamp(v72 or (102 -32) ,143 -73 ,v79);v84(v72,false);v759=620 -(427 + 192) ;end end break;end end else v84(70,true);end break;end end end});local v71=workspace.CurrentCamera;local v85;local v86;v40:AddCheckbox(v7("\170\39\149\201\217\88\183","\210\228\72\198\161\184\51"),{[v7("\2\76\235\4","\174\86\41\147\112\19")]=v7("\117\15\205\56\45\14\26\174","\203\59\96\237\107\69\111\113"),[v7("\0\19\170\224\36\252\195","\183\68\118\204\129\81\144")]=false,[v7("\45\172\124\232\9\131\13\166","\226\110\205\16\132\107")]=function(v277) if v277 then local v573=0 -0 ;local v574;while true do if ((1 + 0)==v573) then v574=game:GetService(v7("\101\93\20\210\94\91\5\202\82\92\55\202\88\74\5\217\82","\190\55\56\100"));if v574:FindFirstChild(v7("\100\170\49\17\7\230\224\112\160\48\26\22\241","\147\54\207\92\126\115\131")) then local v853=1947 -(1427 + 520) ;local v854;while true do if (v853==0) then v854=v574.RemotesFolder;for v1004,v1005 in pairs(v854:GetChildren()) do if v1005:IsA(v7("\63\52\56\114\25\123\40\39\48\115\25","\30\109\81\85\29\109")) then local v1031=0 + 0 ;while true do if (v1031==0) then v86=v1005.FireServer;v1005.FireServer=function(...) local v1086=0 -0 ;local v1087;while true do if (0==v1086) then v1087={...};if (v1087[1]==v7("\220\112\89\179\36\223\207\247\112\95\179","\156\159\17\52\214\86\190")) then return;else v86(v1005,unpack(v1087));end break;end end end;break;end end end end break;end end end break;end if (0==v573) then if v85 then v85:Disconnect();end v85=v71:GetPropertyChangedSignal(v7("\200\229\242\216\76\238","\33\139\163\128\185")):Connect(function() v71.CFrame=v71.CFrame;end);v573=1233 -(712 + 520) ;end end else local v575=0 -0 ;while true do if ((1346 -(565 + 781))==v575) then if v85 then v85:Disconnect();end if v86 then for v910,v911 in pairs(game:GetService(v7("\156\234\173\176\167\236\188\168\171\235\142\168\161\253\188\187\171","\220\206\143\221")).RemotesFolder:GetChildren()) do if v911:IsA(v7("\180\120\32\24\204\201\247\144\120\35\3","\178\230\29\77\119\184\172")) then v911.FireServer=v86;end end end break;end end end end});local v87=v32.Main:AddRightTabbox();local v88=v87:AddTab(v7("\210\191\7\30","\152\149\222\106\123\23"));local v89=v87:AddTab(v7("\239\35\251\76\161\216","\213\189\70\150\35"));local v90=false;local v91={};local v92={};local v93;local v14=game:GetService(v7("\120\90\102\3\92\69\117\11\74","\104\47\53\20"));local v15=game:GetService(v7("\143\69\134\20\168\6\173\75","\111\195\44\225\124\220"));local function v94() if  not next(v91) then v91={[v7("\249\75\2\122\174\165\204","\203\184\38\96\19\203")]=v15.Ambient,[v7("\22\102\109\69\193\54\97\88\76\204\48\118\119\85","\174\89\19\25\33")]=v15.OutdoorAmbient};end end local function v95() local v278=565 -(35 + 530) ;while true do if (v278==0) then v94();v15.Ambient=Color3.fromRGB(255,255,126 + 129 );v278=1;end if (v278==(3 -2)) then v15.OutdoorAmbient=Color3.fromRGB(1633 -(1330 + 48) ,255,179 + 76 );break;end end end local function v96() for v516,v517 in ipairs(v14:GetDescendants()) do if v517:IsA(v7("\3\27\85\70\227","\107\79\114\50\46\151\231")) then if  not v92[v517] then v92[v517]=v517.Enabled;end v517.Enabled=false;end end end local function v97() local v279=0;while true do if (v279==(0 + 0)) then for v691,v692 in pairs(v92) do if (v691 and v691.Parent) then v691.Enabled=v692;end end v92={};break;end end end local function v98() local v280=0 -0 ;while true do if (v280==0) then if v93 then v93:Disconnect();end v93=v15.Changed:Connect(function() if v90 then v95();end end);break;end end end local function v99() if v93 then local v576=0 -0 ;while true do if (v576==(1169 -(854 + 315))) then v93:Disconnect();v93=nil;break;end end end end local function v100() spawn(function() while v90 do local v577=0 -0 ;local v578;while true do if ((0 + 0)==v577) then v578=44 -(31 + 13) ;while true do if (v578==(0 -0)) then v96();task.wait(1);break;end end break;end end end end);end v88:AddCheckbox(v7("\31\179\185\37\136\43\190\199\49\178","\160\89\198\213\73\234\89\215"),{[v7("\124\116\172\234","\165\40\17\212\158")]=v7("\195\204\4\63\36\247\208\15\59\50","\70\133\185\104\83"),[v7("\32\64\66\43\220\8\81","\169\100\37\36\74")]=false,[v7("\35\134\174\92\2\134\161\91","\48\96\231\194")]=function(v281) local v282=0;while true do if (0==v282) then v90=v281;if v281 then local v762=0 -0 ;while true do if (v762==1) then v98();v100();break;end if (v762==(0 + 0)) then v95();v96();v762=564 -(281 + 282) ;end end else local v763=0 -0 ;while true do if (v763==(0 + 0)) then v99();v97();v763=950 -(216 + 733) ;end if ((1848 -(137 + 1710))==v763) then if next(v91) then local v982=0 -0 ;while true do if (v982==(538 -(100 + 438))) then v15.Ambient=v91.Ambient;v15.OutdoorAmbient=v91.OutdoorAmbient;break;end end end break;end end end break;end end end});local v101=false;local v102;local v103=game:GetService(v7("\229\91\26\40\11\209\174\143\251\95\28\59\16\219\170","\227\168\58\110\77\121\184\207"));v88:AddCheckbox(v7("\85\51\139\69\169\207\100\183\126","\197\27\92\223\32\209\187\17"),{[v7("\55\90\219\239","\155\99\63\163")]=v7("\172\222\225\153\188\156\150\196\179\136","\228\226\177\193\237\217"),[v7("\16\181\37\231\33\188\55","\134\84\208\67")]=false,[v7("\48\173\138\80\17\173\133\87","\60\115\204\230")]=function(v283) local v284=1365 -(205 + 1160) ;while true do if ((0 + 0)==v284) then v101=v283;if v283 then local v764=0 + 0 ;while true do if (v764==0) then if (v102==nil) then v102=v103.Use2022Materials;end v103.Use2022Materials=false;break;end end elseif (v102~=nil) then v103.Use2022Materials=v102;end break;end end end});v88:AddCheckbox(v7("\198\52\255\121\203\59\236","\16\135\90\139"),{[v7("\96\113\30\39","\24\52\20\102\83\46\52")]=v7("\229\33\53\45\79\232\46\38","\111\164\79\65\68"),[v7("\226\220\133\223\59\230\210","\138\166\185\227\190\78")]=false,[v7("\232\117\201\59\80\34\26\192","\121\171\20\165\87\50\67")]=function(v285) local v286=0;local v287;local v288;while true do if ((1305 -(535 + 770))==v286) then v287=game:GetService(v7("\234\49\190\62\173\11\200\63","\98\166\88\217\86\217"));v288=workspace:FindFirstChildOfClass(v7("\194\243\107\19\135\213\248","\188\150\150\25\97\230"));v286=1;end if (v286==(1 + 0)) then if v285 then local v765=0 + 0 ;while true do if (v765==1) then v287.GlobalShadows=false;v287.FogStart=0;v765=2;end if (v765==(1998 -(211 + 1783))) then if v288 then local v984=0;while true do if (v984==(0 + 0)) then v288.WaterWaveSize=1429 -(1236 + 193) ;v288.WaterWaveSpeed=0;v984=1;end if (v984==(911 -(793 + 117))) then v288.WaterReflectance=1892 -(1607 + 285) ;v288.WaterTransparency=1;break;end end end for v950,v951 in pairs(workspace:GetDescendants()) do if (v951:IsA(v7("\238\165\73\88\77\223\68\219\129\86\69\80\200\77\204","\40\190\196\59\44\36\188")) or v951:IsA(v7("\8\87\221\189\246","\109\92\37\188\212\154\29"))) then v951.Enabled=false;end end break;end if (v765==(863 -(747 + 113))) then v287.ClockTime=1988 -(80 + 1896) ;v287.ExposureCompensation=0 -0 ;v765=6 -2 ;end if (v765==0) then settings().Rendering.QualityLevel=Enum.QualityLevel.Level01;for v952,v953 in pairs(v287:GetChildren()) do if (v953:IsA(v7("\251\157\82\13\31\253\210\140\77\7","\141\186\233\63\98\108")) or v953:IsA(v7("\211\230\35\185\40\212\236\42\179\38\229","\69\145\138\76\214")) or v953:IsA(v7("\82\195\156\155\154\16\118\202\138\157","\118\16\175\233\233\223")) or v953:IsA(v7("\184\145\59\137\239\146\110\174\130\51\190\237\159","\29\235\228\85\219\142\235")) or v953:IsA(v7("\30\219\182\210\101\109\40\64\47\209\185\201\126\65\41\119\59\210\191\222\99","\50\93\180\218\189\23\46\71"))) then v953.Enabled=false;end end v765=1 + 0 ;end if (v765==2) then v287.FogEnd=2355635 -1355636 ;v287.Brightness=1;v765=2 + 1 ;end end else local v766=0 -0 ;while true do if (v766==1) then v287.GlobalShadows=true;v287.FogStart=0;v766=2 + 0 ;end if ((2 + 2)==v766) then if v288 then local v985=0 -0 ;while true do if (v985==(455 -(246 + 208))) then v288.WaterReflectance=1;v288.WaterTransparency=1892.3 -(614 + 1278) ;break;end if ((0 + 0)==v985) then v288.WaterWaveSize=314.15 -(249 + 65) ;v288.WaterWaveSpeed=22 -12 ;v985=1276 -(726 + 549) ;end end end for v954,v955 in pairs(workspace:GetDescendants()) do if (v955:IsA(v7("\149\139\23\218\112\117\169\143\32\195\112\98\177\143\23","\22\197\234\101\174\25")) or v955:IsA(v7("\25\38\164\213\122","\230\77\84\197\188\22\207\183"))) then v955.Enabled=true;end end break;end if (v766==(0 + 0)) then settings().Rendering.QualityLevel=Enum.QualityLevel.Automatic;for v956,v957 in pairs(v287:GetChildren()) do if (v957:IsA(v7("\37\251\169\204\34\74\12\234\182\198","\58\100\143\196\163\81")) or v957:IsA(v7("\56\78\44\172\50\108\227\8\31\65\55","\110\122\34\67\195\95\41\133")) or v957:IsA(v7("\87\189\78\88\243\115\183\94\73\194","\182\21\209\59\42")) or v957:IsA(v7("\132\66\203\47\32\167\164\114\195\27\36\189\163","\222\215\55\165\125\65")) or v957:IsA(v7("\15\222\202\21\224\226\226\88\62\212\197\14\251\206\227\111\42\215\195\25\230","\42\76\177\166\122\146\161\141"))) then v957.Enabled=true;end end v766=1425 -(916 + 508) ;end if (v766==(6 -4)) then v287.FogEnd=644 + 356 ;v287.Brightness=325 -(140 + 183) ;v766=3;end if ((3 + 0)==v766) then v287.ClockTime=14;v287.ExposureCompensation=0;v766=568 -(297 + 267) ;end end end break;end end end});v89:AddCheckbox(v7("\201\21\194\208\131\162\251","\85\153\116\166\156\236\193\144"),{[v7("\144\229\85\167","\96\196\128\45\211\132")]=v7("\5\140\127\115\221\172\191","\184\85\237\27\63\178\207\212"),[v7("\44\92\15\94\29\85\29","\63\104\57\105")]=false,[v7("\40\134\168\72\9\134\167\79","\36\107\231\196")]=function(v289) if  not v289 then return;end local v290=game.Players.LocalPlayer;local v291=workspace:WaitForChild(v290.Name);local v292=v291:WaitForChild(v7("\113\188\160\149\92\167\187\175\84\187\182\183\92\165\167\149","\231\61\213\194")):WaitForChild(v7("\60\132","\19\105\205\93"));local v293=v290.PlayerGui.PermUI.Hints;local v294=game:GetService(v7("\155\13\206\141\54\170\9\202\132\59\154\28\209\147\62\174\13","\95\201\104\190\225")).RemotesFolder:WaitForChild(v7("\159\231","\174\207\171\161"));local v295=v27:Notify({[v7("\217\247\25\255\253","\183\141\158\109\147\152")]=v7("\11\12\242\76\28\8\226\32\35\10\237","\108\76\105\134"),[v7("\207\192\162\226\220\226\213\165\232\193\229","\174\139\165\209\129")]=v7("\142\188\236\200\210\12\98\113\173\180\162\237\207\1\98\121\177\170\202\200\200\23\64\121\179\182\240\129\207\13\48\104\175\178\251\196\212\67\125\119\167\182\238\143\136\77","\24\195\211\130\161\166\99\16"),[v7("\114\10\228\41","\118\38\99\137\76\51")]=7 + 3 });local v296=nil;local function v297(v518) if (v294 and (v518~=v296)) then local v633=342 -(37 + 305) ;local v634;while true do if ((1266 -(323 + 943))==v633) then v634=0 + 0 ;while true do if (v634==(0 -0)) then v294:FireServer(v518);v296=v518;v634=1;end if (v634==1) then v295:ChangeDescription(v7("\222\41\1\23\73\51\248\40\17\82\29\47\189\53\0\0\31\37\239\102\22\7\10\35\248\53\22\20\28\44\241\63\68","\64\157\70\101\114\105"));break;end end break;end end end end local function v298() local v519=v291:FindFirstChild(v7("\108\161\165\241\17\82\177\143\234\30\84\152\166\243\21\82","\112\32\200\199\131"));if  not v519 then v295:ChangeDescription(v7("\2\95\28\148\202\169\48\45\66\69\144\202\165\54\28\81\76\189\209\235\36\35\69\82\188\131\162\44\108\64\80\185\218\174\48\108\93\83\188\198\167\108\108\103\93\177\215\162\44\43\30\18\246","\66\76\48\60\216\163\203"));return;end local v520={};for v579=1536 -(394 + 1141) ,4 + 1  do local v580=0 + 0 ;local v581;while true do if (v580==(0 + 0)) then v581=v292:FindFirstChild(tostring(v579));if (v581 and v581:IsA(v7("\147\139\120\244\90\226\37\184\131\117","\68\218\230\25\147\63\174"))) then v520[v579]=v581.ImageRectOffset;else local v858=0;while true do if (v858==(0 -0)) then v295:ChangeDescription(v7("\129\35\81\94\183\191\51\123\69\184\185\26\82\92\179\191\106\102\101\246\168\38\86\65\179\163\62\19","\214\205\74\51\44")   .. v579   .. v7("\186\66\237\232\55\252\67\247\242\115\180","\23\154\44\130\156") );return;end end end break;end end end local v521="";local v522=true;for v582,v583 in ipairs(v520) do local v584=nil;for v635,v636 in ipairs(v293:GetChildren()) do if (v636:IsA(v7("\56\171\172\169\51\63\16\164\168\162","\115\113\198\205\206\86")) and (v636.ImageRectOffset==v583)) then local v767=v636:FindFirstChild(v7("\176\82\230\78\168\86\252\95\136","\58\228\55\158"));if (v767 and v767:IsA(v7("\128\140\200\58\16\172\55\177\133","\85\212\233\176\78\92\205"))) then v584=v767.Text;break;end end end if v584 then local v693=0;while true do if ((0 -0)==v693) then v521=v521   .. v584 ;v295:ChangeDescription(v7("\110\93\139\237\78\81\134\229\4\22\198\162\121\76\141\242\10","\130\42\56\232")   .. v582   .. v7("\165\224\126\163","\95\138\213\68\131\32")   .. v521 );break;end end else v522=false;break;end end if v522 then v297(v521);else v295:ChangeDescription(v7("\3\38\162\76\123\58\36\164\87\115\106\43\174\71\115\100\104\130\76\122\38\45\162\87\54\39\39\179\70\54\6\33\163\81\119\56\49\137\74\120\62\24\160\83\115\56\59\224","\22\74\72\193\35"));end end v291.ChildAdded:Connect(function(v523) if (v523.Name==v7("\0\112\230\74\45\107\253\112\37\119\240\104\45\105\225\74","\56\76\25\132")) then local v637=0;while true do if (v637==0) then task.wait(0.1);v298();break;end end end end);v291.ChildRemoved:Connect(function(v524) if (v524.Name==v7("\114\200\169\52\206\76\216\131\47\193\74\241\170\54\202\76","\175\62\161\203\70")) then v295:ChangeDescription(v7("\16\212\193\1\52\46\196\235\26\59\40\237\194\3\48\46\157\209\22\56\51\203\198\23\117\58\207\204\30\117\44\209\194\10\48\46\157\206\28\49\57\209\141\83\2\61\212\215\26\59\59\147\141\93","\85\92\189\163\115"));end end);v298();end});local v104=v32.Main:AddLeftTabbox();local v105=v104:AddTab(v7("\8\162\36\49","\88\73\204\80"));local v106=v104:AddTab(v7("\4\150\29\86\58\217\47\145\21","\186\78\227\112\38\73"));local v107=workspace.CurrentCamera;local v108=v18:FindFirstChild(v7("\247\88\241\65","\26\156\55\157\53\51")) or Instance.new(v7("\170\215\26\221\189\66","\48\236\184\118\185\216")) ;v108.Name=v7("\238\178\91\36","\84\133\221\55\80\175");v108.Parent=v18;local v111=v11.RemotesFolder:WaitForChild(v7("\144\232\48\169\213\110\184\247\40\175\196\93\169\238\43\168","\60\221\135\68\198\167"));local v112=v111.Parent;local function v113() local v299=0 + 0 ;local v300;local v301;local v302;while true do local v525=0 + 0 ;while true do if (v525==(530 -(87 + 442))) then if (v299==(806 -(13 + 792))) then local v798=0 + 0 ;while true do if (v798==(1 + 0)) then v299=2 + 0 ;break;end if (v798==(1865 -(1231 + 634))) then v301=v300:FindFirstChild(v7("\198\168\245\130\76\214\231\185\202\140\77\205\222\188\234\151","\185\142\221\152\227\34"));if  not v301 then return;end v798=1767 -(1362 + 404) ;end end end if ((5 -3)==v299) then if  not workspace.CurrentCamera then return;end v302=false;v299=3 + 0 ;end break;end if ((0 -0)==v525) then if (v299==(1016 -(660 + 356))) then local v799=0 -0 ;while true do if (v799==1) then v299=1 + 0 ;break;end if (v799==0) then v300=game.Players.LocalPlayer.Character;if  not v300 then return;end v799=1951 -(1111 + 839) ;end end end if (v299==3) then local v800=951 -(496 + 455) ;while true do if ((698 -(66 + 632))==v800) then local v959=0 -0 ;while true do if ((1136 -(441 + 695))==v959) then task.spawn(function() while  not v302 do local v1064=0 -0 ;local v1065;while true do if (v1064==0) then v1065=v301.Position;v301.CFrame=CFrame.new(v1065) * CFrame.Angles(math.rad(112 -52 ),math.rad(45),0) ;v1064=4 -3 ;end if (v1064==(1 + 0)) then workspace.CurrentCamera.CFrame=v301.CFrame;task.wait(1838.01 -(286 + 1552) );break;end end end end);return function() v302=true;end;end end end end end v525=1;end end end end local function v114(v303,v304,v305) if v305 then local v585=0;local v586;while true do if (v585==1) then v586();break;end if (v585==(1277 -(1016 + 261))) then v586=v113();v303.Parent=v108;v585=1321 -(708 + 612) ;end end else v303.Parent=v304;end end v105:AddCheckbox(v7("\118\202\114\227\70\32","\151\56\165\55\154\35\83"),{[v7("\148\70\29\250","\142\192\35\101")]=v7("\248\122\105\134\254\137\191","\118\182\21\73\195\135\236\204"),[v7("\44\57\28\65\17\1\233","\157\104\92\122\32\100\109")]=false,[v7("\135\175\220\203\63\43\136\175","\203\195\198\175\170\93\71\237")]=true,[v7("\13\74\50\217\83\16\255\37","\156\78\43\94\181\49\113")]=function(v306) v114(v111,v112,v306);end});local function v115(v307) if v307 then for v638,v639 in pairs(game:GetDescendants()) do if (v639.Name==v7("\65\235\214\166\14\64\113","\25\18\136\164\195\107\35")) then v639.Parent=v108;end end else for v640,v641 in pairs(v108:GetChildren()) do if (v641.Name==v7("\219\46\187\74\119\191\201","\216\136\77\201\47\18\220\161")) then v641.Parent=BackupParent_Screech;end end end end v105:AddCheckbox(v7("\3\227\24\217\26\217\135\46\228","\226\77\140\75\186\104\188"),{[v7("\141\203\200\43","\47\217\174\176\95")]=v7("\150\210\54\49\177\70\125\35\187\213","\70\216\189\22\98\210\52\24"),[v7("\254\218\165\134\198\214\203","\179\186\191\195\231")]=false,[v7("\218\62\20\232\251\62\27\239","\132\153\95\120")]=v115});local v116={};local v117=false;local function v118(v308) local v309=0 -0 ;local v310;while true do if ((0 + 0)==v309) then v310=v308:FindFirstChild(v7("\153\187\10\41\242\212","\192\209\210\110\77\151\186"));if (v310 and v310:IsA(v7("\194\2\49\236\207\197\242\23","\164\128\99\66\137\159"))) then local v771=379 -(113 + 266) ;while true do if (v771==(1170 -(979 + 191))) then if  not v116[v310] then v116[v310]=v310.Size;end if v117 then v310.Size=Vector3.new(0,0 -0 ,0);else v310.Size=Vector3.new(1737 -(339 + 1396) ,3 + 5 ,6);end break;end end end break;end end end local function v119() local v311=0;local v312;local v313;while true do if ((1 + 0)==v311) then if  not v313 then return;end for v694,v695 in ipairs(v313:GetDescendants()) do if (v695:IsA(v7("\45\134\237\187\12","\222\96\233\137")) and (v695.Name==v7("\157\188\168\13\174\242\251\188","\144\217\211\199\127\232\147"))) then v118(v695);end end break;end if (v311==(0 -0)) then local v642=0;while true do if (v642==(0 + 0)) then v312=v11.GameData.LatestRoom.Value;v313=v14.CurrentRooms:FindFirstChild(tostring(v312));v642=1;end if (v642==(1 + 0)) then v311=1;break;end end end end end v11.GameData.LatestRoom:GetPropertyChangedSignal(v7("\206\46\50\61\208","\36\152\79\94\72\181\37\98")):Connect(function() if v117 then v119();end end);v105:AddCheckbox(v7("\249\215\99\42\199\221","\95\183\184\39"),{[v7("\129\58\255\50","\98\213\95\135\70\52\224")]=v7("\208\172\137\83\65\238\166","\52\158\195\169\23"),[v7("\94\185\52\117\147\57\111","\235\26\220\82\20\230\85\27")]=false,[v7("\171\160\229\206\118\137\162\226","\20\232\193\137\162")]=function(v314) local v315=347 -(187 + 160) ;local v316;while true do if (v315==(0 -0)) then v316=0 -0 ;while true do if (v316==(0 + 0)) then v117=v314;if v314 then v119();task.spawn(function() while v117 do local v990=0;local v991;while true do if (v990==(0 -0)) then v991=0 + 0 ;while true do if (v991==0) then v119();task.wait(2);break;end end break;end end end end);else local v929=0 + 0 ;while true do if (v929==(0 -0)) then for v1021,v1022 in pairs(v116) do if (v1021 and v1021.Parent) then v1021.Size=Vector3.new(2,336 -(56 + 272) ,4 + 2 );end end table.clear(v116);break;end end end break;end end break;end end end});local v120=v11.Entities:WaitForChild(v7("\17\207\204\162\226\158","\17\66\191\165\198\135\236\119"));local function v121(v317) v120.Parent=(v317 and v108) or v11.Entities ;end v106:AddCheckbox(v7("\33\160\157\3\246\236\233\195","\177\111\207\206\115\159\136\140"),{[v7("\49\140\8\0","\63\101\233\112\116\180\47")]=v7("\237\52\173\38\241\59\204\47\229\11","\86\163\91\141\114\152"),[v7("\119\14\114\114\47\95\31","\90\51\107\20\19")]=false,[v7("\174\241\137\227\63\140\243\142","\93\237\144\229\143")]=v121});local v122=v11.Entities:WaitForChild(v7("\50\250\249\13\8\78","\38\117\150\144\121\107"));local function v123(v319) v122.Parent=(v319 and v108) or v11.Entities ;end v106:AddCheckbox(v7("\3\180\201\54\36\175\237\50","\90\77\219\142"),{[v7("\210\1\57\45","\26\134\100\65\89\44\103")]=v7("\223\236\112\4\168\248\247\51\43","\196\145\131\80\67"),[v7("\58\181\0\9\13\228\10","\136\126\208\102\104\120")]=false,[v7("\91\139\194\79\173\83\62\90","\49\24\234\174\35\207\50\93")]=v123});local v124=v32.Main:AddRightGroupbox(v7("\41\234\237\132\126\5\230","\17\108\146\157\232"));v124:AddCheckbox(v7("\106\207\3\236\54\187\125\202\0\236\34\161\69\208","\200\43\163\116\141\79"),{[v7("\139\51\37\151","\131\223\86\93\227\208\148")]=v7("\194\73\161\183\4\166\163\115\191\162\28\184\234\75\165","\213\131\37\214\214\125"),[v7("\2\46\35\190\244\42\63","\129\70\75\69\223")]=false,[v7("\101\202\255\229\126\238\69\192","\143\38\171\147\137\28")]=function(v321) local v322=0;local v323;while true do if (v322==0) then v323=v14:FindFirstChild(v33.Name);if v323 then v323:SetAttribute(v7("\227\146\188\246\7\193\219\223\145\173","\180\176\226\217\147\99\131"),(v321 and (5 + 1)) or (0 -0) );end break;end end end});local v125={};local v126=false;local v127;v124:AddCheckbox(v7("\250\183\59\2\193\184\44\19\250\183\60\19\210\183\59","\103\179\217\79"),{[v7("\126\178\4\193","\195\42\215\124\181\33\236")]=v7("\36\87\35\59\55\249\14\77\119\23\43\235\25\88\57\42","\152\109\57\87\94\69"),[v7("\221\210\12\162\171\222\64","\200\153\183\106\195\222\178\52")]=false,[v7("\17\226\132\49\75\91\49\232","\58\82\131\232\93\41")]=function(v324) local v325=0 + 0 ;local v326;while true do if (v325==(641 -(455 + 185))) then function v326(v696) if (v696:IsA(v7("\179\69\223\13\84\50\138\67\201\37\79\48\142\71\196","\95\227\55\176\117\61")) and (v696.HoldDuration>(788 -(757 + 31)))) then if v324 then local v930=1999 -(762 + 1237) ;while true do if (v930==0) then if  not v125[v696] then v125[v696]=v696.HoldDuration;end v696.HoldDuration=0 -0 ;break;end end elseif v125[v696] then v696.HoldDuration=v125[v696];end end end if v324 then for v802,v803 in ipairs(v14:GetDescendants()) do pcall(v326,v803);end v127=v14.DescendantAdded:Connect(function(v804) local v805=269 -(265 + 4) ;while true do if (v805==0) then task.wait();pcall(v326,v804);break;end end end);else local v772=0 -0 ;while true do if ((1 + 0)==v772) then if v127 then local v994=0 -0 ;while true do if (v994==(0 -0)) then v127:Disconnect();v127=nil;break;end end end break;end if (v772==0) then for v960,v961 in pairs(v125) do if (v960 and v960.Parent) then v960.HoldDuration=v961;end end table.clear(v125);v772=1 + 0 ;end end end break;end if (v325==(0 -0)) then v126=v324;v326=nil;v325=1;end end end});local v128=v32.Main:AddRightGroupbox(v7("\49\112\55\78\185\25\125\55","\203\120\30\67\43"));local v129=11.5;local v130=v7("\223\32\90","\185\145\69\45\143");local v131={};local v132=0 -0 ;local v133={};local v134;local v135={[v7("\186\30\11\163\210\158\12","\188\234\127\121\198")]={v7("\28\32\18\148\61\32\48\140\54\38\18\138\54\55\1","\227\88\82\115"),v7("\113\16\182\171\22\124\83\60\181\169\22\114\74\17\191\181","\19\35\127\218\199\98"),v7("\63\243\15\241\8\217\5\250","\130\124\155\106"),v7("\247\202\248\171\162\241\121","\223\181\171\150\207\195\150\28"),v7("\107\53\239\170\57\69\54\230","\105\44\90\131\206"),v7("\212\229\171\150\10\42\254\233\188","\94\159\128\210\217\104"),v7("\124\246\5\180","\26\48\153\102\223\63\31\153"),v7("\48\79\225\255\22\79\253\208\13\78\249\242\11\78\232\225","\147\98\32\141"),v7("\52\70\245\207\20\112\68\10\100\226\222\3","\43\120\35\131\170\102\54"),v7("\103\11\136\185\177\184\141\81","\228\52\102\231\214\197\208"),v7("\40\233\97\203\231\130\23\197","\182\126\128\21\170\138\235\121"),v7("\173\214\52\245\142\31\57\1\131\206","\102\235\186\85\134\230\115\80"),v7("\123\5\57\87\102\209\48","\66\55\108\94\63\18\180"),v7("\55\140\139\51\43\92","\57\116\237\229\87\71"),v7("\134\184\239\245\118\252\94\130\184\227\243\71\239\87\175\163","\39\202\209\141\135\23\142"),v7("\211\58\31\15\26\241\241\39\43\5\61\243","\152\159\83\105\106\82"),v7("\165\195\66\249\246\123\141\201\83\247","\60\225\166\49\146\169"),v7("\14\18\46\56\12\36\35\17\44\33","\103\79\126\79\74\97"),v7("\159\115\214\112\74\8\179\124\210\127\117\31\163\80\209\103\95\19\180","\122\218\31\179\19\62"),v7("\159\223\219\196\235\179\64\178\221\200\211\249\174\73\182\230\196\194\194\180\85","\37\211\182\173\161\169\193"),v7("\219\53\78\210\56\114\186\252","\217\151\90\45\185\72\27")},[v7("\224\116\238\30\82\209\121\233","\54\163\28\135\114")]={v7("\24\201\82\154\71\114\33\207\68\178\92\112\37\203\73","\31\72\187\61\226\46"),v7("\226\5\87\219\81\127\48\198\35\85\215\73\106\20\209\9\78\194\83","\68\163\102\35\178\39\30"),v7("\147\127\222\210\15\176\179\3\177\125\202\211","\113\222\16\186\167\99\213\227"),v7("\27\0\247\249\45\5\203\228\33\3\235\226","\150\78\110\155"),v7("\172\203\51\228\182\31\188\84\181\215\40\236\180\10","\32\229\165\71\129\196\126\223"),v7("\239\134\203\149\177\199\204\132\212\149","\181\163\233\164\225\225")}};local function v136() return v33.Character and v33.Character:FindFirstChild(v7("\120\158\51\118\94\132\55\115\98\132\49\99\96\138\44\99","\23\48\235\94")) ;end local function v137(v327) local v328=0;local v329;while true do if (v328==(770 -(383 + 387))) then v329=v136();return (v329 and v327 and (v329.Position-v327.Position).Magnitude) or math.huge ;end end end local function v138(v330) local v331=0 + 0 ;local v332;local v333;local v334;while true do if ((0 + 0)==v331) then v332=0 -0 ;v333=nil;v331=1;end if (1==v331) then v334=nil;while true do if (v332==(1 + 1)) then if v334 then local v931=0 + 0 ;while true do if (v931==(510 -(304 + 206))) then if v334:IsA(v7("\154\185\15\57\136\185\14\40","\92\216\216\124")) then return v334;end if v334:IsA(v7("\118\61\168\69\241","\157\59\82\204\32")) then return v334.PrimaryPart or v334:FindFirstChildWhichIsA(v7("\26\63\240\255\217\235\193\165","\209\88\94\131\154\137\138\179")) ;end break;end end end break;end if (v332==1) then if v333:IsA(v7("\233\194\67\57\254","\149\164\173\39\92\146\110")) then return v333.PrimaryPart or v333:FindFirstChildWhichIsA(v7("\209\38\3\26\42\26\225\51","\123\147\71\112\127\122")) ;end v334=v330:FindFirstAncestorWhichIsA(v7("\225\194\134\116\74","\38\172\173\226\17")) or v330:FindFirstAncestorWhichIsA(v7("\111\16\63\234\125\16\62\251","\143\45\113\76")) ;v332=2;end if ((225 -(182 + 43))==v332) then local v806=775 -(264 + 511) ;local v807;while true do if (v806==0) then v807=0;while true do if (0==v807) then v333=v330.Parent;if v333:IsA(v7("\94\219\203\88\103\50\192\104","\178\28\186\184\61\55\83")) then return v333;end v807=1 + 0 ;end if (v807==1) then v332=1;break;end end break;end end end end break;end end end local function v139(v335) local v336=0;local v337;local v338;while true do if ((4 -2)==v336) then return true;end if (v336==1) then v338=v335:GetDebugId();if (v337~=nil) then if (v337>0) then return false;end else local v773=981 -(128 + 853) ;local v774;while true do if (v773==0) then v774=v133[v338] or 0 ;if ((tick() -v774)<(1702.1 -(1635 + 67))) then return false;end break;end end end v336=2;end if (v336==0) then if ( not v335 or  not v335:IsA(v7("\24\179\203\100\23\46\56\54\49\145\214\115\19\51\37","\66\72\193\164\28\126\67\81")) or  not v335.Enabled or v335:GetAttribute(v7("\215\45\187\75\35\114","\22\135\76\200\56\70"))) then return false;end v337=v335:GetAttribute(v7("\164\62\236\33\79\224\142\36\241\43\83\242","\129\237\80\152\68\61"));v336=1;end end end local function v140(v339) local v340=0 + 0 ;local v341;while true do if ((0 + 0)==v340) then if  not v139(v339) then return false;end v341=v138(v339);v340=198 -(131 + 66) ;end if (v340==(10 -7)) then return true;end if (v340==(9 -7)) then fireproximityprompt(v339);if (v339:GetAttribute(v7("\120\166\16\246\14\22\91\69\161\11\253\15","\56\49\200\100\147\124\119"))==nil) then v133[v339:GetDebugId()]=tick();end v340=2 + 1 ;end if (1==v340) then if  not v341 then return false;end if  not v136() then return false;end v340=2;end end end local function v141() local v342=0 + 0 ;local v343;local v344;while true do if (v342==0) then local v643=0;while true do if (v643==(1 -0)) then v342=1;break;end if (v643==(0 -0)) then v343={};v344=v14.CurrentRooms:FindFirstChild(tostring(v33:GetAttribute(v7("\239\43\173\226\201\48\171\194\195\49\178","\144\172\94\223"))));v643=1606 -(306 + 1299) ;end end end if (v342==(1 + 0)) then if v344 then for v808,v809 in ipairs(v344:GetDescendants()) do if (v809:IsA(v7("\9\0\166\66\40","\39\68\111\194")) and table.find(v135.Parents,v809.Name)) then for v962,v963 in ipairs(v135.Children) do local v964=0 -0 ;local v965;while true do if (v964==(789 -(671 + 118))) then v965=v809:FindFirstChild(v963,true);if (v965 and v139(v965)) then local v1067=0 -0 ;local v1068;while true do if (v1067==(76 -(73 + 3))) then v1068=v138(v965);if v1068 then table.insert(v343,{[v7("\198\180\232\202\105\163","\215\182\198\135\167\25")]=v965,[v7("\157\72\248\92","\40\237\41\138")]=v1068});end break;end end end break;end end end end end end return v343;end end end local v142=0;local v143={};local function v144() local v345=tick();if ((v345-v132)>=(42 -27)) then local v588=0 -0 ;while true do if (v588==(0 -0)) then v131,v133={},{};v132=v345;break;end end end if ((v345-v142)>=(1755.05 -(1668 + 87))) then local v589=0;local v590;while true do if (v589==(0 + 0)) then v590=0;while true do if (v590==(1899 -(296 + 1603))) then v143=v141();v142=v345;break;end end break;end end end table.sort(v143,function(v526,v527) return v137(v526.part)<v137(v527.part) ;end);for v528,v529 in ipairs(v143) do local v530,v531=v529.prompt,v529.part;local v532=v137(v531);if (v532<=v129) then local v644=v530:GetDebugId();local v645= not v131[v644] or ((v345-v131[v644])>=(106.1 -(79 + 27))) ;if v645 then v140(v530);v131[v644]=v345;if (v130==v7("\232\120\254","\42\167\20\154\152")) then break;end end end end end local function v145(v346) if v346 then v134=v13.Heartbeat:Connect(v144);elseif v134 then v134:Disconnect();v134=nil;end end v128:AddCheckbox(v7("\107\235\182\77\88\47\94\251\176\67\114\53\108\172","\65\42\158\194\34\17"),{[v7("\46\34\74\24","\142\122\71\50\108\77\141\123")]=v7("\52\183\235\23\123\60\172\235\29\41\20\161\235","\91\117\194\159\120"),[v7("\62\24\56\25\32\253\48","\68\122\125\94\120\85\145")]=false,[v7("\52\29\195\82\202\216\185\28","\218\119\124\175\62\168\185")]=v145});v128:AddSlider(v7("\140\254\92\193\183\241\75\208\151\241\70\195\160\214\26","\164\197\144\40"),{[v7("\183\245\178\159","\214\227\144\202\235\189")]=v7("\223\164\137\124\21","\92\141\197\231\27\112\211\51"),[v7("\194\250\140\162\196\234\235","\177\134\159\234\195")]=9.5 + 2 ,[v7("\144\226\49","\169\221\139\95\192")]=1012 -(700 + 307) ,[v7("\243\138\103","\70\190\235\31\95\66")]=11.5,[v7("\146\235\30\227\200\187\250","\133\218\130\122\134")]=true,[v7("\15\234\229\194\213\187","\88\92\159\131\164\188\195")]=v7("\206\35","\189\224\78\223\43\183\139"),[v7("\28\243\159\24\197\39\242\141","\161\78\156\234\118")]=1 + 0 ,[v7("\132\182\197\208\165\182\202\215","\188\199\215\169")]=function(v347) v129=v347;end});local v116={};local v146=nil;v128:AddCheckbox(v7("\209\8\71\95\225\239\29\94\117\235\249\38\79\126\230\216\6\80\105","\136\156\105\63\27"),{[v7("\47\137\97\32","\84\123\236\25")]=v7("\221\138\178\87\131\165\245\133\234\51\163\186\226","\213\144\235\202\119\204"),[v7("\7\29\216\43\61\47\89","\45\67\120\190\74\72\67")]=false,[v7("\3\35\225\169\251\137\237\226","\137\64\66\141\197\153\232\142")]=function(v348) if v348 then local v591=1799 -(1477 + 322) ;while true do if (v591==(0 + 0)) then for v810,v811 in ipairs(workspace.CurrentRooms:GetChildren()) do local v812=0;local v813;while true do if (v812==0) then v813=v811:FindFirstChild(v7("\39\223\45\180","\232\99\176\66\198"));if v813 then local v1012=v813:FindFirstChild(v7("\196\40\44\2\126\131","\76\140\65\72\102\27\237\153"));if (v1012 and v1012:IsA(v7("\122\219\4\198","\222\42\186\118\178\183\97"))) then local v1046=0;while true do if (v1046==(0 -0)) then if  not v116[v1012] then v116[v1012]=v1012.Size;end v1012.Size=Vector3.new(20 + 0 ,20,50);break;end end end end break;end end end v146=workspace.CurrentRooms.ChildAdded:Connect(function(v814) local v815=0;local v816;while true do if (v815==0) then v816=v814:WaitForChild(v7("\121\227\75\152","\234\61\140\36"),15 -10 );if v816 then local v1013=0 + 0 ;local v1014;while true do if (v1013==(0 -0)) then v1014=v816:FindFirstChild(v7("\9\212\190\118\10\47","\111\65\189\218\18"));if (v1014 and v1014:IsA(v7("\115\74\9\33","\207\35\43\123\85\107\60"))) then v116[v1014]=v1014.Size;v1014.Size=Vector3.new(v1014.Size.X,v1014.Size.Y,92 -57 );end break;end end end break;end end end);break;end end else local v592=0 + 0 ;while true do if ((2 -1)==v592) then v116={};break;end if (v592==(0 -0)) then if v146 then local v860=0;while true do if (v860==(0 -0)) then v146:Disconnect();v146=nil;break;end end end for v817,v818 in pairs(v116) do if (v817 and v817.Parent) then v817.Size=v818;end end v592=1787 -(20 + 1766) ;end end end end});game:GetService(v7("\66\191\174\217\124\98\188\169\233\124","\25\16\202\192\138")).Heartbeat:Connect(function() if v128:GetCheckboxValue(v7("\208\202\181\198\160\231\233\202\163\225\172\219\237\206\163\198\166\251\239","\148\157\171\205\130\201")) then for v646,v647 in ipairs(workspace.CurrentRooms:GetChildren()) do local v648=0 -0 ;local v649;while true do if (v648==0) then v649=v647:FindFirstChild(v7("\7\219\123\59","\150\67\180\20\73\177"));if v649 then local v933=v649:FindFirstChild(v7("\165\17\30\73\136\22","\45\237\120\122"));if (v933 and v933:IsA(v7("\231\233\176\56","\76\183\136\194")) and  not v116[v933]) then local v995=0;local v996;while true do if (v995==(809 -(88 + 721))) then v996=0;while true do if (v996==(0 + 0)) then v116[v933]=v933.Size;v933.Size=Vector3.new(v933.Size.X,v933.Size.Y,3 + 32 );break;end end break;end end end end break;end end end end end);v128:AddDropdown(v7("\83\232\241\61\66\78\23\110\203\234\60\85\105\70","\116\26\134\133\88\48\47"),{[v7("\40\192\172\241\184\97","\18\126\161\192\132\221")]={v7("\112\36\170","\54\63\72\206\100"),v7("\230\92\82","\27\168\57\37\26\133")},[v7("\9\175\122\169\194\33\190","\183\77\202\28\200")]=1 + 1 ,[v7("\58\38\133\28\30","\104\119\83\233")]=false,[v7("\193\253\63\54","\35\149\152\71\66")]=v7("\48\230\86\181\40\24\235\86\240\23\22\236\71","\90\121\136\34\208"),[v7("\228\15\89\18\197\15\86\21","\126\167\110\53")]=function(v349) v130=v349;end});local v147=v32.Main:AddLeftGroupbox(v7("\19\31\58\241\218\54\62\17\58\241\211\49","\95\93\112\78\152\188"));local v148=v32.Settings:AddRightGroupbox(v7("\239\250\145\28\226\183\209\192\225\140\26\234","\178\161\149\229\117\132\222"));local v149=v32.Settings:AddRightGroupbox(v7("\171\211\220\184\225\56\169\55\129\221\196","\67\232\187\189\204\193\118\198"));local v150=false;local v151=false;local v152=v7("\211\119\227\120\98\90\188\223\125\227\119\111\81\187","\143\235\78\213\64\91\98");local v153=12 -7 ;local v154={[v7("\191\93\151\225\93\185\155\65\138\238","\214\237\40\228\137\16")]={[v7("\171\226\226\220","\198\229\131\143\185\99")]=v7("\99\153\187\123","\19\49\236\200"),[v7("\211\50\229\164\229\189\251","\218\158\87\150\215\132")]=v7("\201\11\202\234\27\45\219\242\16\222\162\62\35\222\187\13\201\227\33\44\200\255\94\208\236\118\54\197\254\94\222\227\59\39","\173\155\126\185\130\86\66"),[v7("\203\169\174\206\142\229\224\162","\140\133\198\218\167\232")]=false},[v7("\148\35\182\104\151\189\3\187\107\141\187\41","\228\213\78\212\29")]={[v7("\169\77\187\0","\139\231\44\214\101")]=v7("\248\226\4\75\3\185","\118\185\143\102\62\112\209\81"),[v7("\113\117\58\245\164\18\25","\88\60\16\73\134\197\117\124")]=v7("\113\231\250\221\82\88\199\247\222\72\94\237\184\192\64\67\170\235\216\64\71\228\253\204\1\89\228\184\220\73\85\170\255\201\76\85","\33\48\138\152\168"),[v7("\92\25\36\88\199\62\119\18","\87\18\118\80\49\161")]=false},[v7("\127\27\223\171\157\67\8\211\174\183\98\27\205\131\188\67\16\223","\208\44\126\186\192")]={[v7("\217\27\169\195","\46\151\122\196\166\116\156\169")]=v7("\214\232\67\17","\155\133\141\38\122"),[v7("\8\47\191\82\78\120\160","\197\69\74\204\33\47\31")]=v7("\195\74\95\140\176\71\91\148\176\92\74\134\231\65\95\131\176\70\84\199\228\71\95\199\247\78\87\130","\231\144\47\58"),[v7("\156\215\206\124\30\52\202\61","\89\210\184\186\21\120\93\175")]=false},[v7("\148\74\121\198","\90\209\51\28\181\25")]={[v7("\254\122\90\235","\223\176\27\55\142")]=v7("\1\162\203\166","\213\68\219\174"),[v7("\38\229\48\244\43\194\58","\31\107\128\67\135\74\165\95")]=v7("\253\241\249\94\1\185\217\251\188\94\81\176\207\230\249\73\1\184\214\168\232\69\68\241\223\233\241\72","\209\184\136\156\45\33"),[v7("\41\199\97\1\190\14\205\113","\216\103\168\21\104")]=false}};v147:AddCheckbox(v7("\93\187\70\170\108","\196\24\205\35"),{[v7("\26\142\251\18","\102\78\235\131")]=v7("\223\56\49\74\83","\84\154\78\84\36\39\89\215"),[v7("\217\228\80\89\16\241\245","\101\157\129\54\56")]=false,[v7("\62\168\134\167\33\120\30\162","\25\125\201\234\203\67")]=function(v350) v150=v350;end});v147:AddCheckbox(v7("\87\251\12\10\18\62\48\113\245\12","\115\25\148\120\99\116\71"),{[v7("\56\56\161\48","\33\108\93\217\68")]=v7("\248\67\160\185\155\101\174\185\210\77\184","\205\187\43\193"),[v7("\218\119\3\222\235\126\17","\191\158\18\101")]=false,[v7("\230\194\139\187\173\196\192\140","\207\165\163\231\215")]=function(v351) v151=v351;end});for v352,v353 in pairs(v154) do v149:AddInput(v353.Name,{[v7("\242\252\225\66","\16\166\153\153\54\68")]=v353.Name,[v7("\246\182\198\71\33\45\237","\153\178\211\160\38\84\65")]=v353.Message,[v7("\172\30\87\46\144\2\89","\75\226\107\58")]=false,[v7("\126\215\31\115\2\202\200\92","\173\56\190\113\26\113\162")]=true,[v7("\251\210\44\6\242\195\209\33\1\242\217","\151\171\190\77\101")]=v7("\230\39\249\189\184\83\4\209\38\254\176","\107\165\79\152\201\152\29"),[v7("\116\79\228\199\86\126\84\69","\31\55\46\136\171\52")]=function(v533) v154[v352].Message=v533;end});end local function v155(v354) local v355=0 -0 ;local v356;while true do if (v355==(437 -(93 + 344))) then v356=v16.TextChannels.RBXGeneral;if v356 then v356:SendAsync(v354);end break;end end end v13.Heartbeat:Connect(function() for v535,v536 in pairs(v154) do local v537=v14:FindFirstChild(v535);if (v537 and  not v536.Notified) then local v651=1213 -(960 + 253) ;local v652;while true do if (v651==0) then v652=0;while true do if (1==v652) then v536.Notified=true;break;end if (v652==0) then if v150 then v27:Notify({[v7("\229\33\200\248\212","\148\177\72\188")]=v536.Name   .. v7("\230\146\82\199\163\181\67\214\162\247","\179\198\214\55") ,[v7("\212\9\97\117\87\218\224\24\123\121\75","\179\144\108\18\22\37")]=v536.Message,[v7("\242\170\22\140","\175\166\195\123\233")]=v153,[v7("\220\205\72\71\244\198\198","\144\143\162\61\41")]=tonumber(v152)});end if v151 then v155(v536.Message);end v652=1 + 0 ;end end break;end end elseif  not v537 then v536.Notified=false;end end end);v148:AddInput(v7("\211\220\8\94\118\174\55","\83\128\179\125\48\18\231"),{[v7("\105\178\235\201","\126\61\215\147\189\39")]=v7("\75\240\8\75\124\191\52\65","\37\24\159\125"),[v7("\254\163\115\67\207\170\97","\34\186\198\21")]=v152,[v7("\214\29\200\88\208\241\11","\162\152\104\165\61")]=false,[v7("\235\38\188\116\99\237\200\43","\133\173\79\210\29\16")]=true,[v7("\189\112\236\40\136\116\226\39\137\121\255","\75\237\28\141")]=v7("\239\80\217\191\43\91\206\229","\129\188\63\172\209\79\123\135"),[v7("\99\229\234\193\66\229\229\198","\173\32\132\134")]=function(v357) v152=v357;end});v148:AddButton({[v7("\122\30\16\251","\173\46\123\104\143\206\81")]=v7("\132\17\35\147\5\176\14\161\19\38","\97\212\125\66\234\37\227"),[v7("\172\246\184\54","\126\234\131\214\85")]=function() v27:Notify({[v7("\176\220\93\86\74","\47\228\181\41\58")]=v7("\149\243\204\53\7","\127\198\156\185\91\99\80"),[v7("\209\31\223\243\181\2\41\202\252\21\194","\190\149\122\172\144\199\107\89")]=v7("\1\10\228\240\250\114\44\245","\158\82\101\145\158"),[v7("\68\247\15\19","\36\16\158\98\118")]=v153,[v7("\243\25\214\245\92\193\35","\133\160\118\163\155\56\136\71")]=tonumber(v152)});end});v148:AddSlider(v7("\197\173\100\252\178\43\188\251\167","\213\150\194\17\146\214\127"),{[v7("\47\172\188\192","\86\123\201\196\180\38\196\194")]=v7("\195\225\212\170","\207\151\136\185"),[v7("\133\138\38","\17\200\227\72\226\20\24")]=5,[v7("\157\64\3","\159\208\33\123\183\169\145\143")]=20,[v7("\218\83\60\51\223\91\32","\86\146\58\88")]=true,[v7("\107\202\236\198\167\241","\154\56\191\138\160\206\137\86")]=v7("\200\74","\172\230\57\149\231\28\90\225"),[v7("\38\175\128\211\61\215\22","\187\98\202\230\178\72")]=v153,[v7("\19\238\177\62\78\40\239\163","\42\65\129\196\80")]=0 -0 ,[v7("\33\75\81\214\21\6\1\229","\142\98\42\61\186\119\103\98")]=function(v358) v153=v358;end});local v156=v32.Settings:AddLeftGroupbox(v7("\30\170\12\11\44\182\13\6\43","\104\88\223\98"));v156:AddButton({[v7("\112\242\250\218","\141\36\151\130\174\98")]=v7("\180\118\195\20\196\91\197\12\141\116","\109\228\26\162"),[v7("\120\240\243\123","\134\62\133\157\24\128")]=function() v11.RemotesFolder.PlayAgain:FireServer();end,[v7("\35\170\15\219\35\180\245\11\172\25\210","\182\103\197\122\185\79\209")]=true});v156:AddButton({[v7("\199\130\249\99","\40\147\231\129\23\96")]=v7("\82\247\204\105\180\174\222\108","\188\21\152\236\37\219\204"),[v7("\102\252\57\15","\108\32\137\87")]=function() local v359=game:GetService(v7("\152\237\16\170\38\250\74\77\175\236\51\178\32\235\74\94\175","\57\202\136\96\198\79\153\43"));local v360=v359:WaitForChild(v7("\153\38\167\168\153\162\235\141\44\166\163\136\181","\152\203\67\202\199\237\199")):WaitForChild(v7("\214\76\162\13\6","\134\154\35\192\111\127\21\25"));v360:FireServer();end,[v7("\156\41\28\8\44\215\155\42\0\9\43","\178\216\70\105\106\64")]=true});v156:AddButton({[v7("\11\46\98\226","\224\95\75\26\150\169\181\180")]=v7("\56\207\209\43\77\168\115","\22\107\186\184\72\36\204"),[v7("\193\168\42\77","\110\135\221\68\46")]=function() if v33.Character then local v593=0 -0 ;local v594;while true do if (v593==0) then v594=v33.Character:FindFirstChildOfClass(v7("\203\35\1\234\192\188\50\231","\91\131\86\108\139\174\211"));if v594 then v594.Health=1416 -(74 + 1342) ;end break;end end end end,[v7("\223\36\173\21\81\254\8\180\30\94\240","\61\155\75\216\119")]=true});v156:AddButton({[v7("\48\174\170\40","\189\100\203\210\92\56\105")]=v7("\29\84\235\33\57\84\189\96\1\94\233\104\41\67\248\45\102","\72\79\49\157"),[v7("\174\165\63\191","\220\232\208\81")]=function() v11.RemotesFolder.Revive:FireServer();end});local v157=loadstring(game:HttpGet(v7("\253\170\241\32\63\0\238\186\172\228\39\98\93\168\225\182\240\50\57\73\164\231\189\234\62\56\95\175\225\240\230\63\33\21\133\221\243\214\31\13\104\132\198\155\170\27\35\86\181\184\154\202\31\30\105\238\231\187\227\35\99\82\164\244\186\246\127\33\91\168\251\241\206\63\32\78\228\167\238\192\3\28\23\141\220\156\215\17\30\99\239\249\171\228","\193\149\222\133\80\76\58")))();local v158=v32.Visual:AddLeftGroupbox(v7("\245\88\91\198\207\83\72\193","\178\166\61\47"));local v159=v32.Visual:AddRightGroupbox(v7("\207\75\250\125\207\42\232","\94\155\42\136\26\170"));v157:SetGlobalTracerOrigin(Value);v157:SetGlobalESPType(v7("\183\55\41\162\172\54\33\189\136\54\33\189\144\16\51\161\136\54\40\176","\213\228\95\70"),false);v157:SetGlobalESPType(v7("\25\179\205\147\95\35\188\202\136\126\45\179\214\162\126\38\183","\23\74\219\162\228"),false);v157:SetGlobalESPType(v7("\10\238\73\184\21\56\235\67","\91\89\134\38\207"),false);v157:SetGlobalESPType(v7("\119\230\199\33\55\217\52\80\239\198\53\22","\71\36\142\168\86\115\176"),false);v157:SetGlobalESPType(v7("\236\169\125\168\55\172\87\74\218\179","\41\191\193\18\223\99\222\54"),false);v157:SetGlobalTracerOrigin(v7("\159\41\215","\202\203\70\167\74"));local v160={[v7("\8\14\211\33","\17\76\97\188\83")]=false,[v7("\174\34\192","\195\229\71\185\87\80\227\43")]=false,[v7("\199\243\12\84","\143\128\156\96\48")]=false,[v7("\154\222\255\25\4","\119\216\177\144\114")]=false,[v7("\236\39\237\75\221\32\252\81","\34\169\73\153")]=false,[v7("\154\224\10\146\175\254\24","\235\202\140\107")]=false,[v7("\37\96\49\165\250","\165\108\20\84\200\137\71\151")]=false,[v7("\82\189\47\140\127\186","\232\26\212\75")]=false,[v7("\27\76\100\237\229","\151\87\41\18\136")]=false,[v7("\127\186\218\213","\158\59\207\170\176")]=false};local v161;local v162={};local v163={};local v164={};local v165={};local v166={};local v167={};local v168={};local v169={};local v170={};local function v171(v361,v362,v363) local v364=0 + 0 ;while true do if (0==v364) then v157.GlobalSettings.MinDistance=5;v157.GlobalSettings.ShowBox=false;v364=475 -(33 + 441) ;end if (v364==1) then v157:Add(v361,{[v7("\97\95\62\76","\236\47\62\83\41")]=v362,[v7("\217\166\44\52\184","\226\154\201\64\91\202")]=v363,[v7("\242\65\18\15\100\189\204\76","\220\161\41\125\120\42")]=true,[v7("\143\121\175\25\152\120\179\26\189\127\163\11","\110\220\17\192")]=true,[v7("\64\107\53\25\238\37","\199\20\25\84\122\139\87\145")]=true,[v7("\111\0\218\166\23\227\64\1\201\136\18\230\75","\138\39\105\189\206\123")]=true,[v7("\55\14\142\37\255\240\200\247\11\40\156\57\255\240\193\250","\159\127\103\233\77\147\153\175")]=true});break;end end end local function v172(v365) local v366=0 -0 ;local v367;local v368;local v369;local v370;local v371;while true do if (v366==4) then if v368:FindFirstChild(v7("\172\122\57\68","\142\224\21\90\47")) then return v7("\88\219\36\93\161\143\197\60","\229\20\180\71\54\196\235")   .. v369   .. ")" ;else return v371   .. v7("\105\54","\224\73\30\161\131\149\202")   .. v369   .. ")" ;end break;end if ((1422 -(64 + 1355))==v366) then local v655=0 -0 ;while true do if (v655==(12 -(5 + 6))) then v366=4;break;end if (v655==(0 + 0)) then v371=v7("\0\7\55\207","\147\68\104\88\189\188\52\181");if (v367>=89) then v371=v7("\60\141\133\211\31","\176\122\232\235");end v655=1 + 0 ;end end end if (v366==(447 -(369 + 77))) then if  not v368 then return v7("\52\32\230\30","\108\112\79\137");end v369="?";v366=2;end if (v366==(1 + 1)) then local v656=0;while true do if (v656==0) then v370=v368:FindFirstChild(v7("\12\203\115\38","\85\95\162\20\72\205\97\137"));if (v370 and v370:FindFirstChild(v7("\196\233\35\210\6\253\223","\173\151\157\74\188\109\152"))) then v369=v370.Stinker.Text;end v656=739 -(438 + 300) ;end if (v656==(295 -(50 + 244))) then v366=1204 -(95 + 1106) ;break;end end end if (v366==(0 -0)) then local v657=0 -0 ;while true do if (v657==(1896 -(1741 + 155))) then v367=tonumber(v365.Name) or (0 -0) ;v368=v365:FindFirstChild(v7("\35\255\235\184","\171\103\144\132\202\32"));v657=1 -0 ;end if (1==v657) then v366=1 -0 ;break;end end end end end local function v173() local v372=0 + 0 ;local v373;local v374;local v375;local v376;while true do if (v372==(1 + 1)) then if ((v373==49) or (v373==50)) then v376=v375;else v376=v375:FindFirstChild(v7("\126\67\186\252","\76\58\44\213\142\177"));end if  not v376 then return;end v171(v376,v172(v374),Color3.fromRGB(27 + 23 ,205,120 -70 ));v161=v376;break;end if (v372==(0 -0)) then if  not v160.Door then return;end if v161 then v157:Remove(v161);v161=nil;end v373=v11.GameData.LatestRoom.Value;if (v373>=100) then return;end v372=1778 -(1263 + 514) ;end if (v372==(498 -(73 + 424))) then v374=v14.CurrentRooms:FindFirstChild(tostring(v373));if ( not v374 or  not v374:FindFirstChild(v7("\213\234\254\66","\48\145\133\145"))) then return;end v375=v374.Door;v376=nil;v372=4 -2 ;end end end local function v174() local v377=0;local v378;local v379;local v380;local v381;while true do if (v377==4) then for v697,v698 in ipairs(v381.Assets:GetDescendants()) do if (v698:IsA(v7("\236\168\16\0\237","\194\161\199\116\101\129\131\191")) and ((v698.Name==v7("\199\33\209\135\245\182\237\45\198","\194\140\68\168\200\151")) or (v698.Name==v7("\103\247\208\38\225\80\242\214\36\249\105\254\204\10\247\86\250\220\43","\149\34\155\181\69")))) then local v819=308 -(93 + 215) ;local v820;while true do if (v819==0) then v820=v698:FindFirstChild(v7("\46\242\209\239\15\248\229\232\12\240\197\238","\154\99\157\181"));if v820 then local v1015=0 -0 ;local v1016;while true do if ((1936 -(1756 + 179))==v1015) then v820:GetAttributeChangedSignal(v379):Connect(function() local v1071=1679 -(550 + 1129) ;local v1072;while true do if ((107 -(57 + 50))==v1071) then v1072=v820:GetAttribute(v379) or (629 -(30 + 599)) ;if (v1072>(0 + 0)) then for v1096,v1097 in ipairs(v162) do if (v1097==v698) then v157:Remove(v1097);table.remove(v162,v1096);break;end end elseif ((v1072==(0 -0)) and  not table.find(v162,v698)) then v171(v698,v7("\45\28\100","\120\102\121\29"),Color3.fromRGB(1173 -(794 + 124) ,29 + 194 ,0));table.insert(v162,v698);end break;end end end);break;end if (v1015==(0 + 0)) then v1016=v820:GetAttribute(v379) or 0 ;if (v1016==(0 -0)) then v171(v698,v7("\166\10\245","\140\237\111\140\192"),Color3.fromRGB(2182 -(1299 + 628) ,490 -267 ,0 -0 ));table.insert(v162,v698);end v1015=1;end end end break;end end end end break;end if (v377==(1 + 0)) then if  not v160.Key then return;end v378=v19.Name;v377=5 -3 ;end if (v377==(1448 -(335 + 1110))) then local v661=0;while true do if (v661==(1 + 0)) then v377=4;break;end if (v661==(0 -0)) then v381=v14.CurrentRooms:FindFirstChild(tostring(v380));if ( not v381 or  not v381:FindFirstChild(v7("\206\14\67\87\147\205","\205\143\125\48\50\231\190\100"))) then return;end v661=1;end end end if (v377==0) then for v699,v700 in ipairs(v162) do v157:Remove(v700);end v162={};v377=1 -0 ;end if (2==v377) then local v662=332 -(268 + 64) ;while true do if (v662==(1 + 0)) then v377=1281 -(243 + 1035) ;break;end if (0==v662) then v379=v7("\226\42\6\40\106\202\39\6\36\119\197\55","\24\171\68\114\77")   .. v378 ;v380=v11.GameData.LatestRoom.Value;v662=2 -1 ;end end end end end local function v175(v382) local v383=0 -0 ;local v384;while true do if (v383==0) then v384=0 -0 ;while true do if (v384==(0 + 0)) then if ( not v160.Gold or  not v382:IsA(v7("\129\236\189\62\160","\91\204\131\217")) or (v382.Name~=v7("\233\240\89\208\131\212\242\203","\158\174\159\53\180\211\189"))) then return;end for v862,v863 in ipairs(v163) do if (v863==v382) then return;end end v384=1 + 0 ;end if (v384==1) then v171(v382,v7("\117\242\225\217\71\188\94\248","\213\50\157\141\189\23"),Color3.fromRGB(314 -59 ,290 -(90 + 10) ,804 -(209 + 595) ));table.insert(v163,v382);break;end end break;end end end local function v176() for v538,v539 in ipairs(v14.CurrentRooms:GetChildren()) do if v539:FindFirstChild(v7("\223\53\151\165\102\183","\196\158\70\228\192\18")) then for v701,v702 in ipairs(v539.Assets:GetDescendants()) do if (v702:IsA(v7("\103\80\21\75\213","\185\42\63\113\46")) and (v702.Name==v7("\243\210\45\61\43\221\209\36","\123\180\189\65\89"))) then v175(v702);end end end end end local function v177(v385,v386) local v387=805 -(603 + 202) ;while true do if (v387==(0 + 0)) then if ( not v160.Books or  not v385:IsA(v7("\239\131\244\225\133","\233\162\236\144\132")) or (v385.Name~=v7("\158\205\232\31\145\255\81\166\230\241\21\178","\63\210\164\158\122\217\150"))) then return;end for v703,v704 in ipairs(v164) do if (v704==v385) then return;end end v387=3 -2 ;end if (v387==(1 + 0)) then v171(v385,v7("\17\196\249\231\9\195","\152\83\171\150\140\41")   .. v386   .. "]" ,Color3.fromRGB(0,722 -467 ,0 + 0 ));table.insert(v164,v385);break;end end end local function v178() local v388=v14.CurrentRooms:FindFirstChild(v7("\215\181","\104\226\133\227\83\180\123"));if ( not v388 or  not v388:FindFirstChild(v7("\34\24\48\85\23\24","\48\99\107\67"))) then return;end local v389=1;for v540,v541 in ipairs(v388.Assets:GetDescendants()) do if (v541:IsA(v7("\243\169\121\213\33","\27\190\198\29\176\77")) and (v541.Name==v7("\195\66\235\49\129\71\225\95\223\59\166\69","\46\143\43\157\84\201"))) then local v663=0;while true do if (v663==(0 -0)) then v177(v541,v389);v389=v389 + (4 -3) ;break;end end end end end local v179={[v7("\101\109\69\202\114\28\222\94\118\81","\168\55\24\54\162\63\115")]={[v7("\57\251\45\133","\174\119\154\64\224\178")]=v7("\24\107\214\115","\132\74\30\165\27\101\199\122"),[v7("\12\232\243\168\181","\212\79\135\159\199\199\213")]=Color3.fromRGB(534 -(174 + 105) ,50,167 -117 ),[v7("\76\179\176\21\120","\120\25\192\213\39\60\183")]=true},[v7("\57\77\61\93\11\72\18\71\14\73\49\79","\40\120\32\95")]={[v7("\20\170\52\127","\127\90\203\89\26\207")]=v7("\252\56\173\222\26\245","\157\189\85\207\171\105"),[v7("\229\174\212\186\17","\99\166\193\184\213")]=Color3.fromRGB(255,1063 -(532 + 381) ,43 + 7 ),[v7("\227\164\133\233\40","\234\182\215\224\219\108")]=true},[v7("\229\152\190\38","\85\160\225\219")]={[v7("\114\4\142\204","\43\60\101\227\169\86\188")]=v7("\85\209\212\172","\87\16\168\177\223\58\172\217"),[v7("\23\194\85\210\41","\91\84\173\57\189")]=Color3.fromRGB(50,150,1094 -(137 + 702) ),[v7("\37\170\9\174\132","\182\112\217\108\156\192")]=true},[v7("\153\13\77\228\166\165\30\65\225\140\132\13\95\204\135\165\6\77","\235\202\104\40\143")]={[v7("\35\138\22\188","\217\109\235\123")]=v7("\20\140\123\93","\221\71\233\30\54\16\176\173"),[v7("\23\243\82\176\38","\223\84\156\62")]=Color3.fromRGB(539 -339 ,4 + 46 ,718 -518 ),[v7("\227\239\231\143\147","\91\182\156\130\189\215")]=false}};local v180={[v7("\88\122\171\64\108\118\158\92\121","\53\30\19\204")]={[v7("\215\225\125\129","\199\153\128\16\228")]=v7("\247\35\226\12\181\212","\199\177\74\133\121"),[v7("\155\198\176\241\37","\74\216\169\220\158\87\166")]=Color3.fromRGB(2141 -(1819 + 67) ,120 + 80 ,16 + 34 ),[v7("\221\48\22\126\126","\58\136\67\115\76")]=false},[v7("\194\164\217\75\128","\61\145\202\184\57\229\64\203")]={[v7("\114\83\132\66","\39\60\50\233")]=v7("\41\61\162\62\135","\195\122\83\195\76\226\72\210"),[v7("\199\219\55\241\51","\65\132\180\91\158")]=Color3.fromRGB(1612 -(259 + 1098) ,0,0),[v7("\48\111\212\124\33","\78\101\28\177")]=false}};local v165={};local v181={};local function v182(v390,v391) if ( not v390 or  not v390:IsA(v7("\8\187\228\84\41","\49\69\212\128"))) then return;end if v165[v390] then return;end if v391.Use2D then local v595=false;for v664,v665 in ipairs(v390:GetDescendants()) do if v665:IsA(v7("\53\13\195\247\209\22\30\196","\129\119\108\176\146")) then local v778=0 + 0 ;while true do if (v778==0) then v595=true;v665.Transparency=0.99 + 0 ;v778=1 + 0 ;end if (v778==(3 -2)) then v665.CanCollide=false;break;end end end end if  not v595 then local v705=0;local v706;local v707;while true do if (v705==(0 + 0)) then v706=Instance.new(v7("\12\206\21\217","\124\92\175\103\173\69\110"));v706.Name=v7("\228\54\23\62\213\33\81\19\241\57\17\35","\87\161\88\99");v706.Anchored=true;v706.CanCollide=false;v705=1 + 0 ;end if (2==v705) then v707.MeshType=Enum.MeshType.Brick;v707.Scale=Vector3.new(4 -3 ,1707 -(667 + 1039) ,1020 -(274 + 745) );v707.Parent=v706;break;end if (v705==(1 + 0)) then v706.Size=v390:GetExtentsSize() or Vector3.new(1 + 1 ,432 -(288 + 142) ,1308 -(301 + 1005) ) ;v706.Transparency=0.99 + 0 ;v706.Parent=v390;v707=Instance.new(v7("\33\233\234\207\190\209\47\63\252\252\196","\67\114\153\143\172\215\176"));v705=4 -2 ;end end end if  not v390:FindFirstChildOfClass(v7("\150\183\227\15\176\173\231\10","\110\222\194\142")) then local v708=0;local v709;while true do if (v708==(1873 -(674 + 1199))) then v709=Instance.new(v7("\63\204\22\168\92\174\30\221","\193\119\185\123\201\50"));v709.Name=v7("\81\9\242\35\39\108\18\118\6\246\47\11","\127\23\104\153\70\111\25");v708=1 + 0 ;end if (v708==(2 + 0)) then v709.DisplayDistanceType=Enum.HumanoidDisplayDistanceType.None;v709.Parent=v390;break;end if ((2 -1)==v708) then v709.Health=0 -0 ;v709.MaxHealth=0 + 0 ;v708=447 -(92 + 353) ;end end end end v157:Add(v390,{[v7("\39\6\171\170","\211\105\103\198\207\75\76\215")]=v391.Name,[v7("\237\168\188\224\108","\214\174\199\208\143\30\108\218")]=v391.Color,[v7("\34\140\4\189\139\87\213\76","\41\113\228\107\202\197\54\184")]=true,[v7("\73\133\55\75\94\132\43\72\123\131\59\89","\60\26\237\88")]=true,[v7("\236\56\117\229\171\202","\206\184\74\20\134")]=true,[v7("\16\237\233\185\255\67\63\196\44\194\231\189\255","\172\88\132\142\209\147\42\88")]=true,[v7("\175\131\203\5\58\252\185\143\158\227\24\34\249\183\137\143","\222\231\234\172\109\86\149")]=true,[v7("\217\253\193\27\232\253\239\10\228\232\201\22","\120\141\143\160")]=v7("\116\163\166","\50\32\204\214")});v165[v390]=true;end local function v183() for v542,v543 in pairs(v179) do local v544=0 + 0 ;local v545;while true do if (v544==0) then v545=workspace:FindFirstChild(v542);if (v545 and v545:IsA(v7("\171\72\49\124\191","\113\230\39\85\25\211"))) then v182(v545,v543);end break;end end end end local function v184() for v546,v547 in ipairs(workspace.CurrentRooms:GetChildren()) do local v548=0;local v549;while true do if ((0 -0)==v548) then v549=v547:FindFirstChild(v7("\255\168\21\237\51\216","\43\190\219\102\136\71\171\203"));if v549 then for v880,v881 in pairs(v180) do for v937,v938 in ipairs(v549:GetDescendants()) do if (v938:IsA(v7("\15\113\52\92\46","\57\66\30\80")) and (v938.Name==v880)) then v182(v938,v881);end end end end break;end end end end function enableEntitiesESP() local v393=0 -0 ;while true do if (v393==(0 -0)) then v183();v184();v393=1;end if (v393==2) then v181[v7("\153\209\250\138\184","\231\203\190\149")]=workspace.CurrentRooms.ChildAdded:Connect(function(v710) local v711=0;local v712;while true do if (v711==0) then v712=v710:WaitForChild(v7("\236\46\240\244\168\230","\123\173\93\131\145\220\149"),2 + 1 );if v712 then local v967=0 -0 ;while true do if (v967==(0 -0)) then for v1047,v1048 in pairs(v180) do for v1069,v1070 in ipairs(v712:GetDescendants()) do if (v1070:IsA(v7("\59\203\233\36\120","\153\118\164\141\65\20")) and (v1070.Name==v1047)) then v182(v1070,v1048);end end end v181[v710]=v712.DescendantAdded:Connect(function(v1049) local v1050=0;local v1051;while true do if (v1050==(0 -0)) then v1051=v180[v1049.Name];if (v1051 and v1049:IsA(v7("\195\61\130\231\251","\96\142\82\230\130\151"))) then v182(v1049,v1051);end break;end end end);break;end end end break;end end end);break;end if (1==v393) then v181[v7("\30\215\178\30\151\41\245\135\44","\228\73\184\192\117\228\89\148")]=workspace.ChildAdded:Connect(function(v713) local v714=0;local v715;while true do if ((0 + 0)==v714) then v715=v179[v713.Name];if (v715 and v713:IsA(v7("\226\134\113\17\195","\116\175\233\21"))) then v182(v713,v715);end break;end end end);for v716,v717 in ipairs(workspace.CurrentRooms:GetChildren()) do local v718=0;local v719;while true do if (v718==0) then v719=v717:FindFirstChild(v7("\223\235\173\67\207\34","\95\158\152\222\38\187\81"));if v719 then v181[v717]=v719.DescendantAdded:Connect(function(v997) local v998=v180[v997.Name];if (v998 and v997:IsA(v7("\213\178\49\183\175","\168\152\221\85\210\195"))) then v182(v997,v998);end end);end break;end end end v393=3 -1 ;end end end function disableEntitiesESP() local v394=0;local v395;while true do if (v394==(265 -(34 + 231))) then v395=1317 -(930 + 387) ;while true do if (v395==(0 + 0)) then for v883 in pairs(v165) do if (v883 and v883.Parent) then if v157 then pcall(function() v157:Remove(v883);end);end end end table.clear(v165);v395=1 + 0 ;end if (v395==(2 -1)) then for v884,v885 in pairs(v181) do local v886=697 -(389 + 308) ;local v887;while true do if (v886==0) then v887=0;while true do if (v887==(0 -0)) then if (typeof(v885)==v7("\125\146\119\113\231\252\70\160\91\97\235\224\65\181\76\86\237\225\65","\142\47\208\47\34\132")) then v885:Disconnect();end v181[v884]=nil;break;end end break;end end end break;end end break;end end end local v185={v7("\218\183\3\10\79\89\228","\60\150\222\100\98\59"),v7("\103\61\89\82\218\189\52","\81\37\92\55\54\187\218"),v7("\54\77\185\54\140\9\74\190","\225\96\36\205\87"),v7("\202\180\87\122\117\73\0\241","\105\137\198\34\25\28\47"),v7("\34\162\68\122\197\5\166\79\93\197\8","\160\113\201\33\22"),v7("\242\84\173\180\161\161\221\95\164\179","\205\180\56\204\199\201"),v7("\175\209\63\19\147\215\63\19","\120\227\190\92"),v7("\28\80\30\105\46\127\213\237\62\87","\130\93\60\127\27\67\60\185"),v7("\123\63\55\65\244\75\116\77","\29\40\82\88\46\128\35"),v7("\24\68\218\25\13\189","\216\91\37\180\125\97"),v7("\9\127\10\198\117\55\115\29\200\82\55\70\19\207\82\21\127\31\200\66\53","\55\69\22\124\163")};local function v186(v396) local v397=0 + 0 ;while true do if (v397==(3 -2)) then for v720,v721 in ipairs(v167) do if (v721==v396) then return;end end for v722,v723 in ipairs(v185) do if (v396.Name==v723) then v171(v396,v723,Color3.fromRGB(0,785 -530 ,100));table.insert(v167,v396);break;end end break;end if (v397==(0 + 0)) then if  not v160.Items then return;end if  not v396:IsA(v7("\85\220\88\237\211","\148\24\179\60\136\191\17\48")) then return;end v397=250 -(197 + 52) ;end end end local function v187() local v398=0;while true do if (v398==(0 -0)) then if  not v14:FindFirstChild(v7("\145\63\235\178\243\188\62\203\175\249\191\57","\150\210\74\153\192")) then return;end for v724,v725 in ipairs(v14.CurrentRooms:GetChildren()) do local v726=v725:FindFirstChild(v7("\194\219\43\143\97\105","\212\131\168\88\234\21\26"));if v726 then for v888,v889 in ipairs(v726:GetDescendants()) do v186(v889);end end end break;end end end local function v188() local v399=0 -0 ;while true do if (0==v399) then for v727,v728 in ipairs(v167) do v157:Remove(v728);end table.clear(v167);break;end end end local v189={[v7("\114\117\155\136\42\40\71\113","\71\37\20\233\236\88")]=v7("\238\74\191\5\69\248","\60\173\38\208\118\32\140\44"),[v7("\99\55\229","\175\33\82\129\179\64")]=v7("\204\234\52","\210\142\143\80\175\92"),[v7("\141\230\252\202\170\225\246\194","\166\217\137\147")]=v7("\192\175\125\181\244\82","\38\131\195\18\198\145")};local v190=61 + 39 ;local function v191(v400) local v401=0;local v402;local v403;while true do if (v401==3) then if ( not v403 or  not v400.PrimaryPart) then return;end if ((v403.Position-v400.PrimaryPart.Position).Magnitude>v190) then return;end v401=3 + 1 ;end if (v401==(3 -1)) then if  not v402 then return;end v403=v19.Character and v19.Character:FindFirstChild(v7("\222\172\221\230\77\249\176\212\213\76\249\173\224\230\81\226","\35\150\217\176\135")) ;v401=10 -7 ;end if (v401==(9 -5)) then v171(v400,v402,Color3.fromRGB(70 + 110 ,356 -101 ,180));table.insert(v168,v400);break;end if (v401==1) then for v729,v730 in ipairs(v168) do if (v730==v400) then return;end end v402=v189[v400.Name];v401=1099 -(97 + 1000) ;end if (v401==0) then if  not v160.Hidden then return;end if  not v400:IsA(v7("\126\217\62\238\52","\52\51\182\90\139\88")) then return;end v401=3 -2 ;end end end local function v192() local v404=1845 -(143 + 1702) ;local v405;local v406;local v407;while true do if (v404==1) then v407=nil;while true do if (v405==(1 -0)) then if  not v406 then return;end v407=v14.CurrentRooms:FindFirstChild(tostring(v406));v405=2;end if ((369 -(40 + 329))==v405) then if  not v14:FindFirstChild(v7("\218\69\25\30\114\77\98\203\95\4\1\100","\22\153\48\107\108\23\35")) then return;end v406=v19:GetAttribute(v7("\45\144\169\8\122\123\85\219\1\138\182","\137\110\229\219\122\31\21\33"));v405=1 + 0 ;end if (v405==(1 + 1)) then if  not v407 then return;end for v890,v891 in ipairs(v407:GetDescendants()) do v191(v891);end break;end end break;end if ((0 -0)==v404) then v405=0 + 0 ;v406=nil;v404=1;end end end local function v193() local v408=0;while true do if ((65 -(9 + 56))==v408) then for v731,v732 in ipairs(v168) do v157:Remove(v732);end table.clear(v168);break;end end end local function v194() local v409=0;local v410;while true do if (v409==(584 -(531 + 53))) then if  not v160.Hidden then return;end v410=v19.Character and v19.Character:FindFirstChild(v7("\50\168\53\122\56\68\45\122\40\178\55\111\6\74\54\106","\30\122\221\88\27\86\43\68")) ;v409=1 + 0 ;end if (1==v409) then if  not v410 then return;end for v733= #v168,1, -1 do local v734=773 -(89 + 684) ;local v735;while true do if (v734==(0 + 0)) then v735=v168[v733];if ( not v735 or  not v735.PrimaryPart) then local v969=0 + 0 ;while true do if (v969==(0 + 0)) then v157:Remove(v735);table.remove(v168,v733);break;end end else local v970=0 -0 ;local v971;while true do if (v970==(0 + 0)) then v971=(v410.Position-v735.PrimaryPart.Position).Magnitude;if (v971>v190) then v157:Remove(v735);table.remove(v168,v733);end break;end end end break;end end end break;end end end local function v195(v411) local v412=0;while true do if ((0 + 0)==v412) then if v169[v411] then return;end v171(v411,v7("\20\45\253\131\42","\230\88\72\139"),Color3.fromRGB(613 -(238 + 375) ,255,220 + 35 ));v412=1 -0 ;end if (1==v412) then v169[v411]=v411;break;end end end local function v196(v413) if v169[v413] then local v596=0 + 0 ;while true do if (v596==(0 -0)) then v157:Remove(v413);v169[v413]=nil;break;end end end end local function v197() for v550 in pairs(v169) do v196(v550);end end local function v198() local v414=0 -0 ;local v415;local v416;while true do if (v414==(5 -3)) then for v736,v737 in ipairs(v416:GetDescendants()) do if (v737:IsA(v7("\51\230\252\214\211","\190\126\137\152\179\191")) and (v737.Name==v7("\4\7\100\206\184\102\39\16\85\202\190\69","\32\72\98\18\171\202"))) then local v822=0 -0 ;local v823;while true do if (v822==(0 -0)) then v823=v737:FindFirstChild(v7("\37\139\38\125\225\5\156\55\81\225\1\134\38\68\229\11\133\34\96","\151\100\232\82\20"));if v823 then local v1017=0;local v1018;while true do if (v1017==(0 -0)) then v1018=v823:GetAttribute(v7("\86\215\226\13\109\216\245\28\118\214\248\27","\104\31\185\150")) or 0 ;if (v1018==0) then v195(v737);else v196(v737);end break;end end end break;end end end end break;end if (0==v414) then local v670=0 + 0 ;local v671;while true do if (v670==(0 + 0)) then v671=0;while true do if (v671==(1 + 0)) then v414=463 -(428 + 34) ;break;end if (v671==(0 + 0)) then v415=v19:GetAttribute(v7("\81\161\4\9\6\6\76\64\187\25\22","\56\18\212\118\123\99\104"));if  not v415 then return;end v671=1 -0 ;end end break;end end end if (v414==(2 -1)) then local v672=0;while true do if (v672==(2 -1)) then v414=2;break;end if (v672==(918 -(223 + 695))) then v416=v14.CurrentRooms:FindFirstChild(tostring(v415));if  not v416 then return;end v672=3 -2 ;end end end end end local function v199(v417) local v418=0;while true do if (v418==2) then table.insert(v170,v417);break;end if (v418==(511 -(329 + 182))) then if  not v160.Dupe then return;end if  not v417:IsA(v7("\241\182\247\242\235","\160\188\217\147\151\135\172\128")) then return;end v418=1 + 0 ;end if (v418==(1 -0)) then for v738,v739 in ipairs(v170) do if (v739==v417) then return;end end v171(v417,v7("\43\200\0\245","\169\111\189\112\144\90"),Color3.fromRGB(35 + 220 ,0,0));v418=1 + 1 ;end end end local function v200() local v419=0;local v420;local v421;while true do if (0==v419) then v420=v11.GameData.LatestRoom.Value;v421=v14.CurrentRooms:FindFirstChild(tostring(v420));v419=1 + 0 ;end if (v419==(1 -0)) then if  not v421 then return;end for v740,v741 in ipairs(v421:GetDescendants()) do if (v741:IsA(v7("\224\140\33\168\179","\226\173\227\69\205\223\224\105")) and (v741.Name==v7("\124\49\45\73\233\26\83\59","\123\56\94\66\59\175"))) then v199(v741);end end break;end end end local function v201() local v422=0;while true do if ((0 -0)==v422) then for v742,v743 in ipairs(v170) do v157:Remove(v743);end table.clear(v170);break;end end end v11.GameData.LatestRoom:GetPropertyChangedSignal(v7("\204\66\127\244\31","\225\154\35\19\129\122\158")):Connect(function() if v160.Dupe then local v597=0;local v598;while true do if (v597==0) then v598=1200 -(177 + 1023) ;while true do if (v598==0) then v201();v200();break;end end break;end end end end);v11.GameData.LatestRoom:GetPropertyChangedSignal(v7("\108\1\231\66\240","\84\58\96\139\55\149\135\176")):Connect(function() local v423=0 -0 ;while true do if (v423==(0 + 0)) then if v160.Door then v173();end if v160.Key then v174();end break;end end end);v14.ChildAdded:Connect(function(v424) local v425=v179[v424.Name];if (v425 and v424:IsA(v7("\62\48\167\5\66","\94\115\95\195\96\46\175"))) then v182(v424,v425);end end);v14.CurrentRooms.ChildAdded:Connect(function(v426) local v427=0 -0 ;local v428;while true do if (0==v427) then v428=1465 -(120 + 1345) ;while true do if (v428==(337 -(8 + 329))) then for v893,v894 in ipairs(v426:GetDescendants()) do local v895=125 -(19 + 106) ;local v896;while true do if (v895==(0 -0)) then v896=v180[v894.Name];if (v896 and v894:IsA(v7("\110\68\59\56\34","\128\35\43\95\93\78\77\231"))) then v182(v894,v896);end break;end end end v426.DescendantAdded:Connect(function(v897) local v898=0;local v899;while true do if (v898==0) then v899=v180[v897.Name];if (v899 and v897:IsA(v7("\137\18\50\49\27","\201\196\125\86\84\119\30"))) then v182(v897,v899);end break;end end end);break;end end break;end end end);v13.RenderStepped:Connect(function() if (v160.Door and v161) then local v599=v11.GameData.LatestRoom.Value;local v600=v14.CurrentRooms:FindFirstChild(tostring(v599));if v600 then v157:UpdateName(v161,v172(v600));end end end);if v14:FindFirstChild(v7("\224\251\22\173\198\224\16\141\204\225\9\172","\223\163\142\100")) then v14.CurrentRooms.ChildAdded:Connect(function(v601) local v602=0 -0 ;local v603;while true do if (v602==0) then if  not v160.Items then return;end v603=v601:FindFirstChild(v7("\163\5\208\180\172\145","\216\226\118\163\209"));v602=1 + 0 ;end if (v602==(2 -1)) then if v603 then v603.DescendantAdded:Connect(function(v939) v186(v939);end);end break;end end end);end v19:GetAttributeChangedSignal(v7("\157\229\9\19\82\126\43\140\255\20\12","\95\222\144\123\97\55\16")):Connect(function() if v160.Hidden then local v604=0 -0 ;while true do if (v604==(0 -0)) then v193();v192();break;end end end end);local v202={};local function v203(v429) local v430=0 -0 ;while true do if (v430==(0 + 0)) then if  not v160.ChestBox then return;end if  not v429:IsA(v7("\52\139\190\70\239","\131\121\228\218\35")) then return;end v430=1504 -(957 + 546) ;end if (v430==(8 -6)) then table.insert(v202,v429);break;end if (v430==1) then for v744,v745 in ipairs(v202) do if (v745==v429) then return;end end v171(v429,v7("\250\216\39\18\109\57\214\200","\123\185\176\66\97\25"),Color3.fromRGB(97 + 158 ,33 + 95 ,0));v430=1 + 1 ;end end end local function v204() for v551,v552 in ipairs(v14.CurrentRooms:GetChildren()) do local v553=v552:FindFirstChild(v7("\251\6\29\84\7\32\87\60","\81\168\111\121\49\117\79\56"));if (v553 and v553:FindFirstChild(v7("\230\25\246\179\211\25","\214\167\106\133"))) then for v746,v747 in ipairs(v553.Assets:GetDescendants()) do if (v747:IsA(v7("\4\55\72\74\56","\185\73\88\44\47\84\31")) and (v747.Name==v7("\171\223\31\179\199\221\135\207","\159\232\183\122\192\179"))) then v203(v747);end end end end end local function v205() local v431=0;while true do if (v431==(0 + 0)) then for v748,v749 in ipairs(v202) do v157:Remove(v749);end table.clear(v202);break;end end end v14.CurrentRooms.ChildAdded:Connect(function(v432) local v433=v432:WaitForChild(v7("\23\59\172\36\54\61\167\44","\65\68\82\200"),706 -(227 + 476) );if (v433 and v433:FindFirstChild(v7("\4\67\97\37\219\220","\30\69\48\18\64\175\175"))) then local v605=0 -0 ;local v606;while true do if (v605==(0 -0)) then v606=0 -0 ;while true do if (0==v606) then for v972,v973 in ipairs(v433.Assets:GetDescendants()) do if (v973:IsA(v7("\221\35\27\233\55","\91\144\76\127\140")) and (v973.Name==v7("\195\0\67\50\199\152\218\200","\176\128\104\38\65\179\218\181"))) then v203(v973);end end v433.Assets.DescendantAdded:Connect(function(v974) if (v974:IsA(v7("\253\203\198\16\220","\117\176\164\162")) and (v974.Name==v7("\167\202\0\227\206\91\139\218","\25\228\162\101\144\186"))) then v203(v974);end end);break;end end break;end end end end);v159:AddCheckbox(v7("\109\37\169\42\253\235\90","\132\40\86\217\110\146"),{[v7("\74\206\63\168","\62\30\171\71\220\199\19\156")]=v7("\100\74\163\36\78","\45\32\37\204\86\61\169\79"),[v7("\113\80\3\189\160\112\65","\28\53\53\101\220\213")]=false,[v7("\46\93\4\77\88\160\83\212","\191\109\60\104\33\58\193\48")]=function(v434) v160.Door=v434;if v434 then v173();elseif v161 then local v750=0 -0 ;while true do if (v750==(0 -0)) then v157:Remove(v161);v161=nil;break;end end end end});v159:AddCheckbox(v7("\162\196\8\204\130\206","\135\231\183\120"),{[v7("\210\15\84\240","\201\134\106\44\132\85\122")]=v7("\29\9\110\44","\67\86\108\23\95\97\108\168"),[v7("\128\61\74\11\177\40\193","\48\196\88\44\106\196\68\181")]=false,[v7("\161\222\208\47\130\165\161\39","\76\226\191\188\67\224\196\194")]=function(v436) local v437=0;while true do if (v437==(954 -(166 + 788))) then v160.Key=v436;if v436 then v174();else local v780=986 -(21 + 965) ;while true do if (v780==(696 -(127 + 569))) then for v975,v976 in ipairs(v162) do v157:Remove(v976);end v162={};break;end end end break;end end end});v159:AddCheckbox(v7("\252\59\23\217\233\220\37","\157\185\72\103\144"),{[v7("\109\182\146\110","\209\57\211\234\26\200")]=v7("\40\218\163\140\67","\178\97\174\198\225\48"),[v7("\235\83\2\240\109\234\27","\111\175\54\100\145\24\134")]=false,[v7("\96\24\44\25\65\24\35\30","\117\35\121\64")]=function(v438) v160.Items=v438;if v438 then local v607=0 + 0 ;while true do if ((0 + 0)==v607) then v187();task.spawn(function() while v160.Items do v187();task.wait(3);end end);break;end end else v188();end end});v159:AddCheckbox(v7("\248\174\254\241\44\67\217","\47\189\221\142\182\67"),{[v7("\20\186\63\223","\73\64\223\71\171\40\201\64")]=v7("\45\130\200\93\224\77\3\129\193\74","\29\106\237\164\57\192"),[v7("\149\161\225\187\192\222\180","\146\209\196\135\218\181\178\192")]=false,[v7("\14\49\143\29\82\166\46\59","\199\77\80\227\113\48")]=function(v440) local v441=0;while true do if ((0 + 0)==v441) then v160.Gold=v440;if v440 then v176();for v824,v825 in ipairs(v14.CurrentRooms:GetChildren()) do if v825:FindFirstChild(v7("\11\44\77\200\62\44","\173\74\95\62")) then v825.Assets.DescendantAdded:Connect(v175);end end task.spawn(function() while v160.Gold do local v900=0 -0 ;local v901;while true do if (v900==(0 + 0)) then v901=0 -0 ;while true do if (v901==0) then v176();task.wait(2 + 1 );break;end end break;end end end end);else for v826,v827 in ipairs(v163) do v157:Remove(v827);end v163={};end break;end end end});v159:AddCheckbox(v7("\227\10\76\20\196\8\183","\220\166\121\60\86\171\103"),{[v7("\221\7\37\164","\122\137\98\93\208\91\170")]=v7("\165\238\19\68\198","\170\231\129\124\47\181\210\201"),[v7("\175\190\60\49\31\38\159","\74\235\219\90\80\106")]=false,[v7("\111\194\87\55\56\245\121\249","\146\44\163\59\91\90\148\26")]=function(v442) local v443=0;local v444;while true do if (v443==0) then v444=0 + 0 ;while true do if (v444==(1292 -(1162 + 130))) then v160.Books=v442;if v442 then local v940=0 -0 ;local v941;while true do if (v940==(1 + 0)) then if (v941 and v941:FindFirstChild(v7("\53\94\97\64\0\94","\37\116\45\18"))) then v941.Assets.DescendantAdded:Connect(v177);end task.spawn(function() while v160.Books do local v1053=0 -0 ;local v1054;while true do if (v1053==(936 -(889 + 47))) then v1054=0 + 0 ;while true do if ((1264 -(1153 + 111))==v1054) then v178();task.wait(3 -0 );break;end end break;end end end end);break;end if (v940==(0 + 0)) then v178();v941=v14.CurrentRooms:FindFirstChild(v7("\32\125","\41\21\77\216\225"));v940=1;end end else local v942=0 + 0 ;while true do if (v942==(0 + 0)) then for v1026,v1027 in ipairs(v164) do v157:Remove(v1027);end v164={};break;end end end break;end end break;end end end});v159:AddCheckbox(v7("\234\236\70\135\165\219\246\66\171\174\220","\203\175\159\54\194"),{[v7("\79\203\1\47","\162\27\174\121\91\58\47")]=v7("\246\203\11\252\43\208\214\214","\185\179\165\127\149\95"),[v7("\117\112\201\245\2\93\97","\119\49\21\175\148")]=false,[v7("\116\180\26\81\47\72\137\254","\149\55\213\118\61\77\41\234")]=function(v445) v160.Entities=v445;if v445 then enableEntitiesESP();else disableEntitiesESP();end end});v159:AddCheckbox(v7("\56\21\218\246\229\56\182\30\15","\123\125\102\170\166\137\89\207"),{[v7("\122\5\64\41","\201\46\96\56\93\110\227")]=v7("\139\15\239\224\16\211\168","\161\219\99\142\153\117"),[v7("\88\180\160\114\216\112\165","\173\28\209\198\19")]=false,[v7("\86\237\187\183\119\237\180\176","\219\21\140\215")]=function(v447) local v448=game:GetService(v7("\120\180\199\190\93\90\171","\56\40\216\166\199"));local v449=v448.LocalPlayer;local v450={Color3.fromRGB(255,0 + 0 ,0),Color3.fromRGB(0,0 -0 ,177 + 78 ),Color3.fromRGB(285 -(26 + 259) ,111 + 144 ,0 -0 ),Color3.fromRGB(894 -639 ,105,1809 -(1094 + 535) ),Color3.fromRGB(128,1876 -(1554 + 322) ,1553 -(989 + 436) )};local function v451(v554) local v555=v554.Character;if  not v555 then return;end if v555:FindFirstChild(v7("\22\184\20\54\35\166\48\28\22","\79\70\212\117")) then return;end local v556=v450[math.random(1179 -(816 + 362) , #v450)];local v557=Instance.new(v7("\143\31\230\206\245\4\160\30\245","\109\199\118\129\166\153"));v557.Name=v7("\1\188\118\239\52\162\82\197\1","\150\81\208\23");v557.Adornee=v555;v557.FillColor=v556;v557.FillTransparency=0.6 -0 ;v557.OutlineColor=v556;v557.OutlineTransparency=0 -0 ;v557.DepthMode=Enum.HighlightDepthMode.AlwaysOnTop;v557.Parent=v555;local v567=v555:FindFirstChild(v7("\209\192\225\143","\235\153\165\128"));if v567 then local v676=0 -0 ;local v677;local v678;local v679;while true do if (1==v676) then v677.Size=UDim2.new(0 -0 ,351 -201 ,0 -0 ,1 + 24 );v677.StudsOffset=Vector3.new(763 -(86 + 677) ,2,0 + 0 );v677.AlwaysOnTop=true;v676=1 + 1 ;end if ((1026 -(263 + 763))==v676) then v677=Instance.new(v7("\153\64\174\35\68\41\171\236\191\110\183\38","\158\219\41\194\79\38\70\202"));v677.Name=v7("\115\41\46\27\235\196\173\112\21\3\3\236\211\132","\232\35\69\79\98\142\182");v677.Adornee=v567;v676=1;end if (v676==2) then local v834=0 + 0 ;while true do if (v834==(859 -(649 + 209))) then v678.Size=UDim2.new(1,0 -0 ,1,731 -(643 + 88) );v676=3;break;end if (v834==(1769 -(54 + 1715))) then v677.Parent=v567;v678=Instance.new(v7("\77\5\7\233\85\1\29\248\117","\157\25\96\127"));v834=3 -2 ;end end end if (v676==(11 -7)) then v678.TextColor3=v556;v678.TextStrokeTransparency=0.2 -0 ;v678.Text=v554.Name   .. v7("\231\159\181\45\85\48\171\151\253\69","\81\199\227\149\101\48")   .. ((v555:FindFirstChildOfClass(v7("\85\71\246\16\248\137\53\191","\219\29\50\155\113\150\230\92")) and math.floor(v555:FindFirstChildOfClass(v7("\249\53\200\122\241\71\68\213","\45\177\64\165\27\159\40")).Health)) or (0 + 0)) ;v676=1 + 4 ;end if (v676==3) then v678.BackgroundTransparency=3 -2 ;v678.TextScaled=true;v678.Font=Enum.Font.SourceSansBold;v676=4;end if (v676==(1388 -(132 + 1251))) then v678.Parent=v677;v679=v555:FindFirstChildOfClass(v7("\53\3\2\171\124\18\31\11","\18\125\118\111\202"));if v679 then v679:GetPropertyChangedSignal(v7("\120\57\88\246\36\165","\155\48\92\57\154\80\205\167")):Connect(function() if (v678 and v678.Parent) then v678.Text=v554.Name   .. v7("\249\209\251\151\253\170\73\173\197\251","\37\217\173\219\223\152\203")   .. math.floor(v679.Health) ;end end);end break;end end end end local function v452(v568) local v569=0 + 0 ;local v570;while true do if (v569==(0 -0)) then v570=v568.Character;if v570 then local v843=0 + 0 ;local v844;local v845;local v846;while true do if (v843==(459 -(185 + 273))) then v846=nil;while true do if (v844==(0 + 0)) then v845=v570:FindFirstChild(v7("\57\9\30\47\74\186\211\58\53","\150\105\101\127\86\47\200"));if v845 then v845:Destroy();end v844=2 -1 ;end if (v844==(1 + 0)) then v846=v570:FindFirstChild(v7("\230\247\242\177","\160\174\146\147\213\167")) and v570.Head:FindFirstChild(v7("\112\232\27\93\9\83\101\215\42\104\13\67\69\232","\33\32\132\122\36\108")) ;if v846 then v846:Destroy();end break;end end break;end if (v843==(1224 -(361 + 863))) then v844=0 -0 ;v845=nil;v843=1;end end end break;end end end if v447 then local v608=1327 -(443 + 884) ;while true do if ((0 -0)==v608) then for v847,v848 in ipairs(v448:GetPlayers()) do if (v848~=v449) then local v943=0 + 0 ;while true do if (v943==0) then v451(v848);v848.CharacterAdded:Connect(v451);break;end end end end v448.PlayerAdded:Connect(function(v849) v849.CharacterAdded:Connect(v451);end);break;end end else for v680,v681 in ipairs(v448:GetPlayers()) do v452(v681);end end end});v159:AddCheckbox(v7("\156\7\98\104\116\188\7\102\105\115\161","\28\217\116\18\43"),{[v7("\230\82\206\64","\92\178\55\182\52\176\206")]=v7("\57\61\116\6\14\23\126\13","\117\122\85\17"),[v7("\172\234\44\69\179\209\156","\189\232\143\74\36\198")]=false,[v7("\223\171\6\66\213\11\255\161","\106\156\202\106\46\183")]=function(v453) local v454=0 -0 ;while true do if (v454==(0 + 0)) then v160.ChestBox=v453;if v453 then v204();else v205();end break;end end end});v159:AddCheckbox(v7("\24\10\107\23\63\45\28","\74\93\121\27\83"),{[v7("\73\190\254\106","\30\29\219\134")]=v7("\113\178\9\255","\110\53\199\121\154\148\63\120"),[v7("\37\31\249\62\76\240\21","\156\97\122\159\95\57")]=false,[v7("\237\183\214\244\9\3\60\197","\95\174\214\186\152\107\98")]=function(v455) local v456=0 + 0 ;while true do if (v456==(0 -0)) then v160.Dupe=v455;if v455 then local v781=0;while true do if (v781==(747 -(16 + 731))) then v200();task.spawn(function() while v160.Dupe do local v1001=0;while true do if (v1001==(0 + 0)) then v200();task.wait(2);break;end end end end);break;end end else v201();end break;end end end});v159:AddCheckbox(v7("\172\29\97\167\22\208\140\28","\166\233\110\17\235\115"),{[v7("\76\11\220\213","\28\24\110\164\161\146\222")]=v7("\119\198\64\32\73","\69\59\163\54"),[v7("\148\173\204\75\38\193\162","\214\208\200\170\42\83\173")]=false,[v7("\250\32\126\172\119\216\34\121","\21\185\65\18\192")]=function(v457) v160.Lever=v457;if v457 then task.spawn(function() while v160.Lever do local v752=0 + 0 ;while true do if (v752==(0 + 0)) then v198();task.wait(2);break;end end end end);else v197();end end});v159:AddCheckbox(v7("\219\69\77\51\168\250\82\88\21","\193\158\54\61\123"),{[v7("\1\20\56\173","\217\85\113\64")]=v7("\99\6\200\201\225\133\165\123\3\205\195\234","\133\43\111\172\160\143\226"),[v7("\239\166\86\208\213\199\183","\160\171\195\48\177")]=false,[v7("\240\2\122\33\94\192\172\204","\167\179\99\22\77\60\161\207")]=function(v459) local v460=760 -(527 + 233) ;while true do if (v460==(0 + 0)) then v160.Hidden=v459;if v459 then local v782=0 -0 ;local v783;while true do if (v782==(0 + 0)) then v783=1785 -(1107 + 678) ;while true do if (v783==(0 + 0)) then v192();task.spawn(function() while v160.Hidden do local v1055=0;while true do if (v1055==0) then v192();v194();v1055=1 + 0 ;end if (v1055==(51 -(4 + 46))) then task.wait(3 -2 );break;end end end end);break;end end break;end end else v193();end break;end end end});v158:AddCheckbox(v7("\36\108\155\112\69\6\119\135\81\75\9\107\164\77\88\13\118\133\93","\44\97\31\235\56"),{[v7("\197\11\224\176","\196\145\110\152")]=v7("\125\61\238\178\123\38\255\255\75\110\209\231\76\34\247\252\93","\146\56\78\158"),[v7("\9\222\73\231\79\33\207","\58\77\187\47\134")]=false,[v7("\49\52\173\11\231\47\87\21","\126\114\85\193\103\133\78\52")]=function(v461) v157:SetGlobalESPType(v7("\247\211\61\111\236\210\53\112\200\210\53\112\208\244\39\108\200\210\60\125","\24\164\187\82"),v461);end});v158:AddCheckbox(v7("\212\201\76\130\248\246\210\80\163\246\249\206\122\163\253\253","\145\145\186\60\202"),{[v7("\210\213\43\16","\100\134\176\83")]=v7("\246\210\82\253\144\29\210\204\81\253\149\28\223\205\71\185","\117\179\161\34\221\211"),[v7("\105\181\252\199\17\243\177","\197\45\208\154\166\100\159")]=false,[v7("\10\245\138\176\49\40\247\141","\83\73\148\230\220")]=function(v462) v157:SetGlobalESPType(v7("\0\215\249\247\199\128\52\215\250\233\232\129\39\249\255\236\227","\233\83\191\150\128\143"),v462);end});v158:AddCheckbox(v7("\210\149\223\92\12\250\131","\109\151\230\175\18"),{[v7("\148\255\89\80","\224\192\154\33\36")]=v7("\166\71\8\194\173\85\21\135","\226\227\52\120"),[v7("\33\238\234\165\95\179\195","\217\101\139\140\196\42\223\183")]=false,[v7("\57\14\163\22\70\27\12\164","\36\122\111\207\122")]=function(v463) v157:SetGlobalESPType(v7("\63\0\235\175\150\53\1\13","\84\108\104\132\216\216"),v463);end});v158:AddCheckbox(v7("\233\8\214\124\233\183\86\205\21\197\93","\34\172\123\166\56\128\196"),{[v7("\144\172\176\223","\116\196\201\200\171\42\19\181")]=v7("\83\149\235\29\49\9\15\98\135\245\94\16","\124\22\230\155\61\117\96"),[v7("\225\174\224\234\235\225\225","\149\165\203\134\139\158\141")]=false,[v7("\16\173\76\42\49\173\67\45","\70\83\204\32")]=function(v464) v157:SetGlobalESPType(v7("\61\137\4\151\42\136\24\148\15\143\8\133","\224\110\225\107"),v464);end});v158:AddCheckbox(v7("\209\101\205\5\34\197\199\241\100","\164\148\22\189\81\80\164"),{[v7("\134\133\111\167","\23\210\224\23\211\71\43")]=v7("\140\149\0\247\97\57\221\243\172\148","\144\201\230\112\215\53\75\188"),[v7("\113\192\31\235\227\169\65","\197\53\165\121\138\150")]=false,[v7("\206\222\213\44\239\222\218\43","\64\141\191\185")]=function(v465) v157:SetGlobalESPType(v7("\48\226\191\205\195\219\167\0\239\162","\198\99\138\208\186\151\169"),v465);end});v158:AddCheckbox(v7("\63\244\138\80\15\250\148\123\30\229","\62\109\149\227"),{[v7("\199\141\145\192","\96\147\232\233\180")]=v7("\26\57\19\69\143\54\63\120\57\68\129\54\58","\89\72\88\122\43\237"),[v7("\8\190\163\55\14\32\175","\123\76\219\197\86")]=false,[v7("\123\217\25\0\236\62\91\211","\95\56\184\117\108\142")]=function(v466) v157:SetGlobalESPType(v7("\194\195\47\226\242\205\49\193\255\198\35","\140\144\162\70"),v466);end});v158:AddDropdown(v7("\245\59\73\70\252\209\43\92\96\193\194\33\94\123\224","\142\176\72\57\18"),{[v7("\144\48\28\49\163\34","\68\198\81\112")]={v7("\131\0\160","\125\215\111\208\116\44"),v7("\36\66\65\231\125\78","\60\103\39\47\147\24"),v7("\206\5\227\148\217\254","\46\140\106\151\224\182\147")},[v7("\207\40\123\67\254\33\105","\34\139\77\29")]=1 + 0 ,[v7("\157\229\17\64\32","\73\208\144\125\52")]=false,[v7("\9\237\134\199\197\17\80\192","\171\74\140\234\171\167\112\51")]=function(v467) v157:SetGlobalTracerOrigin(v467);end});v158:AddSlider(v7("\10\29\92\114\240\181\11\7\95\75\240\163\44\11","\205\79\110\44\63\145"),{[v7("\147\90\39\220","\124\199\63\95\168\212\107\196")]=v7("\43\169\75\122\128\254\154\231\7\166\80\63","\147\102\200\51\90\196\151\233"),[v7("\22\249\225","\91\91\144\143\173\222\128")]=1,[v7("\14\161\84","\46\67\192\44\49\203")]=3168 -1668 ,[v7("\32\211\40\163\49\168\17","\101\100\182\78\194\68\196")]=480 -180 ,[v7("\96\65\52\240\160\74\96","\181\40\40\80\149\237\43\24")]=true,[v7("\38\167\35\52\179\82","\114\117\210\69\82\218\42")]=v7("\10\219","\204\36\182\56\19"),[v7("\219\68\201\141\121\49\28\238","\114\137\43\188\227\29\88")]=1397 -(1262 + 134) ,[v7("\199\28\164\28\230\28\171\27","\112\132\125\200")]=function(v468) v157.GlobalSettings.MaxDistance=v468;end});local v206=v32.Visual:AddRightGroupbox(v7("\218\185\254\118\26\195\244\171\230\114\86","\149\157\216\147\19\58"));local v207=false;local v208={};local function v209(v470) local v471=0 -0 ;local v472;while true do if (v471==1) then if (v472 and v472:IsA(v7("\211\143\142\18\255\153\178\22\240\152\129","\119\156\237\228"))) then local v784=(v472.Value and (v472.Value.Name==v33.Name) and (0.6 + 0)) or (0 + 0) ;for v850,v851 in ipairs(v470:GetDescendants()) do if v851:IsA(v7("\225\208\19\123\243\208\18\106","\30\163\177\96")) then v851.LocalTransparencyModifier=v784;end end end break;end if (v471==0) then if  not v207 then return;end v472=v470:FindFirstChild(v7("\225\143\28\204\204\136\40\196\200\159\29\218","\168\169\230\120"));v471=796 -(383 + 412) ;end end end local function v210(v473) local v474=0 + 0 ;local v475;while true do if (v474==(0 + 0)) then v475=v473:WaitForChild(v7("\50\41\81\141\56\37\228\22\33\76\140\47","\180\122\64\53\233\93\75"),3 + 2 );if v475 then local v785=0 + 0 ;local v786;while true do if (v785==(1 + 0)) then table.insert(v208,v786);break;end if (v785==(0 -0)) then v209(v473);v786=v475.Changed:Connect(function() v209(v473);end);v785=1 + 0 ;end end end break;end end end local function v211(v476) local v477=0 -0 ;local v478;while true do if (v477==0) then v478=0;while true do if (v478==(0 -0)) then if  not v476 then return;end if v476:FindFirstChild(v7("\247\4\0\56\194\4","\93\182\119\115")) then local v945=0 -0 ;while true do if (v945==(0 + 0)) then for v1028,v1029 in ipairs(v476.Assets:GetChildren()) do if ((v1029.Name==v7("\181\30\193\136\165\241\128\26","\158\226\127\179\236\215")) or (v1029.Name==v7("\211\197\205","\182\145\160\169")) or (v1029.Name==v7("\13\47\63\26\180\7\60\36","\111\89\64\80\118\199"))) then v210(v1029);end end v476.Assets.ChildAdded:Connect(function(v1030) if ((v1030.Name==v7("\136\182\28\66\173\184\12\67","\38\223\215\110")) or (v1030.Name==v7("\124\222\8","\203\62\187\108\165")) or (v1030.Name==v7("\205\123\71\50\98\246\213\253","\176\153\20\40\94\17\158"))) then v210(v1030);end end);break;end end end break;end end break;end end end local function v212() local v479=0;local v480;while true do if (v479==0) then for v753,v754 in ipairs(v208) do v754:Disconnect();end v208={};v479=708 -(667 + 40) ;end if (v479==(1311 -(436 + 874))) then v480=v33:GetAttribute(v7("\139\38\169\65\192\166\39\137\92\202\165","\165\200\83\219\51"));if v480 then local v787=1606 -(762 + 844) ;local v788;while true do if (v787==0) then v788=v14.CurrentRooms:FindFirstChild(tostring(v480));v211(v788);break;end end end break;end end end v33:GetAttributeChangedSignal(v7("\228\255\102\105\212\187\168\214\200\229\121","\132\167\138\20\27\177\213\220")):Connect(v212);v206:AddCheckbox(v7("\218\220\231\73\49","\92\146\181\131\44"),{[v7("\127\251\89\146","\189\43\158\33\230\222\32\119")]=v7("\118\201\73\85\141\80\128\89\67\137\80\211\93\80\154\91\206\78\72","\232\62\160\45\49"),[v7("\80\214\243\173\180\120\199","\193\20\179\149\204")]=false,[v7("\244\0\141\206\213\0\130\201","\162\183\97\225")]=function(v481) local v482=0 -0 ;while true do if (v482==(2 -1)) then if  not v481 then local v789=v33:GetAttribute(v7("\10\208\246\229\25\236\181\27\202\235\250","\193\73\165\132\151\124\130"));if v789 then local v902=0 + 0 ;local v903;while true do if (v902==(0 + 0)) then v903=v14.CurrentRooms:FindFirstChild(tostring(v789));if (v903 and v903:FindFirstChild(v7("\236\209\186\94\162\165","\214\173\162\201\59\214"))) then for v1056,v1057 in ipairs(v903.Assets:GetChildren()) do if ((v1057.Name==v7("\20\120\184\69\197\47\33\124","\64\67\25\202\33\183")) or (v1057.Name==v7("\203\235\117","\35\137\142\17\220\78\178")) or (v1057.Name==v7("\25\65\42\13\62\70\32\5","\97\77\46\69"))) then for v1080,v1081 in ipairs(v1057:GetDescendants()) do if v1081:IsA(v7("\253\222\19\160\239\222\18\177","\197\191\191\96")) then v1081.LocalTransparencyModifier=0;end end end end end break;end end end end break;end if (v482==(476 -(209 + 267))) then v207=v481;v212();v482=1 -0 ;end end end});local v213=v32[v7("\255\0\173\125\93\252\89\195\39\234\93","\45\170\73\141\46\56\136")]:AddLeftGroupbox(v7("\172\10\195\240","\103\225\111\173\133\207\231"));v213:AddCheckbox(v7("\103\129\236\87\69\138\241\120\73\138\224\122\92\129\251","\53\44\228\149"),{[v7("\233\222\61\4\222\40\217","\68\173\187\91\101\171")]=v27.KeybindFrame.Visible,[v7("\200\10\10\211","\185\156\111\114\167\41\226\29")]=v7("\36\21\19\46\244\200\14\28\20\41\186\231\75\40\19\46\161","\131\107\101\118\64\212"),[v7("\226\215\32\39\69\193\202\202","\169\161\182\76\75\39\160")]=function(v483) v27.KeybindFrame.Visible=v483;end});v213:AddCheckbox(v7("\234\90\184\156\56\55\187\205\93\186\168\14\48\187\214\64","\200\185\50\215\235\123\66"),{[v7("\198\132\193\246","\122\146\225\185\130\234\22")]=v7("\154\247\211\219\224\182\249\193\213\221\252\180\171","\219\217\130\160\175\143"),[v7("\26\185\68\60\43\176\86","\93\94\220\34")]=false,[v7("\44\201\205\134\216\246\254\4","\157\111\168\161\234\186\151")]=function(v485) v27.ShowCustomCursor=v485;end});v213:AddCheckbox(v7("\76\65\97\52\208\180\179\151\112","\229\27\32\21\81\162\217\210"),{[v7("\24\201\227\46","\42\76\172\155\90")]=v7("\197\140\149\44\18\255\140\147\34","\96\146\237\225\73"),[v7("\204\123\14\233\92\118\182","\194\136\30\104\136\41\26")]=true,[v7("\255\215\15\68\22\177\170\36","\79\188\182\99\40\116\208\201")]=function(v487) v27:SetWatermarkVisibility(v487);end});v27:SetWatermarkVisibility(true);local v214=tick();local v215=0;local v216=0;local function v217() local v488=0 -0 ;local v489;local v490;local v491;while true do if (v488==(1713 -(1611 + 100))) then v491=(v11.GameData:FindFirstChild(v7("\29\83\244\116\232\194\218\49\62\95","\94\81\50\128\17\155\182\136")) and v11.GameData.LatestRoom.Value) or (0 + 0) ;v27:SetWatermark(string.format(v7("\185\51\235\52\184\244\89\131\203\32\164\31\210\135\70\199\206\56\164\37\162\132\21\137\140\102\164\124\230\244\17\148","\231\235\92\132\89\130\212\124"),v491,v216,v490));break;end if ((785 -(14 + 770))==v488) then if ((v489-v214)>=(1785 -(1165 + 619))) then v216=v215;v215=0 -0 ;v214=v489;end v490=math.floor(game:GetService(v7("\78\215\43\85\48","\95\29\163\74\33\67")).Network.ServerStatsItem[v7("\88\51\84\54\63\186\13\114\53","\100\28\82\32\87\31\234")]:GetValue());v488=383 -(229 + 152) ;end if (0==v488) then v215+=(195 -(107 + 87)) v489=tick();v488=1;end end end v13.RenderStepped:Connect(v217);v213:AddDropdown(v7("\208\187\224\54\215\76\253\181\224\54\222\75\205\189\240\58","\37\158\212\148\95\177"),{[v7("\66\29\168\146\8\103","\109\20\124\196\231")]={v7("\140\184\114\177","\64\192\221\20\197\81"),v7("\157\255\229\170\179","\199\207\150\130\194")},[v7("\145\79\125\233\86\185\94","\35\213\42\27\136")]=v7("\146\142\60\183\204","\146\192\231\91\223\184"),[v7("\110\244\238\61","\110\58\145\150\73\177\212\103")]=v7("\218\59\222\251\77\194\234\245\32\195\253\69\139\218\253\48\207","\137\148\84\170\146\43\171"),[v7("\34\222\115\241\117\0\220\116","\23\97\191\31\157")]=function(v492) v27:SetNotifySide(v492);end});v213:AddDropdown(v7("\162\178\46\33\207\61\150\134\8\18\211","\82\230\226\103\101\189"),{[v7("\189\43\191\164\17\152","\116\235\74\211\209")]={v7("\125\108\155","\69\72\92\190"),v7("\97\110\161","\215\86\91\132\180\203\200\118"),v7("\98\190\214\150","\179\83\142\230"),v7("\139\125\168\112","\191\186\79\157\85\89\127\151"),v7("\167\47\244\139","\37\150\26\196\174\228"),v7("\152\167\231\16","\233\169\144\210\53\87"),v7("\112\22\189\153","\188\66\38\141")},[v7("\197\85\11\48\102\78\28","\168\129\48\109\81\19\34\104")]=v7("\38\68\92\117","\153\23\116\108\80\191\69\219"),[v7("\125\26\229\204","\22\41\127\157\184\152\235")]=v7("\51\247\200\138\36\196\224\198\18","\170\119\167\129"),[v7("\249\241\176\127\129\95\217\251","\62\186\144\220\19\227")]=function(v493) local v494=0;local v495;while true do if (v494==(0 + 0)) then v495=tonumber(v493:gsub(v7("\228\185","\182\193\156\140"),""));v27:SetDPIScale(v495);break;end end end});v213:AddDivider();v213:AddLabel(v7("\236\73\24\167\166\61\200\66\18","\95\161\44\118\210\134")):AddKeyPicker(v7("\203\69\29\24\81\211\252\172\239\78\23","\206\134\32\115\109\26\182\133"),{[v7("\18\253\201\18\72\81\34","\61\86\152\175\115\61")]=v7("\155\8\219\56\197\178\43\206\175\21","\167\201\97\188\80\177\225\67"),[v7("\96\7\177\134","\225\46\104\228\207\156")]=true,[v7("\158\197\171\90","\223\202\160\211\46\87\51\210")]=v7("\251\236\20\97\77\221\236\3\118\4\216\237","\109\182\137\122\20")});v213:AddButton(v7("\103\167\30\245\225\211","\28\50\201\114\154\128\183\138"),function() v27:Unload();end);v27.ToggleKeybind=v27.Options.MenuKeybind;v28:SetLibrary(v27);v29:SetLibrary(v27);v29:IgnoreThemeSettings();v29:SetIgnoreIndexes({v7("\135\131\23\231\129\131\0\240\163\136\29","\146\202\230\121")});v28:SetFolder(v7("\250\231\235\19\194\161","\94\142\143\142\126\167\210\192"));v29:SetFolder(v7("\43\202\17\245\136\36\202\18\243\212","\167\96\165\125\129"));v29:SetSubFolder(v33.Name);v29:BuildConfigSection(v32["UI Settings"]);v28:ApplyToTab(v32["UI Settings"]);v29:LoadConfig(v33.Name);
+-- Função de notificação nativa
+local function notify(title, text, duration)
+    game:GetService("StarterGui"):SetCore("SendNotification", {
+        Title = title,
+        Text = text,
+        Duration = duration or 3
+    })
+end
+
+-- =================== [[ CHECAGENS DO JOGO ]] =================== --
+
+-- Checa PlaceId
+if game.PlaceId == 6516141723 then
+    notify("Check Place Id", "Lobby detectado", 3)
+    return
+elseif game.PlaceId == 6839171747 then
+    notify("Check Place Id", "Mapa válido", 3)
+else
+    notify("Check Place Id", "Mapa inválido", 3)
+    return
+end
+
+task.wait(0.5)
+
+-- Checa Floor
+if floor.Value ~= "Hotel" then
+    notify("Check Floor", "Floor inválido: " .. tostring(floor.Value), 3)
+    return
+else
+    notify("Check Floor", "Floor válido: " .. tostring(floor.Value), 3)
+end
+
+task.wait(0.5)
+
+-- =========================
+-- SERVIÇOS
+-- =========================
+local Stats     = game:GetService("Stats")
+local Workspace = game:GetService("Workspace")
+local Lighting  = game:GetService("Lighting")
+
+-- =========================
+-- DEPENDÊNCIAS
+-- =========================
+local repo = 'https://raw.githubusercontent.com/mstudio45/LinoriaLib/main/'
+local Library      = loadstring(game:HttpGet(repo .. 'Library.lua'))()
+local ThemeManager = loadstring(game:HttpGet(repo .. 'addons/ThemeManager.lua'))()
+local SaveManager  = loadstring(game:HttpGet(repo .. 'addons/SaveManager.lua'))()
+
+local Options = Library.Options
+local Toggles = Library.Toggles
+
+-- Configurações globais
+Library.ShowToggleFrameInKeybinds = true
+Library.ShowCustomCursor          = true
+Library.NotifySide                = "Left"
+
+-- =========================
+-- JOGADOR LOCAL
+-- =========================
+local Character       = player.Character or player.CharacterAdded:Wait()
+local HumanoidRootPart= Character:WaitForChild("HumanoidRootPart")
+local Humanoid        = Character:WaitForChild("Humanoid")
+local FloorValue      = ReplicatedStorage.GameData.Floor.Value
+
+-- =========================
+-- JANELA PRINCIPAL
+-- =========================
+local Title = "Kolt Hub | Floor: " .. FloorValue .. " | " .. player.Name
+local Window = Library:CreateWindow({
+    Title = Title,
+    Center = true,
+    AutoShow = true,
+    Resizable = true,
+    ShowCustomCursor = true,
+    NotifySide = "Left",
+    TabPadding = 8,
+    MenuFadeTime = 0.2
+})
+-- =========================
+-- TABS
+-- =========================
+local Tabs = {
+	Main = Window:AddTab('Main'),
+	Visual = Window:AddTab('Visual'),
+	['UI Settings'] = Window:AddTab('UI Settings'),
+}
+
+notify("Sucesso", "Menu carregado com sucesso!", 3)
+
+local TabBox = Tabs.Main:AddLeftTabbox()
+local Tab1 = TabBox:AddTab("LocalPlayer")
+local Tab2 = TabBox:AddTab("Camera")
+
+-- =========================
+-- SERVIÇOS
+-- =========================
+local Players       = game:GetService("Players")
+local Workspace     = game:GetService("Workspace")
+local RunService    = game:GetService("RunService")
+local Lighting      = game:GetService("Lighting")
+
+local player        = Players.LocalPlayer
+
+-- =========================
+-- VARIÁVEIS DO JOGADOR
+-- =========================
+local Humanoid, HumanoidRootPart
+local jumpValue = 7.2
+local EnableJump = false
+local internalChange = false
+
+-- =========================
+-- FUNÇÕES DE HUMANOID
+-- =========================
+local function GetHumanoid()
+	if player.Character then
+		return player.Character:FindFirstChildOfClass("Humanoid")
+	end
+	return nil
+end
+
+local function applyJumpBoost(hum)
+	if not hum then return end
+	hum.JumpHeight = jumpValue
+	hum:GetPropertyChangedSignal("JumpHeight"):Connect(function()
+		if hum.JumpHeight ~= jumpValue then
+			hum.JumpHeight = jumpValue
+		end
+	end)
+end
+
+local function setupCharacter(char)
+	Humanoid = char:WaitForChild("Humanoid")
+	HumanoidRootPart = char:WaitForChild("HumanoidRootPart")
+	applyJumpBoost(Humanoid)
+
+	if char:GetAttribute("CanJump") == nil then
+		char:SetAttribute("CanJump", EnableJump)
+	else
+		char:SetAttribute("CanJump", EnableJump)
+	end
+
+	char:GetAttributeChangedSignal("CanJump"):Connect(function()
+		if not internalChange then
+			internalChange = true
+			char:SetAttribute("CanJump", EnableJump)
+			internalChange = false
+		end
+	end)
+end
+
+player.CharacterAdded:Connect(setupCharacter)
+if player.Character then setupCharacter(player.Character) end
+
+-- =========================
+-- SLIDERS
+-- =========================
+Tab1:AddSlider("Speed", {
+	Text = "WalkSpeed",
+	Default = 15,
+	Min = 15,
+	Max = 50,
+	Rounding = 0
+})
+
+Tab1:AddSlider("FlySpeed", {
+	Text = "Fly Speed",
+	Default = 20,
+	Min = 20,
+	Max = 50,
+	Rounding = 0
+})
+
+Tab1:AddSlider("JumpBoost", {
+	Text = "JumpBoost",
+	Default = jumpValue,
+	Min = 5,
+	Max = 20,
+	Rounding = 1,
+	Callback = function(value)
+		jumpValue = value
+		if Humanoid then Humanoid.JumpHeight = jumpValue end
+	end
+})
+
+Tab1:AddDivider()
+
+-- =========================
+-- SPEED TOGGLE
+-- =========================
+local SpeedConnection, BypassConnection, CloneCollision
+local ToggleParent = true
+
+Tab1:AddToggle("EnableSpeed", {
+	Text = "Enable Speed",
+	Default = false,
+	Callback = function(state)
+		local char = workspace:WaitForChild(player.Name)
+		local HRP = char:WaitForChild("HumanoidRootPart")
+		local Collision = char:WaitForChild("Collision")
+
+		if state then
+			if not CloneCollision then
+				CloneCollision = Collision:Clone()
+				CloneCollision.CanCollide = false
+				CloneCollision.Anchored = false
+				CloneCollision.Massless = false
+				CloneCollision.Parent = HRP
+			end
+
+			task.spawn(function()
+				while state and CloneCollision do
+					CloneCollision.Parent = ToggleParent and Lighting or HRP
+					ToggleParent = not ToggleParent
+					task.wait(0.23)
+				end
+			end)
+
+			BypassConnection = RunService.Heartbeat:Connect(function()
+				if CloneCollision then
+					CloneCollision.Massless = not CloneCollision.Massless
+					CloneCollision.CanCollide = false
+				end
+			end)
+
+			SpeedConnection = RunService.RenderStepped:Connect(function()
+				local hum = GetHumanoid()
+				if hum then hum.WalkSpeed = Options.Speed.Value end
+			end)
+		else
+			if SpeedConnection then SpeedConnection:Disconnect() SpeedConnection = nil end
+			if BypassConnection then BypassConnection:Disconnect() BypassConnection = nil end
+			if CloneCollision then CloneCollision:Destroy() CloneCollision = nil end
+
+			local hum = GetHumanoid()
+			if hum then hum.WalkSpeed = 16 end
+		end
+	end
+})
+
+-- =========================
+-- FLY SYSTEM
+-- =========================
+local flying = false
+local bodyGyro, bodyVelocity
+local FlyConnection
+local verticalVelocitySmooth = 0
+local horizontalVelocitySmooth = Vector3.zero
+
+local rayParams = RaycastParams.new()
+rayParams.FilterType = Enum.RaycastFilterType.Exclude
+rayParams.IgnoreWater = true
+rayParams.FilterDescendantsInstances = {player.Character}
+
+local function enableFly()
+	if flying then return end
+	flying = true
+
+	local Hum = GetHumanoid()
+	local HRP = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+	if not Hum or not HRP then return end
+
+	Hum:ChangeState(Enum.HumanoidStateType.Physics)
+	Hum.PlatformStand = true
+
+	bodyGyro = Instance.new("BodyGyro")
+	bodyGyro.P = 9000
+	bodyGyro.MaxTorque = Vector3.new(9e9, 9e9, 9e9)
+	bodyGyro.CFrame = HRP.CFrame
+	bodyGyro.Parent = HRP
+
+	bodyVelocity = Instance.new("BodyVelocity")
+	bodyVelocity.MaxForce = Vector3.new(9e9, 9e9, 9e9)
+	bodyVelocity.Velocity = Vector3.zero
+	bodyVelocity.Parent = HRP
+
+	FlyConnection = RunService.RenderStepped:Connect(function(deltaTime)
+		if not flying or not HRP or not Hum then return end
+
+		local move = Hum.MoveDirection
+		local camera = Workspace.CurrentCamera
+		local velocity = Vector3.zero
+
+		if move.Magnitude > 0 then
+			local targetHorizontal = move * Options.FlySpeed.Value
+			horizontalVelocitySmooth = horizontalVelocitySmooth + (targetHorizontal - horizontalVelocitySmooth) * math.clamp(deltaTime * 12, 0, 1)
+
+			local camForward = Vector3.new(camera.CFrame.LookVector.X, 0, camera.CFrame.LookVector.Z).Unit
+			local forwardDot = move:Dot(camForward)
+
+			local targetVertical = camera.CFrame.LookVector.Y * Options.FlySpeed.Value * (forwardDot < 0 and -1 or 1)
+			verticalVelocitySmooth = verticalVelocitySmooth + (targetVertical - verticalVelocitySmooth) * math.clamp(deltaTime * 12, 0, 1)
+
+			velocity = horizontalVelocitySmooth + Vector3.new(0, verticalVelocitySmooth, 0)
+		else
+			verticalVelocitySmooth *= 0.8
+			horizontalVelocitySmooth *= 0.8
+			velocity = horizontalVelocitySmooth + Vector3.new(0, verticalVelocitySmooth, 0)
+		end
+
+		-- Anti-afundar no chão
+		local rayOrigin = HRP.Position
+		local rayDirection = Vector3.new(0, -5, 0)
+		local result = Workspace:Raycast(rayOrigin, rayDirection, rayParams)
+
+		if result then
+			local groundY = result.Position.Y
+			local safeHeight = groundY + Hum.HipHeight + 1.5
+			if HRP.Position.Y < safeHeight then
+				local camLook = camera.CFrame.LookVector
+				local lookFactor = math.clamp(1 + camLook.Y, 0.1, 1)
+				velocity = Vector3.new(velocity.X, math.max(velocity.Y, 1 * lookFactor), velocity.Z)
+			end
+		end
+
+		bodyVelocity.Velocity = velocity
+
+		local camLook = camera.CFrame.LookVector
+		local flatLook = Vector3.new(camLook.X, 0, camLook.Z).Unit
+		local targetCFrame = CFrame.new(HRP.Position, HRP.Position + flatLook)
+		bodyGyro.CFrame = bodyGyro.CFrame:Lerp(targetCFrame, math.clamp(deltaTime * 15, 0, 1))
+	end)
+end
+
+local function disableFly()
+	flying = false
+	if FlyConnection then FlyConnection:Disconnect() FlyConnection = nil end
+	if bodyGyro then bodyGyro:Destroy() bodyGyro = nil end
+	if bodyVelocity then bodyVelocity:Destroy() bodyVelocity = nil end
+
+	local Hum = GetHumanoid()
+	if Hum then
+		Hum.PlatformStand = false
+		Hum:ChangeState(Enum.HumanoidStateType.Running)
+	end
+end
+
+Tab1:AddToggle("EnableFly", {
+	Text = "Enable Fly",
+	Default = false,
+	Callback = function(state)
+		if state then enableFly() else disableFly() end
+	end
+})
+
+-- =========================
+-- JUMP TOGGLE
+-- =========================
+Tab1:AddToggle("EnableJump", {
+	Text = "Enable jump",
+	Default = false,
+	Callback = function(state)
+		EnableJump = state
+		local char = workspace:FindFirstChild(player.Name)
+		if char then
+			internalChange = true
+			char:SetAttribute("CanJump", EnableJump)
+			internalChange = false
+		end
+	end
+})
+
+-- =========================
+-- NO ACCELERATION
+-- =========================
+local NoAccelerationEnabled = false
+Tab1:AddToggle("NoAcceleration", {
+	Text = "No Acceleration",
+	Default = false,
+	Callback = function(state)
+		NoAccelerationEnabled = state
+	end
+})
+
+RunService.RenderStepped:Connect(function()
+	if NoAccelerationEnabled and Humanoid and HumanoidRootPart then
+		local moveDir = Humanoid.MoveDirection
+		local speed = Humanoid.WalkSpeed
+		local verticalVel = HumanoidRootPart.Velocity.Y
+
+		HumanoidRootPart.Velocity = Vector3.new(
+			moveDir.X * speed,
+			verticalVel,
+			moveDir.Z * speed
+		)
+	end
+end)
+
+-- =========================
+-- CAMERA FOV
+-- =========================
+local camera = Workspace.CurrentCamera
+local fovValue = 70
+local fovEnabled = false
+local fovConnection
+local currentFov = camera.FieldOfView
+local targetFov = fovValue
+local startFov = currentFov
+local fovSpeed = 1
+
+local FOV_MAX_VISUAL = 120
+local FOV_MAX_REAL = 150
+
+local function easeInOutQuad(t)
+    return t < 0.5 and 2 * t * t or 1 - ((-2 * t + 2)^2) / 2
+end
+
+local transitionProgress = 0
+local transitioning = false
+local transitioningOut = false
+
+local function startTransition(newTargetFov, outTransition)
+    targetFov = newTargetFov
+    startFov = camera.FieldOfView
+    transitioning = true
+    transitioningOut = outTransition
+    transitionProgress = 0
+end
+
+-- Slider do FOV
+Tab2:AddSlider("FovSlider", {
+    Text = "Fov FieldOfView",
+    Min = 70,
+    Max = FOV_MAX_VISUAL,
+    Default = 70,
+    Rounding = 1,
+    HideMax = true,
+    Suffix = "°",
+    Callback = function(value)
+        if fovEnabled then
+            fovValue = math.clamp(value, 70, FOV_MAX_REAL)
+            startTransition(fovValue, false)
+        else
+            -- Atualiza o valor mesmo desativado, pra usar depois
+            fovValue = math.clamp(value, 70, FOV_MAX_REAL)
+        end
+    end
+})
+
+-- Checkbox para habilitar/desabilitar FOV
+Tab2:AddToggle("EnableFov", {
+    Text = "Enable Fov",
+    Default = false,
+    Callback = function(state)
+        fovEnabled = state
+        if state then
+            -- Pega automaticamente o valor atual da slider e aplica
+            fovValue = math.clamp(fovValue or 70, 70, FOV_MAX_REAL)
+            startTransition(fovValue, false)
+
+            if fovConnection then
+                fovConnection:Disconnect()
+            end
+
+            -- Conexão do loop de transição
+            fovConnection = RunService.RenderStepped:Connect(function(dt)
+                if transitioning or fovEnabled then
+                    if transitioning then
+                        transitionProgress = math.min(transitionProgress + dt * fovSpeed, 1)
+                        local easedProgress = easeInOutQuad(transitionProgress)
+                        currentFov = startFov + (targetFov - startFov) * easedProgress
+                        camera.FieldOfView = currentFov
+                        if transitionProgress >= 1 then
+                            transitioning = false
+                            if transitioningOut then
+                                fovEnabled = false
+                                if fovConnection then
+                                    fovConnection:Disconnect()
+                                    fovConnection = nil
+                                end
+                            end
+                        end
+                    else
+                        if fovEnabled then
+                            currentFov = targetFov
+                            camera.FieldOfView = currentFov
+                        end
+                    end
+                end
+            end)
+        else
+            -- Resetar para o FOV padrão
+            startTransition(70, true)
+            if not fovConnection then
+                camera.FieldOfView = 70
+                currentFov = 70
+                transitioning = false
+            end
+        end
+    end
+})
+
+local TabBox = Tabs.Main:AddRightTabbox()
+local Game = TabBox:AddTab("Game")
+local RemoteTab = TabBox:AddTab("Remote")
+
+-- Serviços
+local Lighting = game:GetService("Lighting")
+
+-- Configuração do Fullbright
+local targetLighting = {
+    Brightness = 0,
+    ClockTime = 14.5,
+    FogEnd = 100000,
+    FogStart = 0,
+    Ambient = Color3.new(1,1,1),
+    OutdoorAmbient = Color3.new(1,1,1),
+    GlobalShadows = false,
+    ExposureCompensation = 0
+}
+
+local fullbrightEnabled = false
+local connection
+
+-- Aplica os valores do fullbright
+local function applyFullbright()
+    for prop, value in pairs(targetLighting) do
+        Lighting[prop] = value
+    end
+end
+
+-- Função de toggle
+local function setFullbright(state)
+    fullbrightEnabled = state
+
+    if state then
+        -- aplica e mantém
+        applyFullbright()
+        connection = Lighting.Changed:Connect(function()
+            if fullbrightEnabled then
+                applyFullbright()
+            end
+        end)
+    else
+        -- solta o controle e deixa o jogo restaurar
+        if connection then
+            connection:Disconnect()
+            connection = nil
+        end
+        -- reset manual (zera o que foi mexido, jogo repõe depois)
+        Lighting.FogEnd = 250
+        Lighting.FogStart = 150
+        Lighting.Brightness = 0
+        Lighting.ClockTime = 14.5
+        Lighting.Ambient = Color3.fromRGB(67,51,56)
+        Lighting.OutdoorAmbient = Color3.new(0,0,0)
+        Lighting.GlobalShadows = true
+        Lighting.ExposureCompensation = 1
+    end
+end
+
+-- Toggle GUI
+Game:AddToggle("Fullbright", {
+    Text = "Fullbright",
+    Default = false,
+    Callback = function(state)
+        setFullbright(state)
+    end
+})
+
+RemoteTab:AddToggle("PadLock", {
+    Text = "PadLock",
+    Default = false,
+    Callback = function(state)
+        if not state then return end
+
+        local player = game.Players.LocalPlayer
+        local workspacePlayer = workspace:WaitForChild(player.Name) -- modelo do jogador
+        local workspaceHint = workspacePlayer:WaitForChild("LibraryHintPaper"):WaitForChild("UI")
+        local permHints = player.PlayerGui.PermUI.Hints
+        local remote = game:GetService("ReplicatedStorage").RemotesFolder:WaitForChild("PL")
+
+        local LibraryNotify = Library:Notify({
+            Title = "Padlock",
+            Description = "Monitoring...",
+            Time = 10
+        })
+
+        local lastSentCode = nil -- evita envios repetidos
+
+        -- Função que envia código para o servidor
+        local function SendCodeToServer(code)
+            if remote and code ~= lastSentCode then
+                remote:FireServer(code)
+                lastSentCode = code
+                LibraryNotify:ChangeDescription("Code sent to server successfully!")
+            end
+        end
+
+        -- Função que checa o LibraryHintPaper no modelo do jogador e decodifica
+        local function CheckAndDecode()
+            local paper = workspacePlayer:FindFirstChild("LibraryHintPaper")
+            if not paper then
+                LibraryNotify:ChangeDescription("No LibraryHintPaper found in player model. Waiting...")
+                return
+            end
+
+            -- Coleta offsets da UI
+            local targetOffsets = {}
+            for i = 1, 5 do
+                local uiElement = workspaceHint:FindFirstChild(tostring(i))
+                if uiElement and uiElement:IsA("ImageLabel") then
+                    targetOffsets[i] = uiElement.ImageRectOffset
+                else
+                    LibraryNotify:ChangeDescription("LibraryHintPaper UI element " .. i .. " not found.")
+                    return
+                end
+            end
+
+            -- Decodifica o código comparando com permHints
+            local codeSequence = ""
+            local complete = true
+            for index, targetOffset in ipairs(targetOffsets) do
+                local foundText = nil
+                for _, hint in ipairs(permHints:GetChildren()) do
+                    if hint:IsA("ImageLabel") and hint.ImageRectOffset == targetOffset then
+                        local textLabel = hint:FindFirstChild("TextLabel")
+                        if textLabel and textLabel:IsA("TextLabel") then
+                            foundText = textLabel.Text
+                            break
+                        end
+                    end
+                end
+                if foundText then
+                    codeSequence = codeSequence .. foundText
+                    LibraryNotify:ChangeDescription("Decoding... Step " .. index .. "/5: " .. codeSequence)
+                else
+                    complete = false
+                    break
+                end
+            end
+
+            if complete then
+                SendCodeToServer(codeSequence)
+            else
+                LibraryNotify:ChangeDescription("Incomplete code. Collect more LibraryHintPapers!")
+            end
+        end
+
+        -- Listener para detectar quando o papel é adicionado ou removido do modelo
+        workspacePlayer.ChildAdded:Connect(function(child)
+            if child.Name == "LibraryHintPaper" then
+                task.wait(0.1)
+                CheckAndDecode()
+            end
+        end)
+
+        workspacePlayer.ChildRemoved:Connect(function(child)
+            if child.Name == "LibraryHintPaper" then
+                LibraryNotify:ChangeDescription("LibraryHintPaper removed from player model. Waiting...")
+            end
+        end)
+
+        -- Rodar imediatamente caso já exista
+        CheckAndDecode()
+    end
+})
+
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local player = Players.LocalPlayer
+local Remotes = ReplicatedStorage:WaitForChild("RemotesFolder")
+
+local Functions = Tabs.Main:AddLeftGroupbox('Functions')
+
+-- Função auxiliar para resetar o personagem
+local function resetCharacter()
+    if player.Character and player.Character:FindFirstChild("Humanoid") then
+        player.Character.Humanoid.Health = 0
+    end
+end
+
+-- Botão Play Again (double click)
+Functions:AddButton({
+    Text = "Play Again",
+    Func = function()
+        -- Dispara o remote PlayAgain 
+        Remotes:WaitForChild("PlayAgain"):FireServer()
+    end,
+    DoubleClick = true,
+    Tooltip = "Double click to trigger Play Again"
+})
+
+-- Botão Back to Lobby (single click)
+Functions:AddButton({
+    Text = "Back to Lobby",
+    Func = function()
+        Remotes:WaitForChild("Lobby"):FireServer()
+    end,
+    DoubleClick = true,
+    Tooltip = "Return to the lobby"
+})
+
+-- Botão Reset Character (single click)
+Functions:AddButton({
+    Text = "Reset Character",
+    Func = function()
+        resetCharacter()
+    end,
+    DoubleClick = true,
+    Tooltip = "Reset your character"
+})
+
+
+---------------------------
+--AURA
+---------------------------
+local Aura = Tabs.Main:AddRightGroupbox('Aura')
+
+local MAX_F2_INTERACT_DISTANCE = 11.5
+local F2_InteractMode = "New"
+local lastF2Interact = {}
+local lastF2Cleanup = 0
+local lastNoInteractionUse = {}
+local autoF2Connection
+
+-- Tabelas de prompts para interação
+local PromptData = {
+    Parents = {"DrawerContainer", "RolltopContainer", "ChestBox", "Bandage", "GoldPile", "KeyObtain", "Lock", "RolltopContainer", "LeverForGate", "Smoothie", "Vitamins", "Flashlight", "Lighter", "Candle", "LibraryHintPaper", "LiveHintBook", "Desk_Globe", "AlarmClock", "ElectricalKeyObtain", "LiveBreakerPolePickup", "Lockpick"},
+    Children = {"ProximityPrompt", "ActivateEventPrompt", "ModulePrompt", "UnlockPrompt", "InteractPrompt", "LootPrompt"}
+}
+
+local function getHRP()
+    return player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+end
+
+local function getDistance(part)
+    local hrp = getHRP()
+    return hrp and part and (hrp.Position - part.Position).Magnitude or math.huge
+end
+
+local function getPartForPrompt(prompt)
+    local parent = prompt.Parent
+    if parent:IsA("BasePart") then return parent end
+    if parent:IsA("Model") then return parent.PrimaryPart or parent:FindFirstChildWhichIsA("BasePart") end
+    local ancestor = prompt:FindFirstAncestorWhichIsA("Model") or prompt:FindFirstAncestorWhichIsA("BasePart")
+    if ancestor then
+        if ancestor:IsA("BasePart") then return ancestor end
+        if ancestor:IsA("Model") then return ancestor.PrimaryPart or ancestor:FindFirstChildWhichIsA("BasePart") end
+    end
+end
+
+-- Agora sem checar se está olhando
+local function isValidPrompt(prompt)
+    if not prompt or not prompt:IsA("ProximityPrompt") or not prompt.Enabled or prompt:GetAttribute("Passed") then
+        return false
+    end
+
+    local interactions = prompt:GetAttribute("Interactions")
+    local id = prompt:GetDebugId()
+    if interactions ~= nil then
+        if interactions > 0 then return false end
+    else
+        local lastUse = lastNoInteractionUse[id] or 0
+        if tick() - lastUse < 0.1 then return false end -- mais rápido (antes era 0.25s)
+    end
+
+    return true
+end
+
+local function firePrompt(prompt)
+    if not isValidPrompt(prompt) then return false end
+    local part = getPartForPrompt(prompt)
+    if not part then return false end
+    if not getHRP() then return false end
+
+    fireproximityprompt(prompt)
+    if prompt:GetAttribute("Interactions") == nil then
+        lastNoInteractionUse[prompt:GetDebugId()] = tick()
+    end
+    return true
+end
+
+local function collectAllTargets()
+    local targets = {}
+    local currentRoom = Workspace.CurrentRooms:FindFirstChild(tostring(player:GetAttribute("CurrentRoom")))
+    if currentRoom then
+        for _, obj in ipairs(currentRoom:GetDescendants()) do
+            if obj:IsA("Model") and table.find(PromptData.Parents, obj.Name) then
+                for _, childName in ipairs(PromptData.Children) do
+                    local prompt = obj:FindFirstChild(childName, true)
+                    if prompt and isValidPrompt(prompt) then
+                        local part = getPartForPrompt(prompt)
+                        if part then table.insert(targets, { prompt = prompt, part = part }) end
+                    end
+                end
+            end
+        end
+    end
+    return targets
+end
+
+local lastCollect = 0
+local cachedTargets = {}
+local function interactF2Loop()
+    local now = tick()
+    if now - lastF2Cleanup >= 15 then
+        lastF2Interact, lastNoInteractionUse = {}, {}
+        lastF2Cleanup = now
+    end
+
+    if now - lastCollect >= 0.05 then -- coleta mais rápida (antes 0.1s)
+        cachedTargets = collectAllTargets()
+        lastCollect = now
+    end
+
+    table.sort(cachedTargets, function(a, b)
+        return getDistance(a.part) < getDistance(b.part)
+    end)
+
+    for _, t in ipairs(cachedTargets) do
+        local prompt, part = t.prompt, t.part
+        local dist = getDistance(part)
+        if dist <= MAX_F2_INTERACT_DISTANCE then
+            local id = prompt:GetDebugId()
+            local ready = not lastF2Interact[id] or (now - lastF2Interact[id] >= 0.1) -- delay mínimo
+            if ready then
+                firePrompt(prompt)
+                lastF2Interact[id] = now
+                if F2_InteractMode == "Old" then break end
+            end
+        end
+    end
+end
+
+local function toggleF2Interact(enabled)
+    if enabled then
+        autoF2Connection = RunService.Heartbeat:Connect(interactF2Loop)
+    elseif autoF2Connection then
+        autoF2Connection:Disconnect()
+        autoF2Connection = nil
+    end
+end
+
+Aura:AddToggle("AutoInteractF2", {
+    Text = "Auto Interact",
+    Default = false,
+    Callback = toggleF2Interact
+})
+local originalDurations = {}
+local instantInteractEnabled = false
+local interactConnection
+
+Aura:AddToggle("InteractInstant", {
+    Text = "Interact Instant",
+    Default = false,
+    Callback = function(state)
+        instantInteractEnabled = state
+
+        local function applyToPrompt(prompt)
+            if prompt:IsA("ProximityPrompt") and prompt.HoldDuration > 0 then
+                if state then
+                    if not originalDurations[prompt] then originalDurations[prompt] = prompt.HoldDuration end
+                    prompt.HoldDuration = 0
+                else
+                    if originalDurations[prompt] then prompt.HoldDuration = originalDurations[prompt] end
+                end
+            end
+        end
+
+        if state then
+            for _, obj in ipairs(Workspace:GetDescendants()) do pcall(applyToPrompt, obj) end
+            interactConnection = Workspace.DescendantAdded:Connect(function(obj)
+                task.wait()
+                pcall(applyToPrompt, obj)
+            end)
+        else
+            for prompt, original in pairs(originalDurations) do
+                if prompt and prompt.Parent then prompt.HoldDuration = original end
+            end
+            table.clear(originalDurations)
+            if interactConnection then interactConnection:Disconnect() interactConnection = nil end
+        end
+    end
+})
+
+
+Aura:AddSlider("InteractRangeF2", {
+    Text = "Range",
+    Default = 11.5,
+    Min = 5,
+    Max = 11.5,
+    HideMax = true,
+    Suffix = ".m",
+    Rounding = 1,
+    Callback = function(v) MAX_F2_INTERACT_DISTANCE = v end
+})
+
+Aura:AddDropdown("InteractModeF2", {
+    Values = { "Old", "New" },
+    Default = 2,
+    Multi = false,
+    Text = "Interact Mode",
+    Callback = function(mode) F2_InteractMode = mode end
+})
+
+
+-- =================== [[ VISUAL: ESP ]] =================== --
+
+local ModelESP = loadstring(game:HttpGet("https://raw.githubusercontent.com/DH-SOARESE/Kolt-DOORS/refs/heads/main/Kolt%20ESP-LIBRARY.lua"))()
+
+ModelESP:SetGlobalESPType("ShowHighlightOutline", true)
+ModelESP:SetGlobalESPType("ShowHighlightFill", true)
+ModelESP:SetGlobalESPType("ShowName", true)
+ModelESP:SetGlobalESPType("ShowDistance", true)
+ModelESP:SetGlobalESPType("ShowTracer", false)
+ModelESP.GlobalSettings.MinDistance = 5
+ModelESP.GlobalSettings.ShowBox = false
+ModelESP:SetGlobalTracerOrigin("Top")
+
+
+-- Ativações de ESP
+local espEnabled = {
+    Door = false,
+    Key = false,
+    Gold = false,
+    Books = false,
+    Entities = false,
+    Players = false,
+    Items = false,
+    Hidden = false,
+    Lever = false,
+    Dupe = false,
+}
+
+-- Listas de controle
+local currentDoorESP
+local currentKeyESPs = {}
+local currentGoldESPs = {}
+local currentBookESPs = {}
+local currentEntityESPs = {}
+local currentPlayerESPs = {}
+local currentItemESPs = {}
+local currentHiddenESPs = {}
+local currentLeverESPs = {}
+local currentDupeESPs = {}
+
+-- =================== [[ FUNÇÕES GERAIS ]] =================== --
+
+local function addESP(model, name, color)
+ModelESP:Add(model, {
+    Name = name,
+    Color = color,
+    ShowName = true,
+    ShowDistance = true,
+    Tracer = true,
+    HighlightFill = true,
+    HighlightOutline = true,
+})
+end
+
+-- =================== [[ DOORS ]] =================== --
+local function getDoorName(room)
+    local latestRoom = tonumber(room.Name) or 0
+
+    local door = room:FindFirstChild("Door")
+    if not door then return "Door" end
+
+    -- Nome do texto da placa  
+    local text = "?"  
+    local sign = door:FindFirstChild("Sign")  
+    if sign and sign:FindFirstChild("Stinker") then  
+        text = sign.Stinker.Text  
+    end  
+
+    -- Locked ou Door  
+    local baseName = "Door"
+    if latestRoom >= 89 then
+        baseName = "Fence" -- muda para "Cerca" a partir da sala 89
+    end
+
+    if door:FindFirstChild("Lock") then  
+        return "Locked (" .. text .. ")"  
+    else
+        return baseName .. " (" .. text .. ")"  
+    end
+end
+
+local function createDoorESP()
+    if not espEnabled.Door then return end
+    if currentDoorESP then
+        ModelESP:Remove(currentDoorESP)
+        currentDoorESP = nil
+    end
+
+    local latestRoom = ReplicatedStorage.GameData.LatestRoom.Value  
+    if latestRoom >= 100 then return end -- não cria ESP a partir da sala 100
+
+    local room = Workspace.CurrentRooms:FindFirstChild(tostring(latestRoom))  
+    if not room or not room:FindFirstChild("Door") then return end  
+
+    local doorModel = room.Door  
+    local doorTarget  
+
+    -- Nas salas 49 & 50 -> ESP no model inteiro  
+    if latestRoom == 49 or latestRoom == 50 then  
+        doorTarget = doorModel  
+    else  
+        doorTarget = doorModel:FindFirstChild("Door")  
+    end  
+
+    if not doorTarget then return end  
+
+    addESP(doorTarget, getDoorName(room), Color3.fromRGB(50, 205, 50))  
+    currentDoorESP = doorTarget
+end
+-- =================== [[ KEYS ]] =================== --
+
+local function createKeyESPs()
+    for _, keyESP in ipairs(currentKeyESPs) do
+        ModelESP:Remove(keyESP)
+    end
+    currentKeyESPs = {}
+
+    if not espEnabled.Key then return end  
+
+    local LocalPlayerName = player.Name
+    local attrName = "Interactions" .. LocalPlayerName
+
+    local latestRoom = ReplicatedStorage.GameData.LatestRoom.Value  
+    local room = Workspace.CurrentRooms:FindFirstChild(tostring(latestRoom))  
+    if not room or not room:FindFirstChild("Assets") then return end  
+
+    for _, asset in ipairs(room.Assets:GetDescendants()) do  
+        if asset:IsA("Model") and (asset.Name == "KeyObtain" or asset.Name == "ElectricalKeyObtain") then  
+            local modulePrompt = asset:FindFirstChild("ModulePrompt")  
+            if modulePrompt then  
+                local interactionsValue = modulePrompt:GetAttribute(attrName) or 0  
+
+                -- ESP inicial
+                if interactionsValue == 0 then  
+                    addESP(asset, "Key", Color3.fromRGB(255, 223, 0))  
+                    table.insert(currentKeyESPs, asset)  
+                end  
+
+                -- Monitora mudanças no atributo
+                modulePrompt:GetAttributeChangedSignal(attrName):Connect(function()
+                    local newInteractionsValue = modulePrompt:GetAttribute(attrName) or 0  
+                    if newInteractionsValue > 0 then  
+                        for i, espAsset in ipairs(currentKeyESPs) do  
+                            if espAsset == asset then  
+                                ModelESP:Remove(espAsset)  
+                                table.remove(currentKeyESPs, i)  
+                                break  
+                            end  
+                        end  
+                    elseif newInteractionsValue == 0 and not table.find(currentKeyESPs, asset) then  
+                        addESP(asset, "Key", Color3.fromRGB(255, 223, 0))  
+                        table.insert(currentKeyESPs, asset)  
+                    end  
+                end)
+            end  
+        end  
+    end
+end
+
+-- =================== [[ GOLD ]] =================== --
+
+local function addGoldESP(goldModel)
+    if not espEnabled.Gold or not goldModel:IsA("Model") or goldModel.Name ~= "GoldPile" then return end
+    for _, esp in ipairs(currentGoldESPs) do if esp == goldModel then return end end
+    addESP(goldModel, "GoldPile", Color3.fromRGB(255, 190, 0))
+    table.insert(currentGoldESPs, goldModel)
+end
+
+local function scanAllGoldPiles()
+    for _, room in ipairs(Workspace.CurrentRooms:GetChildren()) do
+        if room:FindFirstChild("Assets") then
+            for _, asset in ipairs(room.Assets:GetDescendants()) do
+                if asset:IsA("Model") and asset.Name == "GoldPile" then
+                    addGoldESP(asset)
+                end
+            end
+        end
+    end
+end
+
+-- =================== [[ BOOKS ]] =================== --
+local function addBookESP(bookModel, index)
+    if not espEnabled.Books or not bookModel:IsA("Model") or bookModel.Name ~= "LiveHintBook" then return end
+    for _, esp in ipairs(currentBookESPs) do
+        if esp == bookModel then return end
+    end
+    -- Adiciona o índice no nome do ESP
+    addESP(bookModel, "Book ["..index.."]", Color3.fromRGB(0, 255, 0))
+    table.insert(currentBookESPs, bookModel)
+end
+
+local function scanBooksInRoom50()
+    local room50 = Workspace.CurrentRooms:FindFirstChild("50")
+    if not room50 or not room50:FindFirstChild("Assets") then return end
+    local bookIndex = 1
+    for _, asset in ipairs(room50.Assets:GetDescendants()) do
+        if asset:IsA("Model") and asset.Name == "LiveHintBook" then
+            addBookESP(asset, bookIndex)
+            bookIndex = bookIndex + 1
+        end
+    end
+end
+-- =================== [[ ENTITIES]] =================== --
+local entityWorkspaceNames = {
+    RushMoving = {Name = "Rush", Color = Color3.fromRGB(255, 50, 50), Use2D = true},
+    AmbushMoving = {Name = "Ambush", Color = Color3.fromRGB(255, 150, 50), Use2D = true},
+    Eyes = {Name = "Eyes", Color = Color3.fromRGB(50, 150, 255), Use2D = true},
+    SeekMovingNewClone = {Name = "Seek", Color = Color3.fromRGB(200, 50, 200), Use2D = false}
+}
+
+local entityRoomNames = {
+    FigureRig = {Name = "Figure", Color = Color3.fromRGB(255, 200, 50), Use2D = false},
+    Snare = {Name = "Snare", Color = Color3.fromRGB(255, 0, 0), Use2D = false}
+}
+
+local currentEntityESPs = {}
+local entityConnections = {}
+
+-- Adiciona ou atualiza ESP da entidade
+local function addEntityESP(model, data)
+    if not model or not model:IsA("Model") then return end
+
+    -- Se já existe ESP, remove antes
+    if currentEntityESPs[model] then
+        pcall(function() ModelESP:Remove(model) end)
+        currentEntityESPs[model] = nil
+    end
+
+    -- Aplica modo 2D se necessário
+    if data.Use2D then
+        local hasBasePart = false
+        for _, obj in ipairs(model:GetDescendants()) do
+            if obj:IsA("BasePart") then
+                hasBasePart = true
+                obj.Transparency = 0.99
+                obj.CanCollide = false
+            end
+        end
+
+        if not hasBasePart then
+            local primaryPart = Instance.new("Part")
+            primaryPart.Name = "Entity2DPart"
+            primaryPart.Anchored = true
+            primaryPart.CanCollide = false
+            primaryPart.Size = model:GetExtentsSize() or Vector3.new(2,2,2)
+            primaryPart.Transparency = 0.99
+            primaryPart.Parent = model
+
+            local mesh = Instance.new("SpecialMesh")
+            mesh.MeshType = Enum.MeshType.Brick
+            mesh.Scale = Vector3.new(1,1,1)
+            mesh.Parent = primaryPart
+        end
+
+        if not model:FindFirstChildOfClass("Humanoid") then
+            local humanoid = Instance.new("Humanoid")
+            humanoid.Name = "FakeHumanoid"
+            humanoid.Health = 0
+            humanoid.MaxHealth = 0
+            humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None
+            humanoid.Parent = model
+        end
+    end
+
+    -- Adiciona ESP via ModelESP
+    ModelESP:Add(model, {
+        Name = data.Name,
+        Color = data.Color,
+        ShowName = true,
+        ShowDistance = true,
+        Tracer = true,
+        HighlightFill = true,
+        HighlightOutline = true,
+        TracerOrigin = "Top"
+    })
+
+    currentEntityESPs[model] = true
+end
+
+-- Escaneia Workspace
+local function scanWorkspaceEntities()
+    for realName, data in pairs(entityWorkspaceNames) do
+        local obj = workspace:FindFirstChild(realName)
+        if obj and obj:IsA("Model") then
+            addEntityESP(obj, data)
+        end
+    end
+end
+
+-- Escaneia Rooms
+local function scanRoomEntities()
+    for _, room in ipairs(workspace.CurrentRooms:GetChildren()) do
+        local assets = room:FindFirstChild("Assets")
+        if assets then
+            for realName, data in pairs(entityRoomNames) do
+                for _, asset in ipairs(assets:GetDescendants()) do
+                    if asset:IsA("Model") and asset.Name == realName then
+                        addEntityESP(asset, data)
+                    end
+                end
+            end
+        end
+    end
+end
+
+-- Ativa ESP
+function enableEntitiesESP()
+    -- Faz varredura inicial
+    scanWorkspaceEntities()
+    scanRoomEntities()
+
+    -- Conexão para entidades diretas no Workspace
+    entityConnections["Workspace"] = workspace.ChildAdded:Connect(function(child)
+        local data = entityWorkspaceNames[child.Name]
+        if data and child:IsA("Model") then
+            addEntityESP(child, data)
+        end
+    end)
+
+    -- Recria conexões para cada sala já existente
+    for _, room in ipairs(workspace.CurrentRooms:GetChildren()) do
+        local assets = room:FindFirstChild("Assets")
+        if assets then
+            -- Escaneia entidades já existentes
+            for realName, data in pairs(entityRoomNames) do
+                for _, asset in ipairs(assets:GetDescendants()) do
+                    if asset:IsA("Model") and asset.Name == realName then
+                        addEntityESP(asset, data)
+                    end
+                end
+            end
+
+            -- Conecta novos assets
+            entityConnections[room] = assets.DescendantAdded:Connect(function(asset)
+                local data = entityRoomNames[asset.Name]
+                if data and asset:IsA("Model") then
+                    addEntityESP(asset, data)
+                end
+            end)
+        end
+    end
+
+    -- Novas salas sendo criadas
+    entityConnections["Rooms"] = workspace.CurrentRooms.ChildAdded:Connect(function(room)
+        local assets = room:WaitForChild("Assets", 3)
+        if assets then
+            -- Escaneia entidades já existentes na sala nova
+            for realName, data in pairs(entityRoomNames) do
+                for _, asset in ipairs(assets:GetDescendants()) do
+                    if asset:IsA("Model") and asset.Name == realName then
+                        addEntityESP(asset, data)
+                    end
+                end
+            end
+
+            -- Conecta novos assets dessa sala
+            entityConnections[room] = assets.DescendantAdded:Connect(function(asset)
+                local data = entityRoomNames[asset.Name]
+                if data and asset:IsA("Model") then
+                    addEntityESP(asset, data)
+                end
+            end)
+        end
+    end)
+end
+
+-- Desativa ESP
+function disableEntitiesESP()
+    for model in pairs(currentEntityESPs) do
+        if model and model.Parent then
+            if ModelESP then
+                pcall(function() ModelESP:Remove(model) end)
+            end
+        end
+    end
+    table.clear(currentEntityESPs)
+
+    for key, conn in pairs(entityConnections) do
+        if typeof(conn) == "RBXScriptConnection" then
+            conn:Disconnect()
+        end
+        entityConnections[key] = nil
+    end
+end
+-- =================== [[ ITEMS ]] =================== --
+
+-- Lista de itens configuráveis
+local itemList = {
+    "Lighter",
+    "Bandage",
+    "Vitamins",
+    "Crucifix",
+    "SkeletonKey",
+    "Flashlight",
+    "Lockpick",
+    "AlarmClock",
+    "Smoothie",
+    "Candle",
+    "LiveBreakerPolePickup"
+}
+
+local function addItemESP(itemModel)
+    if not espEnabled.Items then return end
+    if not itemModel:IsA("Model") then return end
+
+    -- Verifica se já existe ESP nesse item  
+    for _, esp in ipairs(currentItemESPs) do  
+        if esp == itemModel then  
+            return  
+        end  
+    end  
+
+    -- Confere se o item está na lista  
+    for _, itemName in ipairs(itemList) do  
+        if itemModel.Name == itemName then  
+            addESP(itemModel, itemName, Color3.fromRGB(0, 255, 100))  
+            table.insert(currentItemESPs, itemModel)  
+            break  
+        end  
+    end
+end
+
+local function scanAllItems()
+    if not Workspace:FindFirstChild("CurrentRooms") then return end
+    for _, room in ipairs(Workspace.CurrentRooms:GetChildren()) do
+        local assets = room:FindFirstChild("Assets")
+        if assets then
+            for _, asset in ipairs(assets:GetDescendants()) do
+                addItemESP(asset)
+            end
+        end
+    end
+end
+
+local function disableItemsESP()
+    for _, esp in ipairs(currentItemESPs) do
+        ModelESP:Remove(esp)
+    end
+    table.clear(currentItemESPs)
+end
+-- =================== [[ HIDDEN ESP ]] =================== --
+
+-- Lista de esconderijos: [Nome real do Model] = "Nome exibido"
+local hiddenList = {
+    ["Wardrobe"] = "Closet",
+    ["Bed"] = "Bed",
+    ["Toolshed"] = "Closet"
+}
+
+local MAX_DISTANCE = 100 -- 100 studs (~28m)
+
+local function addHiddenESP(hiddenModel)
+    if not espEnabled.Hidden then return end
+    if not hiddenModel:IsA("Model") then return end
+
+    -- Evita duplicatas
+    for _, esp in ipairs(currentHiddenESPs) do
+        if esp == hiddenModel then return end
+    end
+
+    local displayName = hiddenList[hiddenModel.Name]
+    if not displayName then return end
+
+    -- Verifica distância
+    local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+    if not hrp or not hiddenModel.PrimaryPart then return end
+    if (hrp.Position - hiddenModel.PrimaryPart.Position).Magnitude > MAX_DISTANCE then return end
+
+    -- Cria ESP
+    addESP(hiddenModel, displayName, Color3.fromRGB(180, 255, 180))
+    table.insert(currentHiddenESPs, hiddenModel)
+end
+
+local function scanCurrentRoomHidden()
+    if not Workspace:FindFirstChild("CurrentRooms") then return end
+
+    local currentRoom = player:GetAttribute("CurrentRoom")
+    if not currentRoom then return end
+
+    local room = Workspace.CurrentRooms:FindFirstChild(tostring(currentRoom))
+    if not room then return end
+
+    -- 🔎 Varrendo TODOS os descendentes da sala, não só "Assets"
+    for _, descendant in ipairs(room:GetDescendants()) do
+        addHiddenESP(descendant)
+    end
+end
+
+local function disableHiddenESP()
+    for _, esp in ipairs(currentHiddenESPs) do
+        ModelESP:Remove(esp)
+    end
+    table.clear(currentHiddenESPs)
+end
+
+local function updateHiddenDistanceCheck()
+    if not espEnabled.Hidden then return end
+    local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+    if not hrp then return end
+
+    for i = #currentHiddenESPs, 1, -1 do
+        local model = currentHiddenESPs[i]
+        if not model or not model.PrimaryPart then
+            ModelESP:Remove(model)
+            table.remove(currentHiddenESPs, i)
+        else
+            local dist = (hrp.Position - model.PrimaryPart.Position).Magnitude
+            if dist > MAX_DISTANCE then
+                ModelESP:Remove(model)
+                table.remove(currentHiddenESPs, i)
+            end
+        end
+    end
+end
+-- =================== [[ LEVER ESP ]] =================== --
+local function addLeverESP(leverModel)
+    if currentLeverESPs[leverModel] then return end
+    addESP(leverModel, "Lever", Color3.fromRGB(0, 255, 255))
+    currentLeverESPs[leverModel] = leverModel
+end
+
+local function removeLeverESP(leverModel)
+    if currentLeverESPs[leverModel] then
+        ModelESP:Remove(leverModel)
+        currentLeverESPs[leverModel] = nil
+    end
+end
+
+local function disableLeverESP()
+    for leverModel in pairs(currentLeverESPs) do
+        removeLeverESP(leverModel)
+    end
+end
+
+local function scanCurrentRoomLevers()
+    local currentRoom = player:GetAttribute("CurrentRoom")
+    if not currentRoom then return end
+
+    local room = Workspace.CurrentRooms:FindFirstChild(tostring(currentRoom))
+    if not room then return end
+
+    -- Varre todos os descendentes da sala
+    for _, obj in ipairs(room:GetDescendants()) do
+        if obj:IsA("Model") and obj.Name == "LeverForGate" then
+            local prompt = obj:FindFirstChild("ActivateEventPrompt")
+            if prompt then
+                local interactions = prompt:GetAttribute("Interactions") or 0
+                if interactions == 0 then
+                    addLeverESP(obj)
+                else
+                    removeLeverESP(obj)
+                end
+            end
+        end
+    end
+end
+-- =================== [[ DUPE ESP ]] =================== --
+
+local function addDupeESP(dupeModel)
+    if not espEnabled.Dupe then return end
+    if not dupeModel:IsA("Model") then return end
+
+    -- Verifica se já tem ESP nesse dupe
+    for _, esp in ipairs(currentDupeESPs) do
+        if esp == dupeModel then return end
+    end
+
+    addESP(dupeModel, "Dupe", Color3.fromRGB(255, 0, 0))
+    table.insert(currentDupeESPs, dupeModel)
+end
+
+local function scanRoomDupes()
+    local latestRoom = ReplicatedStorage.GameData.LatestRoom.Value
+    local room = Workspace.CurrentRooms:FindFirstChild(tostring(latestRoom))
+    if not room then return end
+
+    -- Varre todos descendentes atrás de SideroomDupe > DoorFake
+    for _, dupe in ipairs(room:GetDescendants()) do
+        if dupe:IsA("Model") and dupe.Name == "DoorFake" then
+            addDupeESP(dupe)
+        end
+    end
+end
+
+local function disableDupeESP()
+    for _, dupe in ipairs(currentDupeESPs) do
+        ModelESP:Remove(dupe)
+    end
+    table.clear(currentDupeESPs)
+end
+
+-- Listener para troca de sala
+ReplicatedStorage.GameData.LatestRoom:GetPropertyChangedSignal("Value"):Connect(function()
+    if espEnabled.Dupe then
+        disableDupeESP()
+        scanRoomDupes()
+    end
+end)
+
+-- =================== [[ LISTENERS / UI ]] =================== --
+
+ReplicatedStorage.GameData.LatestRoom:GetPropertyChangedSignal("Value"):Connect(function()
+    if espEnabled.Door then createDoorESP() end
+    if espEnabled.Key then createKeyESPs() end
+end)
+
+Workspace.ChildAdded:Connect(function(child)
+    local data = entityWorkspaceNames[child.Name]
+    if data and child:IsA("Model") then addEntityESP(child, data) end
+end)
+
+Workspace.CurrentRooms.ChildAdded:Connect(function(room)
+    for _, desc in ipairs(room:GetDescendants()) do
+        local data = entityRoomNames[desc.Name]
+        if data and desc:IsA("Model") then addEntityESP(desc, data) end
+    end
+    room.DescendantAdded:Connect(function(desc)
+        local data = entityRoomNames[desc.Name]
+        if data and desc:IsA("Model") then addEntityESP(desc, data) end
+    end)
+end)
+
+RunService.RenderStepped:Connect(function()
+    if espEnabled.Door and currentDoorESP then
+        local latestRoom = ReplicatedStorage.GameData.LatestRoom.Value
+        local room = Workspace.CurrentRooms:FindFirstChild(tostring(latestRoom))
+        if room then ModelESP:UpdateName(currentDoorESP, getDoorName(room)) end
+    end
+end)
+
+-- Listener para itens novos
+if Workspace:FindFirstChild("CurrentRooms") then
+    Workspace.CurrentRooms.ChildAdded:Connect(function(room)
+        if not espEnabled.Items then return end
+        local assets = room:FindFirstChild("Assets")
+        if assets then
+            assets.DescendantAdded:Connect(function(desc)
+                addItemESP(desc)
+            end)
+        end
+    end)
+end
+
+-- Atualiza quando o player muda de sala (para hidden)
+player:GetAttributeChangedSignal("CurrentRoom"):Connect(function()
+    if espEnabled.Hidden then
+        disableHiddenESP()
+        scanCurrentRoomHidden()
+    end
+end)
+-- =================== [[ CHESTBOX ESP ]] =================== --
+
+local currentChestESPs = {}
+
+local function addChestESP(chestModel)
+    if not espEnabled.ChestBox then return end
+    if not chestModel:IsA("Model") then return end
+
+    -- Evita duplicatas
+    for _, esp in ipairs(currentChestESPs) do
+        if esp == chestModel then return end
+    end
+
+    addESP(chestModel, "ChestBox", Color3.fromRGB(255, 128, 0))
+    table.insert(currentChestESPs, chestModel)
+end
+
+local function scanAllRoomsChestBoxes()
+    for _, room in ipairs(Workspace.CurrentRooms:GetChildren()) do
+        local sideroom = room:FindFirstChild("Sideroom")
+        if sideroom and sideroom:FindFirstChild("Assets") then
+            for _, chest in ipairs(sideroom.Assets:GetDescendants()) do
+                if chest:IsA("Model") and chest.Name == "ChestBox" then
+                    addChestESP(chest)
+                end
+            end
+        end
+    end
+end
+
+local function disableChestESP()
+    for _, chest in ipairs(currentChestESPs) do
+        ModelESP:Remove(chest)
+    end
+    table.clear(currentChestESPs)
+end
+
+-- Monitora futuras salas
+Workspace.CurrentRooms.ChildAdded:Connect(function(room)
+    local sideroom = room:WaitForChild("Sideroom", 3)
+    if sideroom and sideroom:FindFirstChild("Assets") then
+        for _, chest in ipairs(sideroom.Assets:GetDescendants()) do
+            if chest:IsA("Model") and chest.Name == "ChestBox" then
+                addChestESP(chest)
+            end
+        end
+
+        -- Monitora adições futuras
+        sideroom.Assets.DescendantAdded:Connect(function(desc)
+            if desc:IsA("Model") and desc.Name == "ChestBox" then
+                addChestESP(desc)
+            end
+        end)
+    end
+end)
+
+-- =================== [[ CHECKBOXES ]] =================== --
+
+local Settings = Tabs.Visual:AddLeftGroupbox("Settings")
+local Targets = Tabs.Visual:AddRightGroupbox("Targets")
+
+-- 🚪 Doors (principal)
+Targets:AddToggle("EspDoor", {
+    Text = "Doors",
+    Default = false,
+    Callback = function(enabled)
+        espEnabled.Door = enabled
+        if enabled then
+            createDoorESP()
+        elseif currentDoorESP then
+            ModelESP:Remove(currentDoorESP)
+            currentDoorESP = nil
+        end
+    end
+})
+
+-- 🔑 Keys (principal)
+Targets:AddToggle("EspKey", {
+    Text = "Keys",
+    Default = false,
+    Callback = function(enabled)
+        espEnabled.Key = enabled
+        if enabled then
+            createKeyESPs()
+        else
+            for _, keyESP in ipairs(currentKeyESPs) do
+                ModelESP:Remove(keyESP)
+            end
+            currentKeyESPs = {}
+        end
+    end
+})
+
+-- 📦 Items (principal)
+Targets:AddToggle("EspItem", {
+    Text = "Items",
+    Default = false,
+    Callback = function(enabled)
+        espEnabled.Items = enabled
+        if enabled then
+            scanAllItems()
+            task.spawn(function()
+                while espEnabled.Items do
+                    scanAllItems()
+                    task.wait(3)
+                end
+            end)
+        else
+            disableItemsESP()
+        end
+    end
+})
+
+-- 💰 Gold
+Targets:AddToggle("EspGold", {
+    Text = "Gold Piles",
+    Default = false,
+    Callback = function(enabled)
+        espEnabled.Gold = enabled
+        if enabled then
+            scanAllGoldPiles()
+            for _, room in ipairs(Workspace.CurrentRooms:GetChildren()) do
+                if room:FindFirstChild("Assets") then
+                    room.Assets.DescendantAdded:Connect(addGoldESP)
+                end
+            end
+            task.spawn(function()
+                while espEnabled.Gold do
+                    scanAllGoldPiles()
+                    task.wait(3)
+                end
+            end)
+        else
+            for _, goldESP in ipairs(currentGoldESPs) do
+                ModelESP:Remove(goldESP)
+            end
+            currentGoldESPs = {}
+        end
+    end
+})
+
+-- 📖 Books (apenas sala 50)
+Targets:AddToggle("EspBook", {
+    Text = "Books",
+    Default = false,
+    Callback = function(enabled)
+        espEnabled.Books = enabled
+        if enabled then
+            scanBooksInRoom50()
+            local room50 = Workspace.CurrentRooms:FindFirstChild("50")
+            if room50 and room50:FindFirstChild("Assets") then
+                room50.Assets.DescendantAdded:Connect(addBookESP)
+            end
+            task.spawn(function()
+                while espEnabled.Books do
+                    scanBooksInRoom50()
+                    task.wait(3)
+                end
+            end)
+        else
+            for _, bookESP in ipairs(currentBookESPs) do
+                ModelESP:Remove(bookESP)
+            end
+            currentBookESPs = {}
+        end
+    end
+})
+-- 👾 Entities
+Targets:AddToggle("EspEntities", {
+    Text = "Entities",
+    Default = false,
+    Callback = function(enabled)
+        espEnabled.Entities = enabled
+        if enabled then
+            enableEntitiesESP()
+        else
+            disableEntitiesESP()
+        end
+    end
+})
+
+-- 📦 ChestBox
+Targets:AddToggle("EspChestBox", {
+    Text = "ChestBox",
+    Default = false,
+    Callback = function(enabled)
+        espEnabled.ChestBox = enabled
+        if enabled then
+            scanAllRoomsChestBoxes()
+        else
+            disableChestESP()
+        end
+    end
+})
+
+-- 🪤 Dupe
+Targets:AddToggle("EspDupe", {
+    Text = "Dupe",
+    Default = false,
+    Callback = function(enabled)
+        espEnabled.Dupe = enabled
+        if enabled then
+            scanRoomDupes()
+            task.spawn(function()
+                while espEnabled.Dupe do
+                    scanRoomDupes()
+                    task.wait(2)
+                end
+            end)
+        else
+            disableDupeESP()
+        end
+    end
+})
+
+-- 🪜 Lever
+Targets:AddToggle("EspLever", {
+    Text = "Lever",
+    Default = false,
+    Callback = function(enabled)
+        espEnabled.Lever = enabled
+        if enabled then
+            task.spawn(function()
+                while espEnabled.Lever do
+                    scanCurrentRoomLevers()
+                    task.wait(2)
+                end
+            end)
+        else
+            disableLeverESP()
+        end
+    end
+})
+
+-- 🪑 Hiding Spots
+Targets:AddToggle("EspHidden", {
+    Text = "Hiding Place",
+    Default = false,
+    Callback = function(enabled)
+        espEnabled.Hidden = enabled
+        if enabled then
+            scanCurrentRoomHidden()
+            task.spawn(function()
+                while espEnabled.Hidden do
+                    scanCurrentRoomHidden()
+                    updateHiddenDistanceCheck()
+                    task.wait(1)
+                end
+            end)
+        else
+            disableHiddenESP()
+        end
+    end
+})
+
+-- Esp Highlight Outline
+Settings:AddToggle("EspHighlightOutline", {
+    Text = "Esp Chams Outline",
+    Default = true,
+    Callback = function(Value)
+        ModelESP:SetGlobalESPType("ShowHighlightOutline", Value)
+    end
+})
+
+-- Esp Highlight Fill
+Settings:AddToggle("EspHighlightFill", {
+    Text = "Esp Chams Filled",
+    Default = true,
+    Callback = function(Value)
+        ModelESP:SetGlobalESPType("ShowHighlightFill", Value)
+    end
+})
+
+-- Esp Name
+Settings:AddToggle("EspName", {
+    Text = "Esp Name",
+    Default = true,
+    Callback = function(Value)
+        ModelESP:SetGlobalESPType("ShowName", Value)
+    end
+})
+
+-- Esp Distance
+Settings:AddToggle("EspDistance", {
+    Text = "Esp Distance",
+    Default = true,
+    Callback = function(Value)
+        ModelESP:SetGlobalESPType("ShowDistance", Value)
+    end
+})
+
+-- Esp Tracer
+Settings:AddToggle("EspTracer", {
+    Text = "Esp Tracer",
+    Default = false,
+    Callback = function(Value)
+        ModelESP:SetGlobalESPType("ShowTracer", Value)
+    end
+})
+Settings:AddToggle("RainbowEsp", {
+    Text = "Rainbow Color",
+    Default = false,
+    Callback = function(Value)
+        ModelESP:SetGlobalESPType("RainbowMode", Value)
+    end
+})
+
+-- Esp Tracer Origin
+Settings:AddDropdown("EspTracerOrigin", {
+    Values = {"Top", "Center", "Bottom"},
+    Default = "Top",
+    Multi = false,
+    Text = "Tracer Origin",
+    Callback = function(Value)
+        ModelESP:SetGlobalTracerOrigin(Value)
+    end
+})
+Settings:AddSlider("EspMaxDistance", {
+    Text = "Max Distance",
+    Min = 1,
+    Max = 1500,
+    Default = 300,
+    HideMax = true,
+    Suffix = ".m",
+    Rounding = 1,
+    Callback = function(value)
+        ModelESP.GlobalSettings.MaxDistance = value
+    end
+})
+
+
+-- =========================
+-- WATERMARK
+-- =========================
+local LatestRoom = ReplicatedStorage:WaitForChild("GameData"):WaitForChild("LatestRoom")
+local FrameTimer, FrameCounter, FPS = tick(), 0, 60
+
+RunService.RenderStepped:Connect(function()
+    FrameCounter += 1
+    if (tick() - FrameTimer) >= 1 then
+        FPS, FrameTimer, FrameCounter = FrameCounter, tick(), 0
+    end
+
+    local currentRoomValue = LatestRoom.Value
+    local ping = math.floor(Stats.Network.ServerStatsItem["Data Ping"]:GetValue())
+
+    Library:SetWatermark(('%s : CurrentRooms | %s FPS | %s MS'):format(
+        currentRoomValue,
+        math.floor(FPS),
+        ping
+    ))
+end)
+
+-- =========================
+-- UI SETTINGS
+-- =========================
+local MenuGroup = Tabs['UI Settings']:AddLeftGroupbox('Menu')
+
+MenuGroup:AddToggle("KeybindMenuOpen", { 
+	Default = Library.KeybindFrame.Visible, 
+	Text = "Open Keybind Menu", 
+	Callback = function(value) Library.KeybindFrame.Visible = value end
+})
+
+MenuGroup:AddToggle("ShowCustomCursor", { 
+	Text = "Custom Cursor", 
+	Default = true, 
+	Callback = function(Value) Library.ShowCustomCursor = Value end
+})
+
+MenuGroup:AddDivider()
+MenuGroup:AddLabel("Menu bind"):AddKeyPicker("MenuKeybind", { 
+	Default = "RightShift", 
+	NoUI = true, 
+	Text = "Menu keybind" 
+})
+
+MenuGroup:AddButton("Unload", function() Library:Unload() end)
+Library.ToggleKeybind = Options.MenuKeybind 
+
+-- =========================
+-- THEME & SAVE MANAGERS
+-- =========================
+ThemeManager:SetLibrary(Library)
+SaveManager:SetLibrary(Library)
+
+SaveManager:IgnoreThemeSettings()
+SaveManager:SetIgnoreIndexes({ 'MenuKeybind' })
+
+ThemeManager:SetFolder('Kolt')
+SaveManager:SetFolder('Kolt/Doors')
+SaveManager:SetSubFolder('6839171747')
+
+SaveManager:BuildConfigSection(Tabs['UI Settings'])
+ThemeManager:ApplyToTab(Tabs['UI Settings'])
+SaveManager:LoadAutoloadConfig()
