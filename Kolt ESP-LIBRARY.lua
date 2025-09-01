@@ -1,4 +1,4 @@
---// 📦 Library Kolt V1.1--
+--// 📦 Library Kolt V1.2--
 --// 👤 Autor: DH_SOARES
 --// 🎨 Estilo: Minimalista, eficiente e responsivo
 
@@ -11,7 +11,7 @@ local ModelESP = {
     Theme = {
         PrimaryColor = Color3.fromRGB(130, 200, 255),
         SecondaryColor = Color3.fromRGB(255, 255, 255),
-        OutlineColor = Color3.fromRGB(0, 0, 0),
+        OutlineColor = Color3.fromRGB(0, 0, 0), -- Outline global
     },
     GlobalSettings = {
         TracerOrigin = "Bottom",
@@ -20,20 +20,20 @@ local ModelESP = {
         ShowHighlightOutline = true,
         ShowName = true,
         ShowDistance = true,
-        ShowBox = true,       -- Novo
-        ShowSkeleton = false, -- Novo
+        ShowBox = true,
+        ShowSkeleton = false,
         RainbowMode = false,
         MaxDistance = math.huge,
         MinDistance = 0,
         Opacity = 0.8,
         LineThickness = 1.5,
-        BoxThickness = 1.5,      -- Novo
-        SkeletonThickness = 1.2, -- Novo
-        BoxTransparency = 0.5,   -- Novo
+        BoxThickness = 1.5,
+        SkeletonThickness = 1.2,
+        BoxTransparency = 0.5,
+        HighlightOutlineTransparency = 0.65, -- Nova config global
+        HighlightFillTransparency = 0.85, -- Nova config global
         FontSize = 14,
         AutoRemoveInvalid = true,
-        HighlightFillTransparency = 0.85,
-        HighlightOutlineTransparency = 0.65,
     }
 }
 
@@ -88,88 +88,75 @@ function ModelESP:Add(target, config)
         Target = target,
         Name = config and config.Name or target.Name,
         Color = config and config.Color or self.Theme.PrimaryColor,
-        OutlineColor = config and config.OutlineColor or self.Theme.OutlineColor,
-        HighlightFillTransparency = config and config.HighlightFillTransparency or self.GlobalSettings.HighlightFillTransparency,
+        HighlightOutlineColor = config and config.HighlightOutlineColor or self.Theme.OutlineColor,
         HighlightOutlineTransparency = config and config.HighlightOutlineTransparency or self.GlobalSettings.HighlightOutlineTransparency,
-        ShowTracer = config and config.ShowTracer ~= nil and config.ShowTracer or self.GlobalSettings.ShowTracer,
-        ShowName = config and config.ShowName ~= nil and config.ShowName or self.GlobalSettings.ShowName,
-        ShowDistance = config and config.ShowDistance ~= nil and config.ShowDistance or self.GlobalSettings.ShowDistance,
-        ShowBox = config and config.ShowBox ~= nil and config.ShowBox or self.GlobalSettings.ShowBox,
-        ShowSkeleton = config and config.ShowSkeleton ~= nil and config.ShowSkeleton or self.GlobalSettings.ShowSkeleton,
-        ShowHighlightFill = config and config.ShowHighlightFill ~= nil and config.ShowHighlightFill or self.GlobalSettings.ShowHighlightFill,
-        ShowHighlightOutline = config and config.ShowHighlightOutline ~= nil and config.ShowHighlightOutline or self.GlobalSettings.ShowHighlightOutline,
-        Opacity = config and config.Opacity or self.GlobalSettings.Opacity,
-        LineThickness = config and config.LineThickness or self.GlobalSettings.LineThickness,
-        BoxThickness = config and config.BoxThickness or self.GlobalSettings.BoxThickness,
-        SkeletonThickness = config and config.SkeletonThickness or self.GlobalSettings.SkeletonThickness,
-        BoxTransparency = config and config.BoxTransparency or self.GlobalSettings.BoxTransparency,
-        FontSize = config and config.FontSize or self.GlobalSettings.FontSize,
-        MaxDistance = config and config.MaxDistance or self.GlobalSettings.MaxDistance,
-        MinDistance = config and config.MinDistance or self.GlobalSettings.MinDistance,
+        FilledTransparency = config and config.FilledTransparency or self.GlobalSettings.HighlightFillTransparency,
+        BoxColor = config and config.BoxColor or nil,
+        TracerColor = config and config.TracerColor or nil,
     }
 
     -- Drawings básicos
     cfg.tracerLine = createDrawing("Line", {
-        Thickness = cfg.LineThickness,
-        Color = cfg.Color,
-        Transparency = cfg.Opacity,
+        Thickness = self.GlobalSettings.LineThickness,
+        Color = cfg.TracerColor or cfg.Color,
+        Transparency = self.GlobalSettings.Opacity,
         Visible = false
     })
     cfg.nameText = createDrawing("Text", {
         Text = cfg.Name,
         Color = cfg.Color,
-        Size = cfg.FontSize,
+        Size = self.GlobalSettings.FontSize,
         Center = true,
         Outline = true,
         OutlineColor = self.Theme.OutlineColor,
         Font = Drawing.Fonts.Monospace,
-        Transparency = cfg.Opacity,
+        Transparency = self.GlobalSettings.Opacity,
         Visible = false
     })
     cfg.distanceText = createDrawing("Text", {
         Text = "",
         Color = cfg.Color,
-        Size = cfg.FontSize-2,
+        Size = self.GlobalSettings.FontSize-2,
         Center = true,
         Outline = true,
         OutlineColor = self.Theme.OutlineColor,
         Font = Drawing.Fonts.Monospace,
-        Transparency = cfg.Opacity,
+        Transparency = self.GlobalSettings.Opacity,
         Visible = false
     })
 
     -- Highlight
-    if cfg.ShowHighlightFill or cfg.ShowHighlightOutline then
+    if self.GlobalSettings.ShowHighlightFill or self.GlobalSettings.ShowHighlightOutline then
         local highlight = Instance.new("Highlight")
         highlight.Name = "ESPHighlight"
         highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
         highlight.FillColor = cfg.Color
-        highlight.OutlineColor = cfg.OutlineColor
-        highlight.FillTransparency = cfg.ShowHighlightFill and cfg.HighlightFillTransparency or 1
-        highlight.OutlineTransparency = cfg.ShowHighlightOutline and cfg.HighlightOutlineTransparency or 1
+        highlight.OutlineColor = cfg.HighlightOutlineColor
+        highlight.FillTransparency = self.GlobalSettings.ShowHighlightFill and cfg.FilledTransparency or 1
+        highlight.OutlineTransparency = self.GlobalSettings.ShowHighlightOutline and cfg.HighlightOutlineTransparency or 1
         highlight.Parent = target
         cfg.highlight = highlight
     end
 
     -- Box ESP
-    if cfg.ShowBox then
+    if self.GlobalSettings.ShowBox then
         cfg.box = createDrawing("Square", {
-            Thickness = cfg.BoxThickness,
-            Color = cfg.Color,
-            Transparency = cfg.BoxTransparency,
+            Thickness = self.GlobalSettings.BoxThickness,
+            Color = cfg.BoxColor or cfg.Color,
+            Transparency = self.GlobalSettings.BoxTransparency,
             Visible = false
         })
     end
 
     -- Skeleton ESP (simplificado)
-    if cfg.ShowSkeleton and target:IsA("Model") then
+    if self.GlobalSettings.ShowSkeleton and target:IsA("Model") then
         cfg.skeletonLines = {}
         for _, part in ipairs(target:GetDescendants()) do
             if part:IsA("BasePart") then
                 local line = createDrawing("Line", {
-                    Thickness = cfg.SkeletonThickness,
+                    Thickness = self.GlobalSettings.SkeletonThickness,
                     Color = cfg.Color,
-                    Transparency = cfg.Opacity,
+                    Transparency = self.GlobalSettings.Opacity,
                     Visible = false
                 })
                 table.insert(cfg.skeletonLines, line)
@@ -213,6 +200,10 @@ function ModelESP:UpdateGlobalSettings()
         if esp.nameText then esp.nameText.Size = self.GlobalSettings.FontSize end
         if esp.distanceText then esp.distanceText.Size = self.GlobalSettings.FontSize-2 end
         if esp.box then esp.box.Thickness = self.GlobalSettings.BoxThickness esp.box.Transparency = self.GlobalSettings.BoxTransparency end
+        if esp.highlight then
+            esp.highlight.FillTransparency = self.GlobalSettings.ShowHighlightFill and esp.FilledTransparency or 1
+            esp.highlight.OutlineTransparency = self.GlobalSettings.ShowHighlightOutline and esp.HighlightOutlineTransparency or 1
+        end
         if esp.skeletonLines then
             for _, l in ipairs(esp.skeletonLines) do
                 l.Thickness = self.GlobalSettings.SkeletonThickness
@@ -246,16 +237,29 @@ function ModelESP:SetGlobalLineThickness(thick)
     self.GlobalSettings.LineThickness = math.max(1,thick)
     self:UpdateGlobalSettings()
 end
-function ModelESP:SetGlobalHighlightFillTransparency(value)
-    self.GlobalSettings.HighlightFillTransparency = math.clamp(value,0,1)
+-- Novas APIs Globais
+function ModelESP:SetGlobalBoxThickness(thick)
+    self.GlobalSettings.BoxThickness = math.max(1,thick)
+    self:UpdateGlobalSettings()
+end
+function ModelESP:SetGlobalSkeletonThickness(thick)
+    self.GlobalSettings.SkeletonThickness = math.max(1,thick)
+    self:UpdateGlobalSettings()
+end
+function ModelESP:SetGlobalBoxTransparency(value)
+    self.GlobalSettings.BoxTransparency = math.clamp(value, 0, 1)
     self:UpdateGlobalSettings()
 end
 function ModelESP:SetGlobalHighlightOutlineTransparency(value)
-    self.GlobalSettings.HighlightOutlineTransparency = math.clamp(value,0,1)
+    self.GlobalSettings.HighlightOutlineTransparency = math.clamp(value, 0, 1)
+    self:UpdateGlobalSettings()
+end
+function ModelESP:SetGlobalHighlightFillTransparency(value)
+    self.GlobalSettings.HighlightFillTransparency = math.clamp(value, 0, 1)
     self:UpdateGlobalSettings()
 end
 
---// 🔁 Atualização por frame
+-- 🔁 Atualização por frame
 RunService.RenderStepped:Connect(function()
     if not ModelESP.Enabled then return end
     local vs = camera.ViewportSize
@@ -283,50 +287,50 @@ RunService.RenderStepped:Connect(function()
         end
 
         local distance = (camera.CFrame.Position - pos3D).Magnitude
-        local visible = distance >= esp.MinDistance and distance <= esp.MaxDistance
+        local visible = distance >= ModelESP.GlobalSettings.MinDistance and distance <= ModelESP.GlobalSettings.MaxDistance
         local screenPos = Vector2.new(pos2D.X,pos2D.Y)
         local color = ModelESP.GlobalSettings.RainbowMode and getRainbowColor(time) or esp.Color
 
         -- Tracer
         if esp.tracerLine then
-            esp.tracerLine.Visible = esp.ShowTracer and visible
+            esp.tracerLine.Visible = ModelESP.GlobalSettings.ShowTracer and visible
             esp.tracerLine.From = tracerOrigins[ModelESP.GlobalSettings.TracerOrigin](vs)
             esp.tracerLine.To = screenPos
-            esp.tracerLine.Color = color
+            esp.tracerLine.Color = esp.TracerColor or color
         end
         -- Name
         if esp.nameText then
-            esp.nameText.Visible = esp.ShowName and visible
+            esp.nameText.Visible = ModelESP.GlobalSettings.ShowName and visible
             esp.nameText.Position = screenPos - Vector2.new(0,20)
             esp.nameText.Text = esp.Name
             esp.nameText.Color = color
         end
         -- Distance
         if esp.distanceText then
-            esp.distanceText.Visible = esp.ShowDistance and visible
+            esp.distanceText.Visible = ModelESP.GlobalSettings.ShowDistance and visible
             esp.distanceText.Position = screenPos + Vector2.new(0,5)
             esp.distanceText.Text = string.format("%.1fm",distance)
             esp.distanceText.Color = color
         end
         -- Highlight
         if esp.highlight then
-            esp.highlight.Enabled = (esp.ShowHighlightFill or esp.ShowHighlightOutline) and visible
+            esp.highlight.Enabled = (ModelESP.GlobalSettings.ShowHighlightFill or ModelESP.GlobalSettings.ShowHighlightOutline) and visible
             esp.highlight.FillColor = color
-            esp.highlight.OutlineColor = esp.OutlineColor
-            esp.highlight.FillTransparency = esp.ShowHighlightFill and esp.HighlightFillTransparency or 1
-            esp.highlight.OutlineTransparency = esp.ShowHighlightOutline and esp.HighlightOutlineTransparency or 1
+            esp.highlight.OutlineColor = esp.HighlightOutlineColor
+            esp.highlight.FillTransparency = ModelESP.GlobalSettings.ShowHighlightFill and esp.FilledTransparency or 1
+            esp.highlight.OutlineTransparency = ModelESP.GlobalSettings.ShowHighlightOutline and esp.HighlightOutlineTransparency or 1
         end
         -- Box ESP
         if esp.box then
-            esp.box.Visible = esp.ShowBox and visible
-            esp.box.Size = Vector2.new(50,50) -- Placeholder, você pode calcular bounds reais
+            esp.box.Visible = ModelESP.GlobalSettings.ShowBox and visible
+            esp.box.Size = Vector2.new(50,50)
             esp.box.Position = screenPos - esp.box.Size/2
-            esp.box.Color = color
+            esp.box.Color = esp.BoxColor or color
         end
         -- Skeleton ESP
         if esp.skeletonLines then
             for _, l in ipairs(esp.skeletonLines) do
-                l.Visible = esp.ShowSkeleton and visible
+                l.Visible = ModelESP.GlobalSettings.ShowSkeleton and visible
                 l.Color = color
                 -- Aqui você pode atualizar posições reais se tiver joints
             end
