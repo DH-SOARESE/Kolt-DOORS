@@ -2,7 +2,7 @@
 
 **Minimalista, eficiente e responsivo.**
 
-![Kolt ESP Banner](https://raw.githubusercontent.com/DH-SOARESE/Kolt-DOORS/main/assets/banner.png) <!-- Adicione uma imagem ilustrativa se desejar -->
+![Kolt ESP Banner](https://raw.githubusercontent.com/DH-SOARESE/Kolt-DOORS/refs/heads/main/Assets/EspImage.jpg) <!-- Adicione uma imagem ilustrativa se desejar -->
 
 ---
 
