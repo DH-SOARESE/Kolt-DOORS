@@ -149,13 +149,6 @@ Abra issues, envie PRs e compartilhe sugestões no [repositório](https://github
 
 ---
 
-## 📄 Licença
-
-Esta library é distribuída sob a licença MIT.  
-Consulte o arquivo [LICENSE](./LICENSE) para mais informações.
-
----
-
 ## 🗂️ Recursos Avançados
 
 - Remoção automática de objetos inválidos (`AutoRemoveInvalid`)
@@ -175,7 +168,6 @@ Consulte o arquivo [LICENSE](./LICENSE) para mais informações.
 
 ## 📬 Contato
 
-- Discord: `DH_SOARESE`
 - GitHub: [DH-SOARESE](https://github.com/DH-SOARESE)
 
 ---
