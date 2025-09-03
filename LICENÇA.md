@@ -47,12 +47,3 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    --// 🎨 Estilo: Minimalista, eficiente e responsivo
    -- (rest of your code follows)
    ```
-
-3. **Separate LICENSE File**: Alternatively, create a `LICENSE` file in your project directory with the above license text. This is standard practice for open-source projects.
-
-### Notes
-- **Why MIT?**: The MIT License is simple, widely recognized, and allows broad use of your library while ensuring you get credit. It’s suitable for a Roblox Lua-based ESP library like Kolt V1.2.
-- **Customization**: If you want to restrict certain uses (e.g., commercial use) or require derivative works to be open-sourced, consider licenses like GPL or a custom license.
-- **Roblox Context**: Since this appears to be a Roblox-related library, ensure compliance with Roblox’s Terms of Service when distributing or using this library in Roblox games.
-- **Language**: I provided the license in English, as it’s standard for open-source licenses. If you prefer it in Portuguese (e.g., to match your code comments), I can translate it.
-
