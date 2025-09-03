@@ -56,4 +56,3 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 - **Roblox Context**: Since this appears to be a Roblox-related library, ensure compliance with Roblox’s Terms of Service when distributing or using this library in Roblox games.
 - **Language**: I provided the license in English, as it’s standard for open-source licenses. If you prefer it in Portuguese (e.g., to match your code comments), I can translate it.
 
-If you have specific requirements (e.g., a different license type, additional terms, or a Portuguese version), let me know, and I’ll adjust it!
