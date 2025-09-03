@@ -1,0 +1,59 @@
+### MIT License
+
+**Kolt V1.2 Library**  
+**Author**: DH_SOARES  
+**Copyright** © 2025 DH_SOARES  
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+---
+
+### How to Include the License
+1. **Add to the Code File**: You can place the license text at the top of your Lua script, above the `--// 📦 Library Kolt V1.2--` header, or in a separate `LICENSE` file in the same directory as your code.
+2. **Example in Code**:
+   ```lua
+   --[[
+   MIT License
+
+   Kolt V1.2 Library
+   Author: DH_SOARES
+   Copyright © 2025 DH_SOARES
+
+   Permission is hereby granted, free of charge, to any person obtaining a copy
+   of this software and associated documentation files (the "Software"), to deal
+   in the Software without restriction, including without limitation the rights
+   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+   copies of the Software, and to permit persons to whom the Software is
+   furnished to do so, subject to the following conditions:
+
+   The above copyright notice and this permission notice shall be included in all
+   copies or substantial portions of the Software.
+
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+   SOFTWARE.
+   ]]
+
+   --// 📦 Library Kolt V1.2--
+   --// 👤 Autor: DH_SOARES
+   --// 🎨 Estilo: Minimalista, eficiente e responsivo
+   -- (rest of your code follows)
+   ```
+
+3. **Separate LICENSE File**: Alternatively, create a `LICENSE` file in your project directory with the above license text. This is standard practice for open-source projects.
+
+### Notes
+- **Why MIT?**: The MIT License is simple, widely recognized, and allows broad use of your library while ensuring you get credit. It’s suitable for a Roblox Lua-based ESP library like Kolt V1.2.
+- **Customization**: If you want to restrict certain uses (e.g., commercial use) or require derivative works to be open-sourced, consider licenses like GPL or a custom license.
+- **Roblox Context**: Since this appears to be a Roblox-related library, ensure compliance with Roblox’s Terms of Service when distributing or using this library in Roblox games.
+- **Language**: I provided the license in English, as it’s standard for open-source licenses. If you prefer it in Portuguese (e.g., to match your code comments), I can translate it.
+
+If you have specific requirements (e.g., a different license type, additional terms, or a Portuguese version), let me know, and I’ll adjust it!
